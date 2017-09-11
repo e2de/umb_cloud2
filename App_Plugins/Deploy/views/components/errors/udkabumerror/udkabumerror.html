@@ -1,0 +1,14 @@
+<div class="ud-kabum-error">
+    
+    <h4 class="bold color-red">Kabum! &#128163; &#128035;</h4>
+    <p>You have found the easter egg error being triggered by having this configuration setting in your <strong>{{exception.EnvironmentName}}</strong> environment:</p>
+    <pre>
+            &lt;settings&gt;
+            &nbsp;&nbsp;&nbsp;&nbsp;&lt;deploy kabum=&quot;666&quot;&gt;
+            &nbsp;&nbsp;&nbsp;&nbsp;&lt;/deploy&gt;
+            &lt;/settings&gt;
+    </pre>
+    <p>This is used for debugging exceptions/errors and should not normally appear unless you are debugging something.</p>
+    <p>You can disable it by removing the 'kabum' attribute from the UmbracoDeploy.settings.config file in /config of your site.</p>
+
+</div>

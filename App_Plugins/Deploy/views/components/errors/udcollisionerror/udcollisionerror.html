@@ -1,0 +1,25 @@
+<div class="ud-schema-mismatch-error">
+    <h4 class="bold color-red">Artifact collisions detected</h4>
+    <p>
+        While trying to restore, we detected some problems in the Deploy files that exist in your repository.
+        These are the files found in the ~/data/revision folder that represent your project's Schema items such as Data Types and Document Types.
+    </p>
+    <p>
+        This error means that you have one or more of the same Schema items defined in these 
+        with the same aliases but with different Ids. This can occur if one or more developers 
+        are creating the same new Schema items at the same time
+        and both of the developers commit and push these changes to the Git repository.
+    </p>
+    <p>
+        To be able to continue these files will need to be fixed and de-duplicated, 
+        you can find 
+        <a href="https://our.umbraco.org/documentation/Umbraco-Cloud/Troubleshooting/Structure-Error/#error-in-courier-files-containing-site-structure" 
+           target="_blank">documentation online here</a> on how to do this. You will need to expand the error details below to see the collision report
+        about what files and items need to be fixed.
+    </p>
+    
+    <p><a class="underline" ng-if="!errorDetailsVisible" href="#" prevent-default ng-click="toggleErrorDetails()">Click to see error details</a></p>
+    <div class="umb-deploy-error-details" ng-if="errorDetailsVisible">
+        <pre>{{exception.Message}}</pre>
+    </div> 
+</div>

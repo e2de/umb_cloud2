@@ -1,0 +1,87 @@
+<div>
+
+    <div ng-if="status === 'failed'">
+
+        <div ng-switch="uiException.ClassName">
+            
+            <ud-collision-error 
+                ng-switch-when="Umbraco.Deploy.Exceptions.ArtifactCollisionException"
+                exception="uiException">
+            </ud-collision-error>
+
+            <ud-deploy-schema-mismatch-error
+                ng-switch-when="Umbraco.Deploy.Exceptions.DeploySchemaMismatchException"
+                exception="uiException">
+            </ud-deploy-schema-mismatch-error>
+
+            <ud-restore-schema-mismatch-error
+                ng-switch-when="Umbraco.Deploy.Exceptions.RestoreSchemaMismatchException"
+                exception="uiException"
+                no-nodes="noNodes">
+            </ud-restore-schema-mismatch-error>
+
+            <ud-unauthorized-client-error
+                ng-switch-when="Umbraco.Deploy.Exceptions.UnauthorizedClientException"
+                exception="uiException">
+            </ud-unauthorized-client-error>
+
+            <ud-kabum-error
+                ng-switch-when="Umbraco.Deploy.Exceptions.KabumException"
+                exception="uiException">
+            </ud-kabum-error>
+
+            <ud-content-type-changed-error
+                ng-switch-when="Umbraco.Deploy.Exceptions.ContentTypeChangedException"
+                exception="uiException">
+            </ud-content-type-changed-error>
+            
+            <ud-busy-error
+                ng-switch-when="Umbraco.Deploy.Exceptions.EnvironmentBusyException"
+                exception="uiException">
+            </ud-busy-error>
+            
+            <ud-web-exception-error
+                ng-switch-when="System.Net.WebException"
+                exception="uiException">
+            </ud-web-exception-error>
+
+            <div ng-switch-default>
+                <h4 class="bold color-red">An error occurred</h4>
+                <p>We ran out of unicorn dust...</p>
+                <p>
+                    <a class="underline" ng-if="!errorDetailsVisible" href="#" prevent-default ng-click="toggleErrorDetails()">Click to see more details</a>
+                </p>
+                <div class="umb-deploy-error-details" ng-if="errorDetailsVisible">
+                    <hr/>
+                    <p>The {{uiException.EnvironmentName || 'source'}} environment has thrown a <i>{{uiException.ExceptionType || uiException.ClassName || 'unknown exception'}}</i>.</p>
+                    <pre ng-if="uiException.Message">{{uiException.Message}}</pre>
+                    <div ng-if="log">
+                        <p>You can see the details of the error below:</p>
+                        <h5>Detailed log:</h5>
+                        <pre>{{log}}</pre>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <div ng-if="status === 'cancelled'">
+        <h4 class="bold">Task was cancelled</h4>
+        <p>The task was cancelled during execution.</p>
+    </div>
+
+    <div ng-if="status === 'timedOut'">
+        <h4 class="bold">Task timed out</h4>
+        <p>The task timed out.</p>
+    </div>
+
+    <umb-button
+        type="button"
+        button-style="success"
+        action="onBack()"
+        label="Okay">
+    </umb-button>
+
+</div>

@@ -1,0 +1,22 @@
+<div class="ud-schema-mismatch-error">
+    <h4 class="bold color-red">Schema mismatch</h4>
+    <p>While trying to deploy, we found schema mismatches between your environments.</p>
+    <p>To be able to deploy content, please make sure you have deployed all pending schema changes in the portal.</p>
+    <p>For more information on how to resolve schema mismatch errors, please refer to the documentation on how to <a class="underline" href="https://our.umbraco.org/documentation/Umbraco-Cloud/Troubleshooting/Content-Deploy-Schema/">troubleshoot schema errors on Umbraco Cloud</a>.</p>
+
+    <p><a class="underline" ng-if="!errorDetailsVisible" href="#" prevent-default ng-click="toggleErrorDetails()">Click to see error details</a></p>
+    
+    <div ng-if="errorDetailsVisible">
+        <div class="ud-schema-mismatch-error__group" ng-repeat="entityType in exception.Mismatches">
+            <div class="ud-schema-mismatch-error__title">
+                <span class="bold">{{ entityType.Name }}</span><span ng-if="entityType.Alias"> ({{ entityType.Alias }})</span>
+            </div>
+            <div class="ud-schema-mismatch-error__difference-group">
+                <div class="ud-schema-mismatch-error__difference" ng-repeat="difference in entityType.Differences">
+                    - {{ difference.Title }}
+                    <span class="ud-schema-mismatch-error__difference-text" ng-if="difference.Text" ng-bind="difference.Text"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

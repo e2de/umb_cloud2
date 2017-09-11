@@ -1,0 +1,15 @@
+<div class="ud-unauthorizedclient-error">
+    
+    <h4 class="bold color-red">Authorization error</h4>
+    <p>Authorization between your environments has failed.</p>
+    
+    <p><a class="underline" ng-if="!errorDetailsVisible" href="#" prevent-default ng-click="toggleErrorDetails()">Click to see error details</a></p>
+
+    <div ng-if="errorDetailsVisible">
+
+        <p>This could be caused by having different deploy API keys configured for each of your environments.</p>
+        <p>Please ensure that these settings match before trying to continue.</p>
+
+    </div>
+
+</div>
