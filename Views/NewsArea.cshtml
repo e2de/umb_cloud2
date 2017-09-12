@@ -2,8 +2,29 @@
 @using ContentModels = Umbraco.Web.PublishedContentModels;
 @{
 	Layout = "SubMaster.cshtml";
+    var news = Model.Content.Children<NewsItem>().Where(x => x.IsVisible() ).OrderByDescending(x => x.CreateDate);
 }
 
-@Umbraco.Field("bodyText")
+@Model.Content.BodyText
 
-@Html.Partial("listNewsItems")
+<div class="blogposts">
+
+			<!-- Implement the Home Page news listing here -->
+            @foreach(var item in news){
+			<a href="#" class="blogpost blogpost-with-image">
+				<div class="blogpost-info">
+					<div class="blogpost-meta">
+						<small class="blogpost-date">@item.CreateDate</small>
+					</div>
+
+					<h3 class="blogpost-title">@item.Name</h3>
+					<div class="blogpost-excerpt">@item.Summary</div>
+				</div>
+
+				<!--- optional  - if the article has a image assigned to it -->
+				<div class="blogpost-image" style="background-image: url('')"></div>	
+			</a>
+            }
+            
+		
+		</div>
