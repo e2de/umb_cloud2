@@ -1,0 +1,1 @@
+{"File":"umb://template-file/SubMaster.cshtml","Master":null,"Udi":"umb://template/6a428b2ed8e542ce8cedf2fdea7df1de","Dependencies":[{"Udi":"umb://template-file/SubMaster.cshtml","Ordering":true,"Mode":0}],"Name":"SubMaster","Alias":"SubMaster","__type":"Umbraco.Deploy,Umbraco.Deploy.Artifacts.TemplateArtifact","__version":"1.0.9"}

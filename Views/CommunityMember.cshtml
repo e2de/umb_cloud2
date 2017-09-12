@@ -1,0 +1,30 @@
+﻿@inherits Umbraco.Web.Mvc.UmbracoTemplatePage<ContentModels.CommunityMember>
+@using ContentModels = Umbraco.Web.PublishedContentModels;
+@{
+	Layout = "SubMaster.cshtml";
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-9">
+            <div class="page-header">
+                <h1>@Umbraco.Field("pageName")</h1>
+            </div>
+
+			<strong><p>Community Member</p></strong>
+			
+				
+		</div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <footer>
+                Updated by
+                @Umbraco.Field("writerName")
+                on
+                @Umbraco.Field("updateDate", formatAsDate: true)
+            </footer>
+        </div>
+    </div>
+</div>

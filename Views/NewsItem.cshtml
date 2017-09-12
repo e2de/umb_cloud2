@@ -1,0 +1,8 @@
+﻿@inherits Umbraco.Web.Mvc.UmbracoTemplatePage<ContentModels.NewsItem>
+@using ContentModels = Umbraco.Web.PublishedContentModels;
+@{
+	Layout = "SubMaster.cshtml";
+}
+
+<h3>@Model.Content.Summary</h3>
+@Umbraco.Field("bodyText")

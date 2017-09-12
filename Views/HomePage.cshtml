@@ -1,0 +1,140 @@
+﻿@inherits Umbraco.Web.Mvc.UmbracoTemplatePage<ContentModels.HomePage>
+@using ContentModels = Umbraco.Web.PublishedContentModels;
+@{
+	Layout = "Master.cshtml";
+	var products = Model.Content.FirstChild<Products>().Children<ProductItem>().Where(x => x.IsVisible());
+	var news = Model.Content.FirstChild<NewsArea>().Children<NewsItem>().Where(x => x.IsVisible());
+}
+
+<!-- default header on home page -->
+<section class="section section--full-height background-image-full overlay overlay--dark section--content-center section--thick-border" 
+style="background-image: url('/images/HQ_9826.jpg')">
+	<div class="section__hero-content">
+		<h1>Wow, such experience</h1>
+		<p class="section__description">Moonfish, steelhead, lamprey southern flounder tadpole fish sculpin bigeye, blue-redstripe danio collared dogfish. Smalleye squaretail goldfish arowana butterflyfish pipefish wolf-herring jewel tetra, shiner; gibberfish red velvetfish. Thornyhead yellowfin pike threadsail ayu cutlassfish.</p>
+		<button class="button button--border--solid">Learn more</button>
+	</div>
+</section>
+<!-- End of header section -->
+
+<!-- Product section -->
+<section class="section section--sand">
+
+	<div class="container">
+		<div class="row">
+			<h2>Our products</h2>
+			<div class="product-grid">
+				
+				<!-- Implement the Home Page product listing here -->
+                @foreach(var product in products){
+                    
+    				<a href="@product.Url" class="product-grid__item" 
+    					style="background-image: url('@product.HomeImages')">
+    					<div class="product-grid__item__overlay">
+    						<div class="product-grid__item__name">
+    							@product.Name</div>
+    					</div>
+    				</a>   
+				}
+				
+							
+			</div>
+		</div>
+	</div>
+</section>
+<!-- product section end -->										
+										
+
+<!-- News section -->
+<section class="section section--stroke-bottom">
+	<div>
+		<h2 class="ta-center">Latest news</h2>
+	</div>
+
+	<div class="container">
+
+		<div class="blogposts">
+
+			<!-- Implement the Home Page news listing here -->
+            @foreach(var item in news){
+			<a href="#" class="blogpost blogpost-with-image">
+				<div class="blogpost-info">
+					<div class="blogpost-meta">
+						<small class="blogpost-date">@item.CreateDate</small>
+					</div>
+
+					<h3 class="blogpost-title">@item.Name</h3>
+					<div class="blogpost-excerpt">@item.Summary</div>
+				</div>
+
+				<!--- optional  - if the article has a image assigned to it -->
+				<div class="blogpost-image" style="background-image: url('')"></div>	
+			</a>
+            }
+            
+		
+		</div>
+
+		<div class="ta-center">
+			<a class="button--small button--border--dark" href="/news">view all posts &rarr;</a>
+		</div>
+
+	</div>
+</section>
+<!-- News section end -->
+
+
+<!-- Testimonials - you can use this snippet for exercise 6 -->
+<section class="section">
+
+	<div class="container">
+		<h2>Testimonials</h2>
+
+		<!-- start of row -->
+		<div class="row">
+			
+
+			<!-- Testimonial start -->
+			<div class="col-sm-6 col-lg-4">
+				<div class="testimonial">
+					<div >
+						<div class="testimonial-image" style="background-image: url('https://c7.staticflickr.com/3/2925/14434617534_6d43d7e7ff_h.jpg')"></div>
+						<div class="testimonial-content">
+							<h3 class="testimonial-title">Candice Neistat</h3>
+							<p class="testimonial-text no-air">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus adipisci consectetur facere hic id nobis numquam, omnis sapiente.</p>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- testimonial end -->	
+
+
+			<div class="col-sm-6 col-lg-4">
+				<div class="testimonial">
+					<div >
+						<div class="testimonial-image" style="background-image: url('https://c1.staticflickr.com/6/5634/22125241144_cc941439fe_h.jpg')"></div>
+						<div class="testimonial-content">
+							<h3 class="testimonial-title">Casey Neistat</h3>
+							<p class="testimonial-text no-air">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus adipisci consectetur facere hic id nobis numquam, omnis sapiente.</p>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="col-sm-6 col-lg-4">
+				<div class="testimonial">
+					<div >
+						<div class="testimonial-image" style="background-image: url('https://c8.staticflickr.com/1/571/22759201791_aea315535e_h.jpg')"></div>
+						<div class="testimonial-content">
+							<h3 class="testimonial-title">Francine Naistat</h3>
+							<p class="testimonial-text no-air">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus adipisci consectetur facere hic id nobis numquam, omnis sapiente.</p>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- end of testimonials  -->
+
+		</div>
+	</div>
+</section>            
+<!-- Testimonials section end -->

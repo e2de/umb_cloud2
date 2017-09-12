@@ -1,0 +1,36 @@
+﻿@inherits Umbraco.Web.Mvc.UmbracoTemplatePage
+@{
+	Layout = "Master.cshtml";
+}
+
+<section class="section section--themed section--header section--content-center-bottom">
+    <div class="section__hero-content">
+        <!-- Replace with "PageName" value -->
+        <h1 class="no-air">@Umbraco.Field("pageName")</h1>
+    </div>
+</section>
+
+<section class="section">
+    <div class="container">
+        <div class="col-md-9">
+           
+                @RenderBody()
+            
+        </div>
+
+        <div class="col-md-3">
+            <nav class="nav-bar nav-bar--list">
+                
+                 @foreach (var item in Model.Content.Children() )
+                {
+                    <a class="nav-link nav-link--black nav-link--air-bottom nav-link--active"
+                   href="@item.Url">@item.Name</a>
+
+                }
+                
+            </nav>
+        </div>
+
+
+    </div>
+</section>

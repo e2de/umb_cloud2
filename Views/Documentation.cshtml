@@ -1,0 +1,39 @@
+﻿@inherits Umbraco.Web.Mvc.UmbracoTemplatePage<ContentModels.Documentation>
+@using ContentModels = Umbraco.Web.PublishedContentModels;
+@{
+	Layout = "SubMaster.cshtml";
+	
+	
+    //fetch nodes
+    var products = CurrentPage.Site().FirstChild("products").Children("landingPage").Where("Visible");
+}
+
+
+
+
+            @Umbraco.Field("bodyText")
+
+
+            @if (products.Any())
+            {
+                <hr />
+                <h4>Documentation Applies to Products:</h4>
+
+                <ul>
+                    @foreach (var landingPage in products)
+                    {
+                        <li><a href="@landingPage.Url">@landingPage.Name</a></li>
+                    }
+                </ul>
+            }
+
+
+            @if (Model.Content.Images.Any())
+            {
+                <h4>Documentation media:</h4>
+
+                foreach (var image in Model.Content.Images)
+                {
+                    <img src="@image.GetCropUrl("thumb")" alt="..." class="img-thumbnail">
+                }
+            }

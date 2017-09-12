@@ -1,0 +1,1 @@
+{"File":"umb://template-file/BlogItem.cshtml","Master":null,"Udi":"umb://template/79438c26c04f4200972ec6ce3fe880c0","Dependencies":[{"Udi":"umb://template-file/BlogItem.cshtml","Ordering":true,"Mode":0}],"Name":"Blog Item","Alias":"BlogItem","__type":"Umbraco.Deploy,Umbraco.Deploy.Artifacts.TemplateArtifact","__version":"1.0.9"}
