@@ -1,0 +1,5 @@
+{
+	"javascript": [
+		"~/app_plugins/workshops/workshop.resource.js",
+	]
+}

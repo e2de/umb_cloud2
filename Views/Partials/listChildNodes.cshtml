@@ -1,0 +1,22 @@
+﻿@inherits Umbraco.Web.Mvc.UmbracoTemplatePage
+
+
+@{ var products = Model.Content.Children<ProductItem>().Where(x => x.IsVisible() ); }
+
+@if (products.Any())
+{
+    <div class="product-grid">
+				
+				<!-- Implement the Home Page product listing here -->
+                @foreach(var product in products){
+                    
+    				<a href="@product.Url" class="product-grid__item" 
+    					style="background-image: url('@product.HomeImages')">
+    					<div class="product-grid__item__overlay">
+    						<div class="product-grid__item__name">
+    							@product.Name</div>
+    					</div>
+    				</a>   
+				}
+	</div>
+}

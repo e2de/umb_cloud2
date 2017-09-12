@@ -1,0 +1,11 @@
+{
+    "propertyEditors": [
+        {
+          "name": "Twitter Username",
+          "alias": "my.TwitterUsername",
+          "editor": {
+              "view": "/app_plugins/twitterusername/editor.html"
+          }
+        }
+    ]
+}
