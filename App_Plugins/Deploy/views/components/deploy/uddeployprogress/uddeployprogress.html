@@ -7,6 +7,6 @@
         percentage="{{ progress }}">
     </umb-progress-bar>
 
-    <small>{{ currentActivity }}</small>
+    <small><span ng-if="timestamp">{{ timestamp }}:</span> {{ currentActivity }}</small>
 
 </div>

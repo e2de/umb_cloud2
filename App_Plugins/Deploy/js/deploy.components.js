@@ -64,6 +64,7 @@
         function link(scope, element, attr, ctrl) {
 
             scope.config = deployConfiguration;
+            var timestampFormat = 'MMMM Do YYYY, HH:mm:ss';
 
             function onInit() {
 
@@ -90,6 +91,7 @@
                         scope.deploy.deployProgress = args.percent;
                         scope.deploy.currentActivity = args.comment;
                         scope.deploy.status = deployHelper.getStatusValue(args.status);
+                        scope.deploy.timestamp = moment().format(timestampFormat);
 
                         if (scope.deploy.status === 'completed') {
                             
@@ -109,6 +111,18 @@
 
                     });
                 }
+
+            });
+
+            // signalR heartbeat
+            scope.$on('deploy:heartbeat', function (event, args) {
+                if (!deployService.isOurSession(args.sessionId)) return;
+
+                angularHelper.safeApply(scope, function () {
+                    if(scope.deploy) {
+                        scope.deploy.timestamp = moment().format(timestampFormat);
+                    }
+                });
 
             });
 
@@ -176,6 +190,14 @@
 
             scope.addWorkspaceInPortal = function (projectUrl) {
                 workspaceHelper.addWorkspaceInPortal(projectUrl);
+            };
+
+            // call back when deploy is successfully started
+            scope.onDeployStartSuccess = function(data) {
+                scope.deploy.deployProgress = 0;
+                scope.deploy.currentActivity = "Please wait...";
+                scope.deploy.status = deployHelper.getStatusValue(2);
+                scope.deploy.timestamp = moment().format(timestampFormat);                
             };
 
             onInit();
@@ -416,7 +438,8 @@
             scope: {
                 'targetName': "=",
                 'progress': "=",
-                'currentActivity': "="
+                'currentActivity': "=",
+                'timestamp': "="
             },
             link: link
         };
@@ -434,33 +457,26 @@
     function udDeployQueueComponent(deployQueueService, deployService) {
         function link(scope, element, attr, ctrl) {
 
-            var eventBindings = [];            
-            scope.items = deployQueueService.queue;
+            var eventBindings = [];
 
-            scope.buttonState = 'init';
+            scope.items = deployQueueService.queue;
+            scope.deployButtonState = "init";
 
             scope.startDeploy = function () {
 
-                //Disable the button so you can't click it loads of times
-                scope.buttonState = 'busy';
+                scope.deployButtonState = "busy";
 
                 deployService.deploy().then(function(data) {
 
-                    //Update UI instantly to in-progress
-                    //Rather than trigger a WebAPI that will send out a SignalR event, sometimes this can be slow
-                    //And look like the UI is not doing anything
+                    if(scope.onDeployStartSuccess) {
+                        scope.onDeployStartSuccess({'data': data});
+                    }
 
-
-                    //Update the parent scope as this component nested in ud-content-flow
-                    //And display the ud-deploy-progress component
-                    //Then when signalR kicks in & pushes out an event the UI will be ready
-                    scope.$parent.deploy.status = 'inProgress';
-
-                    //Button is success (We most likely not see this state as the above will trigger the view change)
-                    scope.buttonState = 'success';
+                    //Set button state to success (We most likely not see this state as the above will trigger the error view change)
+                    scope.deployButtonState = "success";
 
                 }, function (error) {
-
+                    
                     //Catching the 500 error from the request made to the UI/API Controller to trigger an instant deployment
                     //Other errors will be caught in 'deploy:sessionUpdated' event pushed out
 
@@ -477,7 +493,7 @@
                     };
 
                     //Set button state to error (We most likely not see this state as the above will trigger the error view change)
-                    scope.buttonState = 'error';
+                    scope.deployButtonState = "error";
 
                 });
 
@@ -527,7 +543,8 @@
             templateUrl: '/App_Plugins/Deploy/views/components/deploy/uddeployqueue/uddeployqueue.html',
             scope: {
                 targetName: "=",
-                targetUrl: "="
+                targetUrl: "=",
+                onDeployStartSuccess: "&"
             },
             link: link
         };
@@ -788,7 +805,8 @@
             scope: {
                 'targetName': "=",
                 'progress': "=",
-                'currentActivity': "="
+                'currentActivity': "=",
+                'timestamp': "="
             }
         };
 

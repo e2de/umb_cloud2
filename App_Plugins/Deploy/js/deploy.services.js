@@ -467,6 +467,12 @@ angular.module('umbraco.deploy.services')
                 });
             };
 
+            $.connection.deployHub.client.heartbeat = function (sessionId) {
+                $rootScope.$broadcast('deploy:heartbeat', {
+                    sessionId: sessionId
+                });
+            };
+
             $.connection.restoreHub.client.sessionUpdated = function (sessionId, status, comment, percent, log, exception) {
                 $rootScope.$broadcast('restore:sessionUpdated', {
                     sessionId: sessionId, status: status, comment: comment, percent: percent, log: log, exception: exception
@@ -479,7 +485,13 @@ angular.module('umbraco.deploy.services')
                 });
             };
 
-            instance.initialize = function() {
+            $.connection.restoreHub.client.heartbeat = function (sessionId) {
+                $rootScope.$broadcast('restore:heartbeat', {
+                    sessionId: sessionId
+                });
+            };
+
+            instance.initialize = function () {
                 if (initialized === false && lock === false) {
                     lock = true;
                     $.connection.hub.start();

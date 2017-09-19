@@ -36,7 +36,7 @@
     <key alias="translate">Översätt</key>
     <key alias="unpublish">Avpublicera</key>
     <key alias="update">Uppdatera</key>
-  <key alias="exportContourForm">Export form</key><key alias="importContourForm">Import form</key><key alias="archiveContourForm">Archive form</key><key alias="unarchiveContourForm">Unarchive form</key></area>
+  </area>
   <area alias="assignDomain">
     <key alias="addNew">Lägg till nytt domännamn</key>
     <key alias="domain">Domännamn</key>
@@ -638,8 +638,12 @@
   </area>
   <area alias="imagecropper">
     <key alias="reset">Återställ</key>
+    <key alias="defineCrop">Definiera beskräning</key>
+    <key alias="defineCropDescription">Ge beskärningen ett alias och dess standardbredd och -höjd</key>
+    <key alias="saveCrop">spara beskärning</key>
+    <key alias="addCrop">Lägg till ny beskärning</key>
   </area>
-  <area alias="rollback">
+    <area alias="rollback">
     <key alias="currentVersion">Nuvarande version</key>
     <key alias="diffHelp"><![CDATA[Här visas skillnaderna mellan nuvarande version och vald version<br /><del>Röd</del> text kommer inte att synas i den valda versionen. , <ins>Grön betyder att den har tillkommit</ins>]]></key>
     <key alias="documentRolledBack">Dokumentet har återgått till en tidigare version</key>

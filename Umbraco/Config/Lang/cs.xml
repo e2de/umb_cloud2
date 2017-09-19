@@ -36,7 +36,7 @@
     <key alias="translate">Přeložit</key>
     <key alias="update">Aktualizovat</key>
     <key alias="defaultValue">Výchozí hodnota</key>
-  <key alias="exportContourForm">Export form</key><key alias="importContourForm">Import form</key><key alias="archiveContourForm">Archive form</key><key alias="unarchiveContourForm">Unarchive form</key></area>
+  </area>
   <area alias="assignDomain">
     <key alias="permissionDenied">Přístup zakázán.</key>
     <key alias="addNew">Přidat novou doménu</key>
@@ -757,7 +757,7 @@
     <key alias="translation">Překlad</key>
     <key alias="users">Uživatelé</key>
     <key alias="help" version="7.0">Nápověda</key>
-  <key alias="forms">Forms</key></area>
+  </area>
   <area alias="settings">
     <key alias="defaulttemplate">Výchozí šablona</key>
     <key alias="dictionary editor egenskab">Klíč slovníku</key>

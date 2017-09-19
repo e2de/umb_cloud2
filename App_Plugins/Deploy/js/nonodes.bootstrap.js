@@ -1,14 +1,16 @@
 (function () {
     "use strict";
     function NoNodesController($scope, $http, $timeout, $q, deploySignalrService, deployHelper) {
+        
         var vm = this;
         var baseUrl = Umbraco.Sys.ServerVariables.umbracoUrls.deployNoNodesBaseUrl;
-
+        var timestampFormat = 'MMMM Do YYYY, HH:mm:ss';
+        
         vm.restore = {};
         vm.logIsvisible = false;
         vm.restoreData = restoreData;
         vm.restoreSchema = restoreSchema;
-        vm.showLog = showLog;        
+        vm.showLog = showLog;
         vm.isDebug = Umbraco.Sys.ServerVariables.deploy.DebugEnabled;
         vm.requiresInitialization = vm.isDebug;
 
@@ -25,17 +27,17 @@
          * in which case we'll create a deploy marker to start the deployment process.
          */
         function checkInitMarker() {
-            
+
             var deferred = $q.defer();
-            
+
             $http.get(baseUrl + 'CheckMarkers')
                 .then(function (response) {
                     if (Umbraco.Sys.ServerVariables.deploy.DebugEnabled) {
                         vm.requiresInitialization = true;
                     }
                     else {
-                        //If OK is returned, that means 
-                        vm.restore.status = "ready";    
+                        //If OK is returned, that means
+                        vm.restore.status = "ready";
                     }
                     deferred.resolve();
                 }, function (response) {
@@ -70,7 +72,7 @@
                         }
                     };
                 });
-        };
+        }
 
         function showLog() {
             vm.logIsvisible = true;
@@ -95,12 +97,14 @@
                     });
                 }, 1000);
             }
-        }        
+        }
 
         function updateRestoreArgs(event, args) {
+
             vm.restore.restoreProgress = args.percent;
             vm.restore.currentActivity = args.comment;
             vm.restore.status = deployHelper.getStatusValue(args.status);
+            vm.restore.timestamp = moment().format(timestampFormat);
 
             if (vm.restore.status === 'failed' ||
                 vm.restore.status === 'cancelled' ||
@@ -115,28 +119,34 @@
         }
 
         //listen for the restore data
-        $scope.$on('restore:sessionUpdated',
-            function (event, args) {
-                $scope.$apply(function () {
-                    updateRestoreArgs(event, args);
-                });
+        $scope.$on('restore:sessionUpdated', function (event, args) {
+            $scope.$apply(function () {
+                updateRestoreArgs(event, args);
             });
+        });
 
         //listen for the schema data to complete - this deployments starts as soon as this view loads
         //once that is done we'll present the Restore step
-        $scope.$on('restore:diskReadSessionUpdated',
-            function (event, args) {
-                $scope.$apply(function () {
-                    updateRestoreArgs(event, args);
+        $scope.$on('restore:diskReadSessionUpdated', function (event, args) {
+            $scope.$apply(function () {
+                updateRestoreArgs(event, args);
 
-                    //when this is done, show the restore step
-                    if (vm.restore.status === "completed") {
-                        vm.restore.status = "ready";
-                        vm.restore.restoreMessage = "Restoring your website...";
-                    }
-                });
+                //when this is done, show the restore step
+                if (vm.restore.status === "completed") {
+                    vm.restore.status = "ready";
+                    vm.restore.restoreMessage = "Restoring your website...";
+                }
             });
+        });
 
+        // signalR heartbeat
+        $scope.$on('restore:heartbeat', function (event, args) {
+            $scope.$apply(function () {
+                if(vm.restore) {
+                    vm.restore.timestamp = moment().format(timestampFormat);
+                }
+            });
+        });
         init();
     }
     angular.module("umbraco.nonodes").controller("Umbraco.NoNodes.Controller", NoNodesController);

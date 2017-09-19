@@ -1,8 +1,8 @@
 angular.module('umbraco.deploy')
     .controller('UmbracoDeploy.DashboardController',
     [
-        '$window', '$location', 'deployNavigation', 'deployConfiguration', 'contentResource',
-        function($window, $location, deployNavigation, deployConfiguration, contentResource) {
+        '$scope', '$window', '$location', 'deployNavigation', 'deployConfiguration', 'contentResource', 'assetsService',
+        function($scope, $window, $location, deployNavigation, deployConfiguration, contentResource, assetsService) {
 
             var vm = this;
 
@@ -14,7 +14,11 @@ angular.module('umbraco.deploy')
             vm.selectStarterKit = selectStarterKit;
 
             function init() {
+                
+                assetsService.load(["lib/moment/moment-with-locales.js"], $scope);
+                
                 openStarterKitSelector();
+
             }
 
             function openProject() {
@@ -88,11 +92,13 @@ angular.module('umbraco.deploy')
     function DeployDialogController($scope, deployResource, deploySignalrService, angularHelper, deployHelper, deployService, deployConfiguration) {
 
         var vm = this;
+        var timestampFormat = 'MMMM Do YYYY, HH:mm:ss';
 
         vm.config  = deployConfiguration;
         vm.currentNode = $scope.dialogOptions.currentNode;
         vm.deploy = {};
         vm.includeDescendants = false;
+        vm.deployButtonState = 'init';
 
         vm.startInstantDeploy = startInstantDeploy;
         vm.resetDeploy = resetDeploy;
@@ -105,9 +111,17 @@ angular.module('umbraco.deploy')
         function startInstantDeploy() {
 
             var deployItem = deployHelper.getDeployItem(vm.currentNode, vm.includeDescendants);
+            vm.deployButtonState = 'busy';
 
             deployService.instantDeploy(deployItem).then(function (data) {
+                
+                vm.deploy.deployProgress = 0;                
                 vm.deploy.status = 'inProgress';
+                vm.deploy.currentActivity = "Please wait...";
+                vm.deploy.timestamp = moment().format(timestampFormat);
+
+                vm.deployButtonState = 'init';
+
             }, function (error) {
 
                 //Catching the 500 error from the request made to the UI/API Controller to trigger an instant deployment
@@ -121,8 +135,11 @@ angular.module('umbraco.deploy')
                 vm.deploy.error = {
                     hasError: true,
                     comment: error.Message,
-                    exception: error
+                    exception: error,
+                    timestamp: moment().format(timestampFormat)
                 };
+
+                vm.deployButtonState = 'init';
 
             });
         };
@@ -135,7 +152,7 @@ angular.module('umbraco.deploy')
                 'error': {}
             };
         };
-
+        
         $scope.$on('deploy:sessionUpdated', function (event, args) {
 
             // make sure the event is for us
@@ -145,6 +162,7 @@ angular.module('umbraco.deploy')
                     vm.deploy.deployProgress = args.percent;
                     vm.deploy.currentActivity = args.comment;
                     vm.deploy.status = deployHelper.getStatusValue(args.status);
+                    vm.deploy.timestamp = moment().format(timestampFormat);
 
                     if (vm.deploy.status === 'failed' || 
                         vm.deploy.status === 'cancelled' ||
@@ -162,6 +180,18 @@ angular.module('umbraco.deploy')
             
         });
 
+        // signalR heartbeat
+        $scope.$on('deploy:heartbeat', function (event, args) {
+            if (!deployService.isOurSession(args.sessionId)) return;
+
+            angularHelper.safeApply($scope, function () {
+                if(vm.deploy) {
+                    vm.deploy.timestamp = moment().format(timestampFormat);
+                }
+            });
+
+        });
+
         onInit();
     }
 
@@ -173,11 +203,13 @@ angular.module('umbraco.deploy')
     function PartialRestoreDialogController($scope, deploySignalrService, deployService, angularHelper, deployConfiguration, deployHelper) {
 
         var vm = this;
+        var timestampFormat = 'MMMM Do YYYY, HH:mm:ss';        
 
         vm.config = deployConfiguration;
         vm.restoreWorkspace = {};
         vm.restore = {};
         vm.loading = true;
+        vm.restoreButtonState = "init";
 
         vm.selectable = $scope.currentNode.id === "-1";
         if (vm.selectable === false) {
@@ -223,6 +255,8 @@ angular.module('umbraco.deploy')
 
             var restoreNodes = [];
 
+            vm.restoreButtonState = "busy";
+
             if (vm.selectable === true) {
                 _.each(nodeUdis,
                     function (o, i) {
@@ -240,7 +274,14 @@ angular.module('umbraco.deploy')
 
             deployService.partialRestore(workspace.Url, restoreNodes)
                 .then(function(data) {
+                        
                         vm.restore.status = 'inProgress';
+                        vm.restore.restoreProgress = 0;
+                        vm.restore.currentActivity = "Please wait...";
+                        vm.restore.timestamp = moment().format(timestampFormat);
+
+                        vm.restoreButtonState = "init";
+
                     },
                     function (error) {
                         //Catching the 500 error from the request made to the UI/API Controller to trigger an instant deployment
@@ -256,6 +297,9 @@ angular.module('umbraco.deploy')
                             comment: error.Message,
                             exception: error
                         };
+
+                        vm.restoreButtonState = "init";
+
                     });
 
         }
@@ -279,6 +323,7 @@ angular.module('umbraco.deploy')
                     vm.restore.restoreProgress = args.percent;
                     vm.restore.currentActivity = args.comment;
                     vm.restore.status = deployHelper.getStatusValue(args.status);
+                    vm.restore.timestamp = moment().format(timestampFormat);
                     
                     if (vm.restore.status === 'failed' || 
                         vm.restore.status === 'cancelled' ||
@@ -292,6 +337,17 @@ angular.module('umbraco.deploy')
                     }
                 });
             }
+        });
+
+        // signalR heartbeat
+        $scope.$on('restore:heartbeat', function (event, args) {
+            if (!deployService.isOurSession(args.sessionId)) return;
+            angularHelper.safeApply($scope, function () {
+                if(vm.restore) {
+                    vm.restore.timestamp = moment().format(timestampFormat);
+                }
+            });
+
         });
 
         vm.selectNode = function (node, event) {
@@ -321,10 +377,12 @@ angular.module('umbraco.deploy')
     function RestoreDialogController($scope, deploySignalrService, deployService, angularHelper, deployConfiguration, deployHelper) {
 
         var vm = this;
+        var timestampFormat = 'MMMM Do YYYY, HH:mm:ss';
 
         vm.config = deployConfiguration;
         vm.restoreWorkspace = {};
         vm.restore = {};
+        vm.restoreButtonState = "init";
         
         vm.changeDestination = changeDestination;
         vm.startRestore = startRestore;
@@ -347,25 +405,37 @@ angular.module('umbraco.deploy')
 
         function startRestore(workspace) {
 
+            vm.restoreButtonState = "busy";            
+            
             deployService.restore(workspace.Url)
-                .then(function(data) {
-                        vm.restore.status = 'inProgress';
-                    },
-                    function (error) {
-                        //Catching the 500 error from the request made to the UI/API Controller to trigger an instant deployment
-                        //Other errors will be caught in 'restore:sessionUpdated' event pushed out
+                .then(function (data) {
 
-                        //We don't have ClassName in our Exception here but ExceptionType is what we have
-                        //Push in the value manually into our error/exception object
-                        error['ClassName'] = error.ExceptionType;
+                    vm.restore.status = 'inProgress';
+                    vm.restore.restoreProgress = 0;
+                    vm.restore.currentActivity = "Please wait...";
+                    vm.restore.timestamp = moment().format(timestampFormat);
 
-                        vm.restore.status = 'failed';
-                        vm.restore.error = {
-                            hasError: true,
-                            comment: error.Message,
-                            exception: error
-                        };
-                    });
+                    vm.restoreButtonState = "init";                    
+
+                },
+                function (error) {
+                    //Catching the 500 error from the request made to the UI/API Controller to trigger an instant deployment
+                    //Other errors will be caught in 'restore:sessionUpdated' event pushed out
+
+                    //We don't have ClassName in our Exception here but ExceptionType is what we have
+                    //Push in the value manually into our error/exception object
+                    error['ClassName'] = error.ExceptionType;
+
+                    vm.restore.status = 'failed';
+                    vm.restore.error = {
+                        hasError: true,
+                        comment: error.Message,
+                        exception: error
+                    };
+
+                    vm.restoreButtonState = "init";                    
+
+                });
         }
 
         function resetRestore() {
@@ -377,7 +447,7 @@ angular.module('umbraco.deploy')
                 'error': {}
             };
         }
-
+        
         $scope.$on('restore:sessionUpdated', function (event, args) {
             
             // make sure the event is for us
@@ -388,6 +458,7 @@ angular.module('umbraco.deploy')
                     vm.restore.restoreProgress = args.percent;
                     vm.restore.currentActivity = args.comment;
                     vm.restore.status = deployHelper.getStatusValue(args.status);
+                    vm.restore.timestamp = moment().format(timestampFormat);
                     
                     if (vm.restore.status === 'failed' || 
                         vm.restore.status === 'cancelled' ||
@@ -403,6 +474,19 @@ angular.module('umbraco.deploy')
                 });
             }
         });
+
+        // signalR heartbeat
+        $scope.$on('restore:heartbeat', function (event, args) {
+            if (!deployService.isOurSession(args.sessionId)) return;
+
+            angularHelper.safeApply($scope, function () {
+                if(vm.restore) {
+                    vm.restore.timestamp = moment().format(timestampFormat);
+                }
+            });
+
+        });
+
         onInit();
     }
     angular.module("umbraco.deploy").controller("UmbracoDeploy.RestoreDialogController", RestoreDialogController);
@@ -437,6 +521,14 @@ angular.module('umbraco.deploy')
             // note: due to deploy.service also broadcasting at beginning, the first line could be duplicated
             $scope.$on('deploy:sessionUpdated', updateLog);
             $scope.$on('restore:sessionUpdated', updateLog);
+
+            // signalR heartbeat
+            scope.$on('deploy:heartbeat', function (event, args) {
+                if (!deployService.isOurSession(args.sessionId)) return;
+                angularHelper.safeApply($scope, function() {
+                    vm.trace += "❤<br />";
+                });
+            });
 
             function updateLog(event, sessionUpdatedArgs) {
                 // make sure the event is for us
@@ -503,7 +595,7 @@ angular.module('umbraco.deploy')
 
             $scope.$on('deploy:sessionUpdated',
                 function(event, sessionUpdatedArgs) {
-                    
+
                     // make sure the event is for us
                     if (sessionUpdatedArgs.sessionId === deployService.sessionId) {
                         vm.progress = sessionUpdatedArgs.percent;
@@ -537,8 +629,15 @@ angular.module('umbraco.deploy')
                             _.defer(function() { $scope.$apply(); });
                         }
                     }
-                    
+
                 });
+
+            // signalR heartbeat
+            scope.$on('deploy:heartbeat', function (event, args) {
+                if (!deployService.isOurSession(args.sessionId)) return;
+                // fixme what shall we do?
+                console.log('❤');
+            });
 
             deployService.getStatus();
         }

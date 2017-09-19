@@ -34,14 +34,16 @@
                 <ud-deploy-queue
                     ng-if="!deploy.status"
                     target-url="config.Target.Url"
-                    target-name="config.Target.Name">
+                    target-name="config.Target.Name"
+                    on-deploy-start-success="onDeployStartSuccess(data)">
                 </ud-deploy-queue>
 
                 <ud-deploy-progress
                     ng-if="deploy.status === 'inProgress'"
                     progress="deploy.deployProgress"
                     target-name="config.Target.Name"
-                    current-activity="deploy.currentActivity">
+                    current-activity="deploy.currentActivity"
+                    timestamp="deploy.timestamp">
                 </ud-deploy-progress>
 
                 <ud-deploy-complete

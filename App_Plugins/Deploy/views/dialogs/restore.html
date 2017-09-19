@@ -47,7 +47,8 @@
                             button-style="success"
                             action="vm.startRestore(vm.restoreWorkspace)"
                             label="Restore from {{ vm.restoreWorkspace.Name }}"
-                            disabled="!vm.restoreWorkspace">
+                            disabled="!vm.restoreWorkspace"
+                            state="vm.restoreButtonState">
                         </umb-button>
                     </div>
 
@@ -57,7 +58,8 @@
                     ng-if="vm.restore.status === 'inProgress'"
                     progress="vm.restore.restoreProgress"
                     target-name="vm.restoreWorkspace.Name"
-                    current-activity="vm.restore.currentActivity">
+                    current-activity="vm.restore.currentActivity"
+                    timestamp="vm.restore.timestamp">
                 </ud-restore-progress>
 
                 <ud-restore-complete

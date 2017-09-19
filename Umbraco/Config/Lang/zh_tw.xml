@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <language alias="zh_tw" intName="Chinese (Taiwan)" localName="中文（正體，台灣）" lcid="0404" culture="zh-TW">
   <creator>
     <name>The Umbraco community</name>
@@ -37,7 +37,7 @@
     <key alias="translate">翻譯</key>
     <key alias="update">更新</key>
     <key alias="defaultValue">預設值</key>
-  <key alias="exportContourForm">Export form</key><key alias="importContourForm">Import form</key><key alias="archiveContourForm">Archive form</key><key alias="unarchiveContourForm">Unarchive form</key></area>
+  </area>
   <area alias="assignDomain">
     <key alias="permissionDenied">禁止訪問</key>
     <key alias="addNew">添加功能變數名稱</key>

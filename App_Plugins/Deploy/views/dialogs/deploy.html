@@ -22,7 +22,8 @@
                     type="button"
                     button-style="success"
                     action="vm.startInstantDeploy()"
-                    label="Deploy">
+                    label="Deploy"
+                    state="vm.deployButtonState">
                 </umb-button>
 
             </div>
@@ -31,7 +32,8 @@
                 ng-if="vm.deploy.status === 'inProgress'"
                 progress="vm.deploy.deployProgress"
                 target-name="vm.config.Target.Name"
-                current-activity="vm.deploy.currentActivity">
+                current-activity="vm.deploy.currentActivity"
+                timestamp="vm.deploy.timestamp">
             </ud-deploy-progress>
             
             <ud-deploy-complete

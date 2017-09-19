@@ -292,6 +292,10 @@
 .ud-nonodes .ud-restore-error .ud-schema-mismatch-error__title {
   color: #fff;
 }
+.ud-nonodes .timestamp {
+  color: #d3d3d3;
+  margin-top: 10px;
+}
 .ud-schema-mismatch-error__group {
   margin-bottom: 15px;
 }

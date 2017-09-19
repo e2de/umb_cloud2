@@ -97,6 +97,7 @@
                     <h1>{{ vm.restore.restoreMessage }}</h1>
                     <p>{{ vm.restore.restoreProgress }}% restored</p>
                     <small>{{ vm.restore.currentActivity }}</small>
+                    <div class="timestamp">{{ vm.restore.timestamp }}</div>
                 </div>
 
                 <div ng-if="vm.restore.status === 'completed'">
@@ -133,6 +134,7 @@
 
 <%= NoNodesHelper.ServerVariables(HttpContext.Current.Request.RequestContext, UmbracoContext.Current) %>
 <script type="text/javascript" src="<%= IOHelper.ResolveUrl(SystemDirectories.Umbraco) %>/lib/jquery/jquery.min.js"></script>
+<script type="text/javascript" src="<%= IOHelper.ResolveUrl(SystemDirectories.Umbraco) %>/lib/moment/moment-with-locales.js"></script>
 <script type="text/javascript" src="<%= IOHelper.ResolveUrl(SystemDirectories.Umbraco) %>/lib/angular/1.1.5/angular.min.js"></script>
 <script type="text/javascript" src="<%= IOHelper.ResolveUrl(SystemDirectories.AppPlugins) %>/deploy/lib/signalr/jquery.signalR.min.js"></script>
 <script type="text/javascript" src="<%= IOHelper.ResolveUrl(SystemDirectories.Umbraco) %>/backoffice/signalr/hubs"></script>
