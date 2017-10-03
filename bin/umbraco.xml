@@ -20454,12 +20454,6 @@
             Summary description for rollBack.
             </summary>
         </member>
-        <member name="M:umbraco.presentation.dialogs.rollBack.InitializeComponent">
-            <summary>
-            Required method for Designer support - do not modify
-            the contents of this method with the code editor.
-            </summary>
-        </member>
         <member name="F:umbraco.presentation.dialogs.rollBack.JsInclude1">
             <summary>
             JsInclude1 control.
