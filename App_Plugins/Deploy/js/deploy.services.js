@@ -494,11 +494,22 @@ angular.module('umbraco.deploy.services')
             instance.initialize = function () {
                 if (initialized === false && lock === false) {
                     lock = true;
+
+                    if (Umbraco.Sys.ServerVariables.isDebuggingEnabled) {
+                        $.connection.hub.logging = true;
+                    }
+
                     $.connection.hub.start();
                     initialized = true;
                     lock = false;
                 }
             };
+            
+            $.connection.hub.disconnected(function () {
+                setTimeout(function () {
+                    $.connection.hub.start();
+                }, 4000); //When we get disconnected - try to reconnect after 4 seconds
+            });
 
             instance.initialize();
 

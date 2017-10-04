@@ -59,8 +59,13 @@
                     log="deploy.error.log"
                     exception="deploy.error.exception"
                     status="deploy.status"
-                    on-back="resetDeploy()">
+                    on-back="resetDeploy()"
+                    on-debug="showDebug()">
                 </ud-error>
+
+                <div class="umb-deploy-debug" ng-if="deploy.showDebug">
+                    <div class="umb-deploy-debug-console" ng-bind-html-unsafe="deploy.trace"></div>
+                </div>
 
             </div>
 

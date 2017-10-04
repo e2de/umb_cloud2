@@ -64,7 +64,11 @@
         function link(scope, element, attr, ctrl) {
 
             scope.config = deployConfiguration;
+
             var timestampFormat = 'MMMM Do YYYY, HH:mm:ss';
+
+            // beware, MUST correspond to what's in WorkStatus
+            var workStatus = ["Unknown", "New", "Executing", "Completed", "Failed", "Cancelled", "TimedOut"];
 
             function onInit() {
 
@@ -81,51 +85,6 @@
                 setCurrentWorkspace(scope.dashboardWorkspaces);
             }
 
-            // signalR events for deploy progress
-            scope.$on('deploy:sessionUpdated', function (event, args) {
-                
-                // make sure the event is for us
-                if (args.sessionId === deployService.sessionId) {
-                    angularHelper.safeApply(scope, function () {
-
-                        scope.deploy.deployProgress = args.percent;
-                        scope.deploy.currentActivity = args.comment;
-                        scope.deploy.status = deployHelper.getStatusValue(args.status);
-                        scope.deploy.timestamp = moment().format(timestampFormat);
-
-                        if (scope.deploy.status === 'completed') {
-                            
-                            deployQueueService.clearQueue();
-                            deployService.removeSessionId();
-                        
-                        } else if (scope.deploy.status === 'failed' || scope.deploy.status === 'cancelled' || scope.deploy.status === 'timedOut') { 
-                            
-                            scope.deploy.error = {
-                                hasError: true,
-                                comment: args.comment,
-                                log: args.log,
-                                exception: args.exception
-                            };
-
-                        }
-
-                    });
-                }
-
-            });
-
-            // signalR heartbeat
-            scope.$on('deploy:heartbeat', function (event, args) {
-                if (!deployService.isOurSession(args.sessionId)) return;
-
-                angularHelper.safeApply(scope, function () {
-                    if(scope.deploy) {
-                        scope.deploy.timestamp = moment().format(timestampFormat);
-                    }
-                });
-
-            });
-
             function setCurrentWorkspace(workspaces) {
                 angular.forEach(workspaces, function (workspace) {
                     if (workspace.Type === scope.config.CurrentWorkspaceType) {
@@ -136,17 +95,103 @@
                 });
             }
 
-            scope.resetDeploy = function() {
+            // debug
+
+            function updateLog(event, sessionUpdatedArgs) {
+                // make sure the event is for us
+                if (deployService.isOurSession(sessionUpdatedArgs.sessionId)) {
+                    angularHelper.safeApply(scope, function () {
+                        var progress = sessionUpdatedArgs;
+                        scope.deploy.trace += "" + progress.sessionId.substr(0, 8) + " - " + workStatus[progress.status] + ", " + progress.percent + "%"
+                            + (progress.comment ? " - <em>" + progress.comment + "</em>" : "") + "<br />";
+                        if (progress.log)
+                            scope.deploy.trace += "<br />" + filterLog(progress.log) + "<br /><br />";
+                        //console.log("" + progress.sessionId.substr(0, 8) + " - " + workStatus[progress.status] + ", " + progress.percent + "%");
+                    });
+                }
+            }
+
+            function filterLog(log) {
+                log = log.replace(/(?:\&)/g, '&amp;');
+                log = log.replace(/(?:\<)/g, '&lt;');
+                log = log.replace(/(?:\>)/g, '&gt;');
+                log = log.replace(/(?:\r\n|\r|\n)/g, '<br />');
+                log = log.replace(/(?:\t)/g, '  ');
+                log = log.replace('-- EXCEPTION ---------------------------------------------------', '<span class="umb-deploy-debug-exception">-- EXCEPTION ---------------------------------------------------');
+                log = log.replace('----------------------------------------------------------------', '----------------------------------------------------------------</span>');
+                return log;
+            }
+
+            // signalR events for deploy progress
+            scope.$on('deploy:sessionUpdated', function (event, args) {
+
+                // make sure the event is for us
+                if (args.sessionId === deployService.sessionId) {
+                    angularHelper.safeApply(scope, function () {
+
+                        scope.deploy.deployProgress = args.percent;
+                        scope.deploy.currentActivity = args.comment;
+                        scope.deploy.status = deployHelper.getStatusValue(args.status);
+                        scope.deploy.timestamp = moment().format(timestampFormat);
+
+                        if (scope.deploy.status === 'completed') {
+
+                            deployQueueService.clearQueue();
+                            deployService.removeSessionId();
+
+                        } else if (scope.deploy.status === 'failed' || scope.deploy.status === 'cancelled' || scope.deploy.status === 'timedOut') {
+
+                            scope.deploy.error = {
+                                hasError: true,
+                                comment: args.comment,
+                                log: args.log,
+                                exception: args.exception
+                            };
+                        }
+                    });
+                }
+            });
+
+            // signalR heartbeat
+            scope.$on('deploy:heartbeat', function (event, args) {
+                if (!deployService.isOurSession(args.sessionId)) return;
+
+                angularHelper.safeApply(scope, function () {
+                    if (scope.deploy) {
+                        scope.deploy.timestamp = moment().format(timestampFormat);
+                    }
+                });
+            });
+
+            // signalR debug heartbeat
+            scope.$on('deploy:heartbeat', function (event, args) {
+                if (!deployService.isOurSession(args.sessionId)) return;
+                angularHelper.safeApply($scope, function () {
+                    scope.deploy.trace += "❤<br />";
+                });
+            });
+
+            // debug
+            // note: due to deploy.service also broadcasting at beginning, the first line could be duplicated
+            scope.$on('deploy:sessionUpdated', updateLog);
+            scope.$on('restore:sessionUpdated', updateLog);
+
+            scope.resetDeploy = function () {
+                //Refetch the queue - after a sucess or failed deploy
+                //Sometimes we may not have anything in the queue - so need to ensure we re-fetch it
+                deployQueueService.refreshQueue();
+
                 scope.deploy = {
                     'deployProgress': 0,
                     'currentActivity': '',
                     'status': '',
-                    'error': {}
+                    'error': {},
+                    'trace': '',
+                    'showDebug': false
                 };
             };
 
             scope.selectWorkspace = function(selectedWorkspace, workspaces) {
-
                 // deselect all workspaces
                 if(workspaces) {
                     angular.forEach(workspaces, function(workspace){
@@ -158,14 +203,13 @@
                 if(scope.localWorkspace) {
                     scope.localWorkspace.Active = false;
                 }
-                
+
                 // select workspace
                 if(selectedWorkspace) {
                     selectedWorkspace.Active = true;
                 }
 
                 scope.showWorkspaceInfo(selectedWorkspace);
-
             };
 
             scope.showWorkspaceInfo = function (workspace) {
@@ -197,7 +241,11 @@
                 scope.deploy.deployProgress = 0;
                 scope.deploy.currentActivity = "Please wait...";
                 scope.deploy.status = deployHelper.getStatusValue(2);
-                scope.deploy.timestamp = moment().format(timestampFormat);                
+                scope.deploy.timestamp = moment().format(timestampFormat);
+            };
+
+            scope.showDebug = function() {
+                scope.deploy.showDebug = !scope.deploy.showDebug;
             };
 
             onInit();
@@ -250,6 +298,7 @@
                 'log': "=",
                 'status': "=",
                 'onBack': "&",
+                'onDebug': "&",
                 'noNodes': '='
             },
             link: link
@@ -557,31 +606,6 @@
 
     angular
         .module('umbraco.deploy.components')
-        .directive('udBusyError', udBusyErrorComponent);
-
-    function udBusyErrorComponent() {
-        function link(scope, element, attr, ctrl) {
-            
-        }
-
-        var directive = {
-            restrict: 'E',
-            replace: true,
-            templateUrl: '/App_Plugins/Deploy/views/components/errors/udbusyerror/udbusyerror.html',
-            scope: {
-                'exception': "="
-            },
-            link: link
-        };
-        return directive;
-    }
-})();
-
-(function() {
-    'use strict';
-
-    angular
-        .module('umbraco.deploy.components')
         .directive('udCollisionError', udCollisionErrorComponent);
 
     function udCollisionErrorComponent() {
@@ -596,30 +620,6 @@
             restrict: 'E',
             replace: true,
             templateUrl: '/App_Plugins/Deploy/views/components/errors/udcollisionerror/udcollisionerror.html',
-            scope: {
-                'exception': "="
-            },
-            link: link
-        };
-        return directive;
-    }
-})();
-
-(function() {
-    'use strict';
-
-    angular
-        .module('umbraco.deploy.components')
-        .directive('udContentTypeChangedError', udContentTypeChangedErrorComponent);
-
-    function udContentTypeChangedErrorComponent() {
-        function link(scope, element, attr, ctrl) {
-        }
-
-        var directive = {
-            restrict: 'E',
-            replace: true,
-            templateUrl: '/App_Plugins/Deploy/views/components/errors/udcontenttypechangederror/udcontenttypechangederror.html',
             scope: {
                 'exception': "="
             },
@@ -662,9 +662,9 @@
 
     angular
         .module('umbraco.deploy.components')
-        .directive('udKabumError', udKabumErrorComponent);
+        .directive('udRestoreMissingNodeError', udRestoreMissingNodeErrorComponent);
 
-    function udKabumErrorComponent() {
+    function udRestoreMissingNodeErrorComponent() {
         function link(scope, element, attr, ctrl) {
             scope.errorDetailsVisible = false;
             scope.toggleErrorDetails = function() {
@@ -675,7 +675,7 @@
         var directive = {
             restrict: 'E',
             replace: true,
-            templateUrl: '/App_Plugins/Deploy/views/components/errors/udkabumerror/udkabumerror.html',
+            templateUrl: '/App_Plugins/Deploy/views/components/errors/udrestoremissingnodeerror/udrestoremissingnodeerror.html',
             scope: {
                 'exception': "="
             },
@@ -707,58 +707,6 @@
             scope: {
                 'exception': "=",
                 'noNodes': '='
-            },
-            link: link
-        };
-        return directive;
-    }
-})();
-
-(function() {
-    'use strict';
-
-    angular
-        .module('umbraco.deploy.components')
-        .directive('udUnauthorizedClientError', udUnauthorizedClientErrorComponent);
-
-    function udUnauthorizedClientErrorComponent() {
-        function link(scope, element, attr, ctrl) {
-            scope.errorDetailsVisible = false;
-            scope.toggleErrorDetails = function() {
-                scope.errorDetailsVisible = !scope.errorDetailsVisible;
-            }
-        }
-
-        var directive = {
-            restrict: 'E',
-            replace: true,
-            templateUrl: '/App_Plugins/Deploy/views/components/errors/udunauthorizedclienterror/udunauthorizedclienterror.html',
-            scope: {
-                'exception': "="
-            },
-            link: link
-        };
-        return directive;
-    }
-})();
-
-(function() {
-    'use strict';
-
-    angular
-        .module('umbraco.deploy.components')
-        .directive('udWebExceptionError', udWebExceptionErrorComponent);
-
-    function udWebExceptionErrorComponent() {
-        function link(scope, element, attr, ctrl) {
-        }
-
-        var directive = {
-            restrict: 'E',
-            replace: true,
-            templateUrl: '/App_Plugins/Deploy/views/components/errors/udwebexceptionerror/udwebexceptionerror.html',
-            scope: {
-                'exception': "="
             },
             link: link
         };

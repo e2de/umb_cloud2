@@ -3,8 +3,8 @@
     <div ng-if="status === 'failed'">
 
         <div ng-switch="uiException.ClassName">
-            
-            <ud-collision-error 
+
+            <ud-collision-error
                 ng-switch-when="Umbraco.Deploy.Exceptions.ArtifactCollisionException"
                 exception="uiException">
             </ud-collision-error>
@@ -20,47 +20,52 @@
                 no-nodes="noNodes">
             </ud-restore-schema-mismatch-error>
 
-            <ud-unauthorized-client-error
-                ng-switch-when="Umbraco.Deploy.Exceptions.UnauthorizedClientException"
-                exception="uiException">
-            </ud-unauthorized-client-error>
+            <div class="ud-unauthorizedclient-error" ng-switch-when="Umbraco.Deploy.Exceptions.UnauthorizedClientException">
+                <h4 class="bold color-red">Authorization error</h4>
+                <p>Authorization between your environments has failed.</p>
+                <p>This could be caused by having different deploy API keys configured for each of your environments.
+                    API keys are specified by the "Umbraco.Deploy.ApiKey" application setting in web.config. Please
+                    ensure that these settings match before trying to continue.</p>
+            </div>
 
-            <ud-kabum-error
-                ng-switch-when="Umbraco.Deploy.Exceptions.KabumException"
-                exception="uiException">
-            </ud-kabum-error>
+            <div class="ud-kabum-error" ng-switch-when="Umbraco.Deploy.Exceptions.KabumException">
+                <h4 class="bold color-red">Kabum! &#128163; &#128035;</h4>
+                <p>This error was triggered by having this configuration setting in your <em>{{exception.EnvironmentName}}</em> environment,
+                    and deploying a content item with a name ending with <code>&lt;value&gt;</code>&nbsp;:</p>
+                <pre>
+                    &lt;settings&gt;
+                    &nbsp;&nbsp;&nbsp;&nbsp;&lt;deploy kabum=&quot;&lt;value&gt;&quot;&nbsp;/&gt;
+                    &lt;/settings&gt;
+                </pre>
+                <p>This is used for debugging exceptions &amp; errors and should normally not appear unless you are debugging something.
+                    You can disable it by removing the "kabum" attribute from the UmbracoDeploy.settings.config file in ~/config of your site.</p>
+            </div>
 
-            <ud-content-type-changed-error
-                ng-switch-when="Umbraco.Deploy.Exceptions.ContentTypeChangedException"
-                exception="uiException">
-            </ud-content-type-changed-error>
-            
-            <ud-busy-error
-                ng-switch-when="Umbraco.Deploy.Exceptions.EnvironmentBusyException"
-                exception="uiException">
-            </ud-busy-error>
-            
-            <ud-web-exception-error
-                ng-switch-when="System.Net.WebException"
-                exception="uiException">
-            </ud-web-exception-error>
+            <div class="ud-content-type-changed-error" ng-switch-when="Umbraco.Deploy.Exceptions.ContentTypeChangedException">
+                <h4 class="bold color-red">Content type change error</h4>
+                <p>It looks like the content type of a document you are trying to transfer, has changed.</p>
+                <p>Deploying content type changes are currently not supported by Umbraco Deploy.</p>
+                <p>If you want to transfer this document, you need to delete the existing document in the destination site and
+                    redeploy it from the source site using the new document type.</p>
+            </div>
+
+            <div class="ud-busy-error" ng-switch-when="Umbraco.Deploy.Exceptions.EnvironmentBusyException">
+                <h4 class="bold color-red">A content transfer is already in progress</h4>
+                <p>Another content transfer has already been started, by <strong>{{exception.UserName}}</strong> <em>({{exception.UserEmail}})</em>.
+                    Please try your content transfer again later.</p>
+            </div>
+
+            <div class="ud-webexception-error" ng-switch-when="System.Net.WebException">
+                <h4 class="bold color-red">Connection error</h4>
+                <p>{{exception.Message}}</p>
+            </div>
 
             <div ng-switch-default>
                 <h4 class="bold color-red">An error occurred</h4>
-                <p>We ran out of unicorn dust...</p>
-                <p>
-                    <a class="underline" ng-if="!errorDetailsVisible" href="#" prevent-default ng-click="toggleErrorDetails()">Click to see more details</a>
-                </p>
-                <div class="umb-deploy-error-details" ng-if="errorDetailsVisible">
-                    <hr/>
-                    <p>The {{uiException.EnvironmentName || 'source'}} environment has thrown a <i>{{uiException.ExceptionType || uiException.ClassName || 'unknown exception'}}</i>.</p>
-                    <pre ng-if="uiException.Message">{{uiException.Message}}</pre>
-                    <div ng-if="log">
-                        <p>You can see the details of the error below:</p>
-                        <h5>Detailed log:</h5>
-                        <pre>{{log}}</pre>
-                    </div>
-                </div>
+                <p>The {{uiException.EnvironmentName || 'source'}} environment has thrown a
+                    <em>{{uiException.ExceptionType || uiException.ClassName || 'unknown exception'}}</em>.</p>
+                <p ng-if="uiException.Message">Message: <em>{{uiException.Message}}</em></p>
+                <p>The <em>technical details</em> may contain more information.</p>
             </div>
 
         </div>
@@ -82,6 +87,13 @@
         button-style="success"
         action="onBack()"
         label="Okay">
+    </umb-button>
+
+    <umb-button
+        type="button"
+        button-style="link"
+        action="onDebug()"
+        label="View technical details">
     </umb-button>
 
 </div>
