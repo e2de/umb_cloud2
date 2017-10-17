@@ -2320,6 +2320,17 @@
             <param name="id"></param>
             <returns></returns>
         </member>
+        <member name="M:Umbraco.Web.Editors.MediaController.GetParentIdAsInt(System.String,System.Boolean)">
+            <summary>
+            Given a parent id which could be a GUID, UDI or an INT, this will resolve the INT
+            </summary>
+            <param name="parentId"></param>
+            <param name="validatePermissions">
+            If true, this will check if the current user has access to the resolved integer parent id
+            and if that check fails an unauthorized exception will occur
+            </param>
+            <returns></returns>
+        </member>
         <member name="M:Umbraco.Web.Editors.MediaController.PostMove(Umbraco.Web.Models.ContentEditing.MoveOrCopy)">
             <summary>
             Change the sort order for media
@@ -2833,6 +2844,11 @@
             <summary>
             This is used for the response of PostAddFile so that we can analyze the response in a filter and remove the 
             temporary files that were created.
+            </summary>
+        </member>
+        <member name="T:Umbraco.Web.Models.ContentEditing.PostedFolder">
+            <summary>
+            Used to create a folder with the MediaController
             </summary>
         </member>
         <member name="F:Umbraco.Web.Models.ContentEditing.PropertyGroupBasic.GenericPropertiesGroupId">
@@ -11437,6 +11453,12 @@
         <member name="M:Umbraco.Web.UmbracoDefaultOwinStartup.ConfigureUmbracoUserManager(Owin.IAppBuilder)">
             <summary>
             Configure the Identity user manager for use with Umbraco Back office
+            </summary>
+            <param name="app"></param>
+        </member>
+        <member name="M:Umbraco.Web.UmbracoDefaultOwinStartup.ConfigureUmbracoAuthentication(Owin.IAppBuilder)">
+            <summary>
+            Configure external/OAuth login providers
             </summary>
             <param name="app"></param>
         </member>

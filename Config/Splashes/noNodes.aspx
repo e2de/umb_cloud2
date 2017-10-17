@@ -11,7 +11,7 @@
  <meta charset="utf-8">
  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    
+
  <title></title>
  <meta name="description" content="">
  <meta name="author" content="">
@@ -29,7 +29,7 @@
 </head>
 <body>
 
-<% if(HttpContext.Current.Request.IsLocal == false){  %>  
+<% if(HttpContext.Current.Request.IsLocal == false){  %>
 <section>
     <article>
         <div>
@@ -47,14 +47,14 @@
                 <div class="col">
                     <h2>Easy start with Umbraco.tv</h2>
                     <p>We have created a bunch of 'how-to' videos, to get you easily started with Umbraco. Learn how to build projects in just a couple of minutes. Easiest CMS in the world.</p>
-                    
+
                     <a href="http://umbraco.tv?ref=tvFromInstaller" target="_blank">Umbraco.tv &rarr;</a>
                 </div>
 
                 <div class="col">
                     <h2>Be a part of the community</h2>
                     <p>The Umbraco community is the best of its kind, be sure to visit, and if you have any questions, we’re sure that you can get your answers from the community.</p>
-                    
+
                     <a href="http://our.umbraco.org?ref=ourFromInstaller" target="_blank">our.Umbraco &rarr;</a>
                 </div>
             </div>
@@ -63,7 +63,7 @@
     </article>
 </section>
 
-<% }else{ %> 
+<% }else{ %>
 
 <section ng-controller="Umbraco.NoNodes.Controller as vm">
     <article class="ud-nonodes" ng-cloak>
@@ -72,11 +72,11 @@
             <div class="logo"></div>
 
             <div>
-                
+
                 <div ng-if="vm.restore.status === ''">
-                    
+
                     <h1>Initializing your website...</h1>
-                    
+
                     <div ng-if="vm.isDebug && vm.requiresInitialization">
                         <small>Press the button below to get started</small>
                         <div class="cta">
@@ -115,8 +115,14 @@
                     exception="vm.restore.error.exception"
                     status="vm.restore.status"
                     class="ud-restore-error"
-                    no-nodes="true">
+                    operation="restore"
+                    no-nodes="true"
+                    on-debug="vm.showDebug()">
                 </ud-error>
+
+                <div class="umb-deploy-debug" ng-if="vm.restore.showDebug">
+                    <div class="umb-deploy-debug-console" ng-bind-html-unsafe="vm.restore.trace"></div>
+                </div>
 
                 <%--<div ng-if="vm.restore.error.hasError" class="json">
                     <h1 style="margin-top: 0;">An error occurred: </h1>

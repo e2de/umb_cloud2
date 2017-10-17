@@ -33,14 +33,17 @@
                 progress="vm.deploy.deployProgress"
                 target-name="vm.config.Target.Name"
                 current-activity="vm.deploy.currentActivity"
-                timestamp="vm.deploy.timestamp">
+                timestamp="vm.deploy.timestamp"
+                server-timestamp="vm.deploy.serverTimestamp">
             </ud-deploy-progress>
             
             <ud-deploy-complete
                 ng-if="vm.deploy.status === 'completed'"
                 target-name="vm.config.Target.Name"
                 target-url="vm.config.Target.Url"
-                on-back="nav.hideDialog()">
+                on-back="nav.hideDialog()"
+                timestamp="vm.deploy.timestamp"
+                server-timestamp="vm.deploy.serverTimestamp">
             </ud-deploy-complete>
             
             <ud-error
@@ -49,8 +52,17 @@
                 log="vm.deploy.error.log"
                 exception="vm.deploy.error.exception"
                 status="vm.deploy.status"
-                on-back="vm.resetDeploy()">
+                operation="deploy"
+                on-back="vm.resetDeploy()"
+                on-debug="vm.showDebug()"
+                timestamp="vm.deploy.timestamp"
+                server-timestamp="vm.deploy.serverTimestamp"
+                show-debug="vm.deploy.showDebug">
             </ud-error>
+
+            <div class="umb-deploy-debug" ng-if="vm.deploy.showDebug">
+                <div class="umb-deploy-debug-console" ng-bind-html-unsafe="vm.deploy.trace"></div>
+            </div>
 
         </div>
 

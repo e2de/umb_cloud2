@@ -9,7 +9,7 @@
             </umb-load-indicator>
 
             <div ng-if="!vm.loading">
-            
+
                 <!-- Start restore -->
                 <div ng-if="!vm.restore.status">
 
@@ -53,18 +53,21 @@
                     </div>
 
                 </div>
-                
+
                 <ud-restore-progress
                     ng-if="vm.restore.status === 'inProgress'"
                     progress="vm.restore.restoreProgress"
                     target-name="vm.restoreWorkspace.Name"
                     current-activity="vm.restore.currentActivity"
-                    timestamp="vm.restore.timestamp">
+                    timestamp="vm.restore.timestamp"
+                    server-timestamp="vm.restore.serverTimestamp">
                 </ud-restore-progress>
 
                 <ud-restore-complete
                     ng-if="vm.restore.status === 'completed'"
-                    on-back="nav.hideDialog()">
+                    on-back="nav.hideDialog()"
+                    timestamp="vm.restore.timestamp"
+                    server-timestamp="vm.restore.serverTimestamp">
                 </ud-restore-complete>
 
                 <ud-error
@@ -73,15 +76,24 @@
                     log="vm.restore.error.log"
                     exception="vm.restore.error.exception"
                     status="vm.restore.status"
-                    on-back="vm.resetRestore()">
+                    operation="restore"
+                    on-back="vm.resetRestore()"
+                    on-debug="vm.showDebug()"
+                    timestamp="vm.restore.timestamp"
+                    server-timestamp="vm.restore.serverTimestamp"
+                    show-debug="vm.restore.showDebug">
                 </ud-error>
+
+                <div class="umb-deploy-debug" ng-if="vm.restore.showDebug">
+                    <div class="umb-deploy-debug-console" ng-bind-html-unsafe="vm.restore.trace"></div>
+                </div>
 
             </div>
 
         </div>
 
     </div>
-    
+
     <div class="umb-dialog-footer btn-toolbar umb-btn-toolbar">
         <a class="btn btn-link ng-scope" ng-click="nav.hideDialog()">
             <localize key="general_close">Close</localize>

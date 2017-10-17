@@ -36,6 +36,8 @@
   max-height: 512px;
   overflow: auto;
   white-space: pre;
+  text-align: left;
+  color: black;
 }
 .umb-deploy-debug-clear {
   text-align: right;

@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <language alias="en_us" intName="English (US)" localName="English (US)" lcid="" culture="en-US">
   <creator>
     <name>The Umbraco community</name>
@@ -40,7 +40,7 @@
     <key alias="translate">Translate</key>
     <key alias="update">Update</key>
     <key alias="defaultValue">Default value</key>
-  <key alias="exportContourForm">Export form</key><key alias="importContourForm">Import form</key><key alias="archiveContourForm">Archive form</key><key alias="unarchiveContourForm">Unarchive form</key></area>
+  </area>
   <area alias="assignDomain">
     <key alias="permissionDenied">Permission denied.</key>
     <key alias="addNew">Add new Domain</key>
@@ -1011,6 +1011,15 @@ To manage your website, simply open the Umbraco back office and start adding con
   <area alias="colorpicker">
     <key alias="noColors">You have not configured any approved colors</key>
   </area>
+  <area alias="contentPicker">
+      <key alias="pickedTrashedItem">You have picked a content item currently deleted or in the recycle bin</key>
+      <key alias="pickedTrashedItems">You have picked content items currently deleted or in the recycle bin</key>
+  </area>
+  <area alias="mediaPicker">
+      <key alias="pickedTrashedItem">You have picked a media item currently deleted or in the recycle bin</key>
+      <key alias="pickedTrashedItems">You have picked media items currently deleted or in the recycle bin</key>
+      <key alias="deletedItem">Deleted item</key>
+  </area>
   <area alias="relatedlinks">
     <key alias="enterExternal">enter external link</key>
     <key alias="chooseInternal">choose internal page</key>
@@ -1238,7 +1247,7 @@ To manage your website, simply open the Umbraco back office and start adding con
 
     <key alias="iWant">I want</key>
     <key alias="allContent">all content</key>
-    <key alias="contentOfType">content of type "%0%"</key>
+    <key alias="contentOfType">content of type &quot;%0%&quot;</key>
     <key alias="from">from</key>
     <key alias="websiteRoot">my website</key>
     <key alias="where">where</key>

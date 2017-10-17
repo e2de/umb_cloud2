@@ -25,10 +25,11 @@
 
         ////////////
 
-        function deploy(targetUrl) {
+        function deploy(targetUrl, enableWorkItemLogging) {
 
             var data = {
-                TargetUrl: targetUrl
+                TargetUrl: targetUrl,
+                EnableLogging : enableWorkItemLogging
             };
 
             return $http.post(baseUrl + 'Deploy', data)
@@ -40,11 +41,12 @@
                     });
         }
 
-        function instantDeploy(items, targetUrl) {
+        function instantDeploy(items, targetUrl, enableWorkItemLogging) {
 
             var data = {
                 Items: items,
-                TargetUrl: targetUrl
+                TargetUrl: targetUrl,
+                EnableLogging: enableWorkItemLogging
             };
 
             return $http.post(baseUrl + 'InstantDeploy', data)
@@ -56,10 +58,11 @@
                 });
         }
 
-        function restore(targetUrl) {
+        function restore(targetUrl, enableWorkItemLogging) {
 
             var data = {
-                SourceUrl: targetUrl
+                SourceUrl: targetUrl,
+                EnableLogging: enableWorkItemLogging
             };
 
             return $http.post(baseUrl + 'Restore', data)
@@ -71,11 +74,12 @@
                     });
         }
 
-        function partialRestore(targetUrl, restoreNodes) {
+        function partialRestore(targetUrl, restoreNodes, enableWorkItemLogging) {
 
             var data = {
                 SourceUrl: targetUrl,
-                RestoreNodes: restoreNodes
+                RestoreNodes: restoreNodes,
+                EnableLogging: enableWorkItemLogging
             };
 
             return $http.post(baseUrl + 'PartialRestore', data)

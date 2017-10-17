@@ -64,8 +64,10 @@
         function link(scope, element, attr, ctrl) {
 
             scope.config = deployConfiguration;
+            scope.enableWorkItemLogging = false;
 
             var timestampFormat = 'MMMM Do YYYY, HH:mm:ss';
+            var serverTimestampFormat = 'YYYY-MM-DD HH:mm:ss,SSS';
 
             // beware, MUST correspond to what's in WorkStatus
             var workStatus = ["Unknown", "New", "Executing", "Completed", "Failed", "Cancelled", "TimedOut"];
@@ -98,6 +100,7 @@
             // debug
 
             function updateLog(event, sessionUpdatedArgs) {
+
                 // make sure the event is for us
                 if (deployService.isOurSession(sessionUpdatedArgs.sessionId)) {
                     angularHelper.safeApply(scope, function () {
@@ -133,6 +136,7 @@
                         scope.deploy.currentActivity = args.comment;
                         scope.deploy.status = deployHelper.getStatusValue(args.status);
                         scope.deploy.timestamp = moment().format(timestampFormat);
+                        scope.deploy.serverTimestamp = moment(args.serverTimestamp).format(serverTimestampFormat);
 
                         if (scope.deploy.status === 'completed') {
 
@@ -159,6 +163,7 @@
                 angularHelper.safeApply(scope, function () {
                     if (scope.deploy) {
                         scope.deploy.timestamp = moment().format(timestampFormat);
+                        scope.deploy.serverTimestamp = moment(args.serverTimestamp).format(serverTimestampFormat);
                     }
                 });
             });
@@ -166,7 +171,7 @@
             // signalR debug heartbeat
             scope.$on('deploy:heartbeat', function (event, args) {
                 if (!deployService.isOurSession(args.sessionId)) return;
-                angularHelper.safeApply($scope, function () {
+                angularHelper.safeApply(scope, function () {
                     scope.deploy.trace += "❤<br />";
                 });
             });
@@ -192,6 +197,7 @@
             };
 
             scope.selectWorkspace = function(selectedWorkspace, workspaces) {
+
                 // deselect all workspaces
                 if(workspaces) {
                     angular.forEach(workspaces, function(workspace){
@@ -210,6 +216,7 @@
                 }
 
                 scope.showWorkspaceInfo(selectedWorkspace);
+
             };
 
             scope.showWorkspaceInfo = function (workspace) {
@@ -242,11 +249,17 @@
                 scope.deploy.currentActivity = "Please wait...";
                 scope.deploy.status = deployHelper.getStatusValue(2);
                 scope.deploy.timestamp = moment().format(timestampFormat);
+                if (scope.enableWorkItemLogging) {
+                    scope.deploy.showDebug = true;
+                }
             };
 
             scope.showDebug = function() {
                 scope.deploy.showDebug = !scope.deploy.showDebug;
             };
+
+            var search = window.location.search;
+            scope.enableWorkItemLogging = search === '?ddebug';
 
             onInit();
         }
@@ -257,13 +270,14 @@
             templateUrl: '/App_Plugins/Deploy/views/components/udcontentflow/udcontentflow.html',
             link: link
         };
+
         return directive;
     }
 })();
 
 (function() {
     'use strict';
-    
+
     angular
         .module('umbraco.deploy.components')
         .directive('udError', udErrorComponent);
@@ -279,13 +293,39 @@
             // fetch the inner exception that actually makes sense to show in the UI.
             // AggregateException and RemoteApiException are completely non-saying about what the problem is
             // so we should try to get the inner exception instead and use that for displaying errors.
-            scope.uiException = scope.exception;
-            while ((scope.uiException.ClassName === 'System.AggregateException' ||
-                    scope.uiException.ClassName === 'Umbraco.Deploy.Exceptions.RemoteApiException' ||
-                    scope.uiException.ClassName === 'System.Net.Http.HttpRequestException') &&
-                scope.uiException.InnerException !== null) {
-                scope.uiException = scope.uiException.InnerException;
+
+            var e = scope.exception;
+            while (e !== null) {
+                if (e.HasMeaningForUi) {
+                    scope.innerException = e;
+                    break;
+                }
+                if (e.ExceptionType === 'Umbraco.Deploy.Exceptions.RemoteApiException') {
+                    e = e.Error;
+                    continue;
+                }
+                else if (e.InnerException !== null) {
+                    e = e.InnerException;
+                    continue;
+                }
+                scope.innerException = e;
+                break;
             }
+
+            e = scope.exception;
+            var udis = [];
+            while (e !== null) {
+                if (e.ExceptionType === 'Umbraco.Deploy.Exceptions.RemoteApiException') {
+                    e = e.Error;
+                } else {
+                    if (e.Udi && udis.indexOf(e.Udi) < 0) {
+                        udis.push(e.Udi);
+                    }
+                    e = e.InnerException;
+                }
+            }
+
+            scope.exceptionUdis = udis;
         }
 
         var directive = {
@@ -299,7 +339,11 @@
                 'status': "=",
                 'onBack': "&",
                 'onDebug': "&",
-                'noNodes': '='
+                'noNodes': '=',
+		'operation': '@operation',
+		'timestamp': "=",
+                'serverTimestamp': "=",
+                'showDebug': "="
             },
             link: link
         };
@@ -341,7 +385,7 @@
         .module('umbraco.deploy.components')
         .directive('udStarterKitSelector', udStarterKitSelectorComponent);
 
-    function udStarterKitSelectorComponent($compile, packageResource) {
+    function udStarterKitSelectorComponent($compile, packageResource, $timeout, $q) {
 
         function link(scope, el, attr, ctrl) {
 
@@ -383,12 +427,42 @@
                     }, installError)
                     .then(function (pack) {
                         scope.installStatus = "Installing starterkit...";
-                        scope.installProgress = "60";
+                        scope.installProgress = "40";
                         return packageResource.installFiles(pack);
                     }, installError)
+
                     .then(function (pack) {
-                        scope.installStatus = "Restarting, please hold...";
-                        scope.installProgress = "90";
+                        scope.installStatus = "Restarting, please wait...";
+                        scope.installProgress = "60";
+                        var deferred = $q.defer();
+
+                        //check if the app domain is restarted every 2 seconds
+                        var count = 0;
+                        function checkRestart() {
+                            $timeout(function () {
+                                packageResource.checkRestart(pack).then(function (d) {
+                                        count++;
+                                        //if there is an id it means it's not restarted yet but we'll limit it to only check 10 times
+                                        if (d.isRestarting && count < 10) {
+                                            checkRestart();
+                                        }
+                                        else {
+                                            //it's restarted!
+                                            deferred.resolve(d);
+                                        }
+                                    },
+                                    installError);
+                            }, 2000);
+                        }
+
+                        checkRestart();
+
+                        return deferred.promise;
+                    }, installError)
+
+                    .then(function (pack) {
+                        scope.installStatus = "Restarting, please wait...";
+                        scope.installProgress = "80";
                         return packageResource.installData(pack);
                     }, installError)
                     .then(function (pack) {
@@ -408,6 +482,8 @@
             function installError(err){
                 scope.installStatus = undefined;
                 scope.installError = err;
+                //This will return a rejection meaning that the promise change above will stop
+                return $q.reject();
             };
 
             // hack: move element to body to make it full-screen
@@ -461,6 +537,8 @@
             scope: {
                 'targetName': "=",
                 'targetUrl': "=",
+                'timestamp': "=",
+                'serverTimestamp': "=",
                 'onBack': "&"
             },
             link: link
@@ -488,7 +566,8 @@
                 'targetName': "=",
                 'progress': "=",
                 'currentActivity': "=",
-                'timestamp': "="
+                'timestamp': "=",
+                'serverTimestamp': "="
             },
             link: link
         };
@@ -515,7 +594,7 @@
 
                 scope.deployButtonState = "busy";
 
-                deployService.deploy().then(function(data) {
+                deployService.deploy(scope.enableWorkItemLogging).then(function(data) {
 
                     if(scope.onDeployStartSuccess) {
                         scope.onDeployStartSuccess({'data': data});
@@ -525,7 +604,7 @@
                     scope.deployButtonState = "success";
 
                 }, function (error) {
-                    
+
                     //Catching the 500 error from the request made to the UI/API Controller to trigger an instant deployment
                     //Other errors will be caught in 'deploy:sessionUpdated' event pushed out
 
@@ -571,7 +650,7 @@
                     }
                 });
             }
-            
+
             eventBindings.push(scope.$watch('items', function(newValue, oldValue){
                 setIncludeDescendantsText(scope.items);
             }, true));
@@ -593,6 +672,7 @@
             scope: {
                 targetName: "=",
                 targetUrl: "=",
+                enableWorkItemLogging: "=",
                 onDeployStartSuccess: "&"
             },
             link: link
@@ -610,10 +690,6 @@
 
     function udCollisionErrorComponent() {
         function link(scope, element, attr, ctrl) {
-            scope.errorDetailsVisible = false;
-            scope.toggleErrorDetails = function() {
-                scope.errorDetailsVisible = !scope.errorDetailsVisible;
-            }
         }
 
         var directive = {
@@ -621,7 +697,9 @@
             replace: true,
             templateUrl: '/App_Plugins/Deploy/views/components/errors/udcollisionerror/udcollisionerror.html',
             scope: {
-                'exception': "="
+                'exception': "=",
+                'exceptionUdis': "=",
+                'operation': "="
             },
             link: link
         };
@@ -638,9 +716,14 @@
 
     function udDeploySchemaMismatchErrorComponent() {
         function link(scope, element, attr, ctrl) {
-            scope.errorDetailsVisible = false;
-            scope.toggleErrorDetails = function() {
-                scope.errorDetailsVisible = !scope.errorDetailsVisible;
+
+            scope.prettyEntityType = function (udi) {
+                var p1 = udi.indexOf('//');
+                var p2 = udi.indexOf('/', p1 + 2);
+                var n = udi.substr(p1 + 2, p2 - p1 - 2);
+                n = n.replace('-', ' ');
+                n = n.substr(0, 1).toUpperCase() + n.substr(1);
+                return n;
             }
         }
 
@@ -662,41 +745,18 @@
 
     angular
         .module('umbraco.deploy.components')
-        .directive('udRestoreMissingNodeError', udRestoreMissingNodeErrorComponent);
-
-    function udRestoreMissingNodeErrorComponent() {
-        function link(scope, element, attr, ctrl) {
-            scope.errorDetailsVisible = false;
-            scope.toggleErrorDetails = function() {
-                scope.errorDetailsVisible = !scope.errorDetailsVisible;
-            }
-        }
-
-        var directive = {
-            restrict: 'E',
-            replace: true,
-            templateUrl: '/App_Plugins/Deploy/views/components/errors/udrestoremissingnodeerror/udrestoremissingnodeerror.html',
-            scope: {
-                'exception': "="
-            },
-            link: link
-        };
-        return directive;
-    }
-})();
-
-(function() {
-    'use strict';
-
-    angular
-        .module('umbraco.deploy.components')
         .directive('udRestoreSchemaMismatchError', udRestoreSchemaMismatchErrorComponent);
 
     function udRestoreSchemaMismatchErrorComponent() {
         function link(scope, element, attr, ctrl) {
-            scope.errorDetailsVisible = false;
-            scope.toggleErrorDetails = function() {
-                scope.errorDetailsVisible = !scope.errorDetailsVisible;
+
+            scope.prettyEntityType = function (udi) {
+                var p1 = udi.indexOf('//');
+                var p2 = udi.indexOf('/', p1 + 2);
+                var n = udi.substr(p1 + 2, p2 - p1 - 2);
+                n = n.replace('-', ' ');
+                n = n.substr(0, 1).toUpperCase() + n.substr(1);
+                return n;
             }
         }
 
@@ -728,7 +788,9 @@
             replace: true,
             templateUrl: '/App_Plugins/Deploy/views/components/restore/udrestorecomplete/udrestorecomplete.html',
             scope: {
-                'onBack': "&"
+                'onBack': "&",
+                'timestamp': "=",
+                'serverTimestamp': "="
             }
         };
 
@@ -754,7 +816,8 @@
                 'targetName': "=",
                 'progress': "=",
                 'currentActivity': "=",
-                'timestamp': "="
+                'timestamp': "=",
+                'serverTimestamp': "="
             }
         };
 

@@ -27,35 +27,35 @@ angular.module('umbraco.deploy.services')
 
             instance.error = undefined;
 
-            instance.deploy = function () {
-                
+            instance.deploy = function (enableWorkItemLogging) {
+
                 var deferred = $q.defer();
 
-                deployResource.deploy(deployConfiguration.Target.DeployUrl)
+                deployResource.deploy(deployConfiguration.Target.DeployUrl, enableWorkItemLogging)
                     .then(function (data) {
                         instance.setSessionId(data.SessionId);
                         deferred.resolve(data);
                     }, function (data) {
                         deferred.reject(data);
                     });
-                
+
                 return deferred.promise;
 
             };
 
-            instance.instantDeploy = function(item) {
-                
+            instance.instantDeploy = function (item, enableWorkItemLogging) {
+
                 var deferred = $q.defer();
 
                 // get the item with Udi from the server
                 deployResource.getUdiRange(item.id, item.includeDescendants, item.entityType).then(function(data) {
-                    
+
                     if (data !== 'null' && data !== null) {
                         // deploy item
                         var items = [];
                         items.push(data);
 
-                        deployResource.instantDeploy(items, deployConfiguration.Target.DeployUrl)
+                        deployResource.instantDeploy(items, deployConfiguration.Target.DeployUrl, enableWorkItemLogging)
                             .then(function(data) {
                                     instance.setSessionId(data.SessionId);
                                     deferred.resolve(data);
@@ -72,27 +72,27 @@ angular.module('umbraco.deploy.services')
 
             };
 
-            instance.restore = function(targetUrl) {
+            instance.restore = function (targetUrl, enableWorkItemLogging) {
 
                 var deferred = $q.defer();
 
-                deployResource.restore(targetUrl)
+                deployResource.restore(targetUrl, enableWorkItemLogging)
                     .then(function (data) {
                         instance.setSessionId(data.SessionId);
                         deferred.resolve(data);
                     }, function (data) {
                         deferred.reject(data);
                     });
-                
+
                 return deferred.promise;
 
             };
 
-            instance.partialRestore = function (targetUrl, restoreNodes) {
+            instance.partialRestore = function (targetUrl, restoreNodes, enableWorkItemLogging) {
 
                 var deferred = $q.defer();
 
-                deployResource.partialRestore(targetUrl, restoreNodes)
+                deployResource.partialRestore(targetUrl, restoreNodes, enableWorkItemLogging)
                     .then(function (data) {
                         instance.setSessionId(data.SessionId);
                         deferred.resolve(data);
@@ -136,7 +136,7 @@ angular.module('umbraco.deploy.services')
                         instance.removeSessionId();
                         deferred.reject(data);
                     });
-                
+
                 return deferred.promise;
 
             };
@@ -461,33 +461,33 @@ angular.module('umbraco.deploy.services')
             var initialized = false;
             var lock = false;
 
-            $.connection.deployHub.client.sessionUpdated = function (sessionId, status, comment, percent, log, exception) {
+            $.connection.deployHub.client.sessionUpdated = function (sessionId, status, comment, percent, log, exceptionJson, serverTimestamp) {
                 $rootScope.$broadcast('deploy:sessionUpdated', {
-                    sessionId: sessionId, status: status, comment: comment, percent: percent, log: log, exception: exception
+                    sessionId: sessionId, status: status, comment: comment, percent: percent, log: log, exception: angular.fromJson(exceptionJson), serverTimestamp: serverTimestamp
                 });
             };
 
-            $.connection.deployHub.client.heartbeat = function (sessionId) {
+            $.connection.deployHub.client.heartbeat = function (sessionId, serverTimestamp) {
                 $rootScope.$broadcast('deploy:heartbeat', {
-                    sessionId: sessionId
+                    sessionId: sessionId, serverTimestamp: serverTimestamp
                 });
             };
 
-            $.connection.restoreHub.client.sessionUpdated = function (sessionId, status, comment, percent, log, exception) {
+            $.connection.restoreHub.client.sessionUpdated = function (sessionId, status, comment, percent, log, exceptionJson, serverTimestamp) {
                 $rootScope.$broadcast('restore:sessionUpdated', {
-                    sessionId: sessionId, status: status, comment: comment, percent: percent, log: log, exception: exception
+                    sessionId: sessionId, status: status, comment: comment, percent: percent, log: log, exception: angular.fromJson(exceptionJson), serverTimestamp: serverTimestamp
                 });
             };
 
-            $.connection.restoreHub.client.diskReadSessionUpdated = function (sessionId, status, comment, percent, log, exception) {
+            $.connection.restoreHub.client.diskReadSessionUpdated = function (sessionId, status, comment, percent, log, exceptionJson, serverTimestamp) {
                 $rootScope.$broadcast('restore:diskReadSessionUpdated', {
-                    sessionId: sessionId, status: status, comment: comment, percent: percent, log: log, exception: exception
+                    sessionId: sessionId, status: status, comment: comment, percent: percent, log: log, exception: angular.fromJson(exceptionJson), serverTimestamp: serverTimestamp
                 });
             };
 
-            $.connection.restoreHub.client.heartbeat = function (sessionId) {
+            $.connection.restoreHub.client.heartbeat = function (sessionId, serverTimestamp) {
                 $rootScope.$broadcast('restore:heartbeat', {
-                    sessionId: sessionId
+                    sessionId: sessionId, serverTimestamp: serverTimestamp
                 });
             };
 

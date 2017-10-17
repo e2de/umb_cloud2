@@ -1,11 +1,11 @@
 (function () {
     "use strict";
     function NoNodesController($scope, $http, $timeout, $q, deploySignalrService, deployHelper) {
-        
+
         var vm = this;
         var baseUrl = Umbraco.Sys.ServerVariables.umbracoUrls.deployNoNodesBaseUrl;
         var timestampFormat = 'MMMM Do YYYY, HH:mm:ss';
-        
+
         vm.restore = {};
         vm.logIsvisible = false;
         vm.restoreData = restoreData;
@@ -52,12 +52,18 @@
         }
 
         function restoreData() {
+
             var data = {
-                SourceUrl: Umbraco.Sys.ServerVariables.deploy.Target.Url
+                SourceUrl: Umbraco.Sys.ServerVariables.deploy.Target.Url,
+                EnableLogging: vm.enableWorkItemLogging
             };
             return $http.post(baseUrl + 'Restore', data)
                 .then(function (response) {
                     vm.step = "restoreWebsite";
+                    vm.sessionId = response.data.SessionId;
+                    if (vm.enableWorkItemLogging) {
+                        vm.restore.showDebug = true;
+                    }
                 },
                 function (response) {
 
@@ -84,7 +90,9 @@
                 'restoreProgress': 0,
                 'currentActivity': '',
                 'status': '',
-                'error': {}
+                'error': {},
+                'trace': '',
+                'showDebug': false
             };
 
             if (!vm.isDebug) {
@@ -147,6 +155,72 @@
                 }
             });
         });
+
+        // where is angularHelper ?!
+        vm.safeApply = function (scope, fn) {
+            if (scope.$$phase || scope.$root.$$phase) {
+                if (angular.isFunction(fn)) {
+                    fn();
+                }
+            } else {
+                if (angular.isFunction(fn)) {
+                    scope.$apply(fn);
+                } else {
+                    scope.$apply();
+                }
+            }
+        }
+
+        // signalR debug heartbeat
+        $scope.$on('deploy:heartbeat', function (event, args) {
+            if (vm.sessionId !== args.sessionId) return;
+            vm.safeApply($scope, function () {
+                vm.restore.trace += "❤<br />";
+            });
+        });
+
+        vm.showDebug = function () {
+            vm.restore.showDebug = !vm.restore.showDebug;
+        };
+
+        var search = window.location.search;
+        vm.enableWorkItemLogging = search === '?ddebug';
+
+        // debug
+
+        // beware, MUST correspond to what's in WorkStatus
+        var workStatus = ["Unknown", "New", "Executing", "Completed", "Failed", "Cancelled", "TimedOut"];
+
+        function updateLog(event, sessionUpdatedArgs) {
+
+            // make sure the event is for us
+            if (vm.sessionId === sessionUpdatedArgs.sessionId) {
+                vm.safeApply($scope, function () {
+                    var progress = sessionUpdatedArgs;
+                    vm.restore.trace += "" + progress.sessionId.substr(0, 8) + " - " + workStatus[progress.status] + ", " + progress.percent + "%"
+                        + (progress.comment ? " - <em>" + progress.comment + "</em>" : "") + "<br />";
+                    if (progress.log)
+                        vm.restore.trace += "<br />" + filterLog(progress.log) + "<br /><br />";
+                    //console.log("" + progress.sessionId.substr(0, 8) + " - " + workStatus[progress.status] + ", " + progress.percent + "%");
+                });
+            }
+        }
+
+        function filterLog(log) {
+            log = log.replace(/(?:\&)/g, '&amp;');
+            log = log.replace(/(?:\<)/g, '&lt;');
+            log = log.replace(/(?:\>)/g, '&gt;');
+            log = log.replace(/(?:\r\n|\r|\n)/g, '<br />');
+            log = log.replace(/(?:\t)/g, '  ');
+            log = log.replace('-- EXCEPTION ---------------------------------------------------', '<span class="umb-deploy-debug-exception">-- EXCEPTION ---------------------------------------------------');
+            log = log.replace('----------------------------------------------------------------', '----------------------------------------------------------------</span>');
+            return log;
+        }
+
+        // note: due to deploy.service also broadcasting at beginning, the first line could be duplicated
+        $scope.$on('deploy:sessionUpdated', updateLog);
+        $scope.$on('restore:sessionUpdated', updateLog);
+
         init();
     }
     angular.module("umbraco.nonodes").controller("Umbraco.NoNodes.Controller", NoNodesController);

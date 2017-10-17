@@ -2,21 +2,23 @@
 
     <div ng-if="status === 'failed'">
 
-        <div ng-switch="uiException.ClassName">
+        <div ng-switch="innerException.ExceptionType || innerException.ClassName">
 
             <ud-collision-error
                 ng-switch-when="Umbraco.Deploy.Exceptions.ArtifactCollisionException"
-                exception="uiException">
+                operation="operation"
+                exception-udis="exceptionUdis"
+                exception="innerException">
             </ud-collision-error>
 
             <ud-deploy-schema-mismatch-error
                 ng-switch-when="Umbraco.Deploy.Exceptions.DeploySchemaMismatchException"
-                exception="uiException">
+                exception="innerException">
             </ud-deploy-schema-mismatch-error>
 
             <ud-restore-schema-mismatch-error
                 ng-switch-when="Umbraco.Deploy.Exceptions.RestoreSchemaMismatchException"
-                exception="uiException"
+                exception="innerException"
                 no-nodes="noNodes">
             </ud-restore-schema-mismatch-error>
 
@@ -39,14 +41,27 @@
                 </pre>
                 <p>This is used for debugging exceptions &amp; errors and should normally not appear unless you are debugging something.
                     You can disable it by removing the "kabum" attribute from the UmbracoDeploy.settings.config file in ~/config of your site.</p>
+                <div ng-if="exceptionUdis.length>0">
+                    <p>The following artifacts might be involved:</p>
+                    <ul ng-repeat="udi in exceptionUdis">
+                        <li>{{udi}}</li>
+                    </ul>
+                </div>
             </div>
 
             <div class="ud-content-type-changed-error" ng-switch-when="Umbraco.Deploy.Exceptions.ContentTypeChangedException">
-                <h4 class="bold color-red">Content type change error</h4>
-                <p>It looks like the content type of a document you are trying to transfer, has changed.</p>
-                <p>Deploying content type changes are currently not supported by Umbraco Deploy.</p>
+                <h4 class="bold color-red">Unsupported content type change</h4>
+                <p>The content type of a document or media you are trying to transfer, has changed. This means that the item exists
+                    on both sites, but with a different content type. Deploying content type changes is currently not supported by
+                    Umbraco Deploy.</p>
                 <p>If you want to transfer this document, you need to delete the existing document in the destination site and
                     redeploy it from the source site using the new document type.</p>
+                <div ng-if="exceptionUdis.length>0">
+                    <p>The following artifacts might be involved:</p>
+                    <ul ng-repeat="udi in exceptionUdis">
+                        <li>{{udi}}</li>
+                    </ul>
+                </div>
             </div>
 
             <div class="ud-busy-error" ng-switch-when="Umbraco.Deploy.Exceptions.EnvironmentBusyException">
@@ -57,14 +72,37 @@
 
             <div class="ud-webexception-error" ng-switch-when="System.Net.WebException">
                 <h4 class="bold color-red">Connection error</h4>
-                <p>{{exception.Message}}</p>
+                <p>{{innerException.Message}}</p>
+            </div>
+            
+            <div class="ud-invalid-path-error" ng-switch-when="Umbraco.Deploy.Exceptions.InvalidPathException">
+                <h4 class="bold color-red">Invalid Path in data</h4>
+                <p>
+                    During the deploy process, an invalid path was found in the database.
+                    This can be fixed by updating the paths in <em>umbracoNode</em> to be correct.
+                    Please contact support for instructions on how to solve this issue.
+                </p>
+                <div ng-if="exceptionUdis.length>0">
+                    <p>The following artifacts might be involved:</p>
+                    <ul ng-repeat="udi in exceptionUdis">
+                        <li>{{udi}}</li>
+                    </ul>
+                </div>
             </div>
 
             <div ng-switch-default>
                 <h4 class="bold color-red">An error occurred</h4>
-                <p>The {{uiException.EnvironmentName || 'source'}} environment has thrown a
-                    <em>{{uiException.ExceptionType || uiException.ClassName || 'unknown exception'}}</em>.</p>
-                <p ng-if="uiException.Message">Message: <em>{{uiException.Message}}</em></p>
+                <p>The {{exception.EnvironmentName || 'source'}} environment has thrown a
+                    <em>{{exception.ExceptionType || uiException.ClassName || 'unknown exception'}}</em>
+                    with message: <em>{{exception.ExceptionMessage || exception.Message || '(empty)'}}</em>
+                    <span ng-if="innerException !== exception">It might have been caused by an inner
+                        <em>{{innerException.ExceptionType}}</em> with message: <em>{{innerException.ExceptionMessage || innerException.Message || '(empty)'}}</em></span></p>
+                <div ng-if="exceptionUdis.length>0">
+                    <p >The following artifacts might be involved:</p>
+                    <ul ng-repeat="udi in exceptionUdis">
+                        <li>{{udi}}</li>
+                    </ul>
+                </div>
                 <p>The <em>technical details</em> may contain more information.</p>
             </div>
 
@@ -81,6 +119,15 @@
         <h4 class="bold">Task timed out</h4>
         <p>The task timed out.</p>
     </div>
+
+    <p>
+        <small><strong>Time:</strong> {{ timestamp }}</small>
+        <span ng-if="showDebug">
+            <br/>
+            <small><strong>Server Time:</strong> {{ serverTimestamp }}</small>
+        </span>
+
+    </p>
 
     <umb-button
         type="button"
