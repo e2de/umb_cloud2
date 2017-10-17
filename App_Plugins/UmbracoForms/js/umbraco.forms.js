@@ -3027,6 +3027,77 @@ angular.module("umbraco").controller("UmbracoForms.Editors.Security.EditControll
 });
 
 angular.module("umbraco")
+    .controller("Umbraco.Forms.GridEditors.FormPickerController",
+    function ($scope, $rootScope, $timeout, dialogService, macroResource, macroService, $routeParams) {
+
+        $scope.title = "Click to insert form";
+        $scope.macroAlias = "renderUmbracoForm";
+        $scope.state = "init";
+
+        $scope.setForm = function () {
+
+            var dialogData = {
+                richTextEditor: true,
+                macroData: $scope.control.value || {
+                    macroAlias: $scope.macroAlias
+                }
+            };
+
+            $scope.formPickerOverlay = {};
+            $scope.formPickerOverlay.view = "macropicker";
+            $scope.formPickerOverlay.dialogData = dialogData;
+            $scope.formPickerOverlay.show = true;
+            $scope.formPickerOverlay.title = "Select form";
+
+            $scope.formPickerOverlay.submit = function (model) {
+
+                var macroObject = macroService.collectValueData(model.selectedMacro, model.macroParams, dialogData.renderingEngine);
+
+                $scope.control.value = {
+                    macroAlias: macroObject.macroAlias,
+                    macroParamsDictionary: macroObject.macroParamsDictionary
+                };
+
+                $scope.setPreview($scope.control.value);
+
+                $scope.formPickerOverlay.show = false;
+                $scope.formPickerOverlay = null;
+            };
+
+            $scope.formPickerOverlay.close = function (oldModel) {
+                $scope.formPickerOverlay.show = false;
+                $scope.formPickerOverlay = null;
+            };
+        };
+
+        $scope.setPreview = function (macro) {
+            var contentId = $routeParams.id;
+
+            $scope.title = macro.macroAlias;
+            $scope.state = "loading";
+
+            macroResource.getMacroResultAsHtmlForEditor(macro.macroAlias, contentId, macro.macroParamsDictionary)
+            .then(function (htmlResult) {
+                
+                if (htmlResult.trim().length > 0 && htmlResult.indexOf("Macro:") < 0) {
+                    $scope.preview = htmlResult;
+                    $scope.state = "loaded";
+                } else {
+                    $scope.state = "init";
+                }
+            });
+        };
+
+        $timeout(function () {
+            if ($scope.control.$initializing) {
+                $scope.setForm();
+            } else if ($scope.control.value) {
+                $scope.setPreview($scope.control.value);
+            }
+        }, 200);
+    });
+
+angular.module("umbraco")
 .controller("UmbracoForms.Editors.PreValueSource.DeleteController",
 	function ($scope, preValueSourceResource, navigationService, treeService) {
 	    $scope.delete = function (id) {
