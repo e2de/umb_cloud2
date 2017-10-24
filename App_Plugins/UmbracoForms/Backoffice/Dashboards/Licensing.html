@@ -49,8 +49,7 @@
 
         <hr />
     </div>
-
-
+    
     <div ng-if="status.isTrial || status.isInValid === true">
 
         <div class="alert alert-error" ng-if="status.isInValid">
@@ -158,6 +157,34 @@
 
     <div ng-if="currentVersion">
         <small>Current installed version of Umbraco Forms: {{ currentVersion }}</small>
+    </div>
+
+    <div ng-if="savePlainTextPasswords && isAdminUser">
+        <div class="row-fluid">
+            <style>
+                .warnblock {
+                    background-color: #f1f1f1;
+                    padding: 4px;
+                }
+                .warning {
+                    color: red;
+                    font-weight: bold;
+                }
+                .code {
+                    color: crimson;
+                    background-color: #f1f1f1;
+                    padding-left: 4px;
+                    padding-right: 4px;
+                }
+            </style>
+            <div class="span8 warnblock">
+                <h3 class="warning">Warning: your configuration settings are set to save plain text passwords!</h3>
+                <p>When you use a password field on any of your forms, the data your visitors will enter in that field will be stored in plain text. This is a security issue and should be avoided.</p>
+                <p>To fix this issue, you can go in to your <span class="code">~/App_Plugins/UmbracoForms/UmbracoForms.config</span> file and set the key <span class="code">SavePlainTextPasswords</span> to <span class="code">False</span>.</p>
+                <p>After updating this setting, make sure to recycle the application pool for the site for the new setting to become active.</p>
+                <p>Note: password values will still be passed on to workflows, regardless of the setting in <span class="code">UmbracoForms.config</span></p>
+            </div>
+        </div>
     </div>
 
 </div>
