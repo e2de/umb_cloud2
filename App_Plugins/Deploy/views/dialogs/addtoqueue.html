@@ -4,7 +4,7 @@
             <h4 class="bold">Queue {{addToQueueVm.item.name}} for transfer to {{addToQueueVm.deployConfiguration.Target.Name}}</h4>
             <p>This will put <span class="bold">{{addToQueueVm.item.name}}</span> in the queue for the next transfer, nothing will be transfered yet</p>
 
-            <div ng-if="addToQueueVm.item.hasChildren && addToQueueVm.item.nodeType !='form'">
+            <div ng-if="addToQueueVm.withBranch">
                 <p>Should all pages below <span class="bold">{{addToQueueVm.item.name}}</span> be included in the deploy, or is it only <span class="bold">{{addToQueueVm.item.name}}</span> you want to deploy to {{addToQueueVm.deployConfiguration.Target.Name}}?</p>
                 <hr/>
                 <label>

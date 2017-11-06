@@ -210,6 +210,9 @@ angular.module('umbraco.deploy.services')
             case 'content':
                 item.entityType = 'document';
                 break;
+            case 'contentBlueprints':
+                item.entityType = 'document-blueprint';
+                break;
             case 'media':
                 item.entityType = 'media';
                 break;
@@ -262,6 +265,9 @@ angular.module('umbraco.deploy.services')
             case 'datasource':
                 item.entityType = 'forms-datasource';
                 break;
+            case 'contentBlueprints':
+                item.entityType = 'document-blueprint';
+                break;
             // containers are all just 'container' we have to check the routePath to figure out what kind
             case 'container':
                 var m = node.routePath.match(/.+\/(.+?)\/edit\//);
@@ -299,7 +305,7 @@ angular.module('umbraco.deploy.services')
             }
 
             return item;
-            
+
 
         }
 
@@ -315,7 +321,7 @@ angular.module('umbraco.deploy.services')
                     return 'cancelled';
                 case 6:
                     return 'timedOut';
-                default: 
+                default:
                     return '';
             };
         }

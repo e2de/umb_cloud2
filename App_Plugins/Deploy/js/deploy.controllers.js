@@ -75,6 +75,12 @@ angular.module('umbraco.deploy')
             vm.includeDescendants = false;
             vm.item = $scope.currentNode;
 
+            vm.withBranch = vm.item.hasChildren
+                && vm.item.nodeType !== 'form'
+                && (vm.item.nodeType !== 'document-type-blueprints') // blueprint content type node
+                && (vm.item.nodeType || !vm.item.routePath.startsWith('settings/contentBlueprints/')) // blueprint main node
+                ;
+
             vm.addToQueue = function(item) {
                 var deployItem = deployHelper.getDeployItem(vm.item, vm.includeDescendants);
                 deployQueueService.addToQueue(deployItem);

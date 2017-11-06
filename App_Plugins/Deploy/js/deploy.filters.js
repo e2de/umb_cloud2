@@ -4,6 +4,8 @@ angular.module('umbraco.deploy.filters')
         function () {
             var entityTypes = {
                 'document': 'Content items',
+                'document-blueprint': 'Content blueprints',
+                'document-type-blueprints': 'Content blueprints for Document Types',
                 'media': 'Media',
                 'member': 'Members',
 
