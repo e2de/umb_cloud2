@@ -17294,7 +17294,7 @@
             </summary>
             <returns></returns>
         </member>
-        <member name="M:Umbraco.Core.Persistence.Repositories.IContentRepository.CountPublished">
+        <member name="M:Umbraco.Core.Persistence.Repositories.IContentRepository.CountPublished(System.String)">
             <summary>
             Get the count of published items
             </summary>
@@ -22187,6 +22187,33 @@
             </summary>
             <returns></returns>
         </member>
+        <member name="M:Umbraco.Core.Security.BackOfficeSignInManager.TwoFactorSignInAsync(System.String,System.String,System.Boolean,System.Boolean)">
+            <summary>
+            Two factor verification step
+            </summary>
+            <param name="provider"></param>
+            <param name="code"></param>
+            <param name="isPersistent"></param>
+            <param name="rememberBrowser"></param>
+            <returns></returns>
+            <remarks>
+            This is implemented because we cannot override GetVerifiedUserIdAsync and instead we have to shadow it
+            so due to this and because we are using an INT as the TKey and not an object, it can never be null. Adding to that
+            the default(int) value returned by the base class is always a valid user (i.e. the admin) so we just have to duplicate
+            all of this code to check for -1 instead.
+            </remarks>
+        </member>
+        <member name="M:Umbraco.Core.Security.BackOfficeSignInManager.SendTwoFactorCodeAsync(System.String)">
+            <summary>Send a two factor code to a user</summary>
+            <param name="provider"></param>
+            <returns></returns>
+            <remarks>
+            This is implemented because we cannot override GetVerifiedUserIdAsync and instead we have to shadow it
+            so due to this and because we are using an INT as the TKey and not an object, it can never be null. Adding to that
+            the default(int) value returned by the base class is always a valid user (i.e. the admin) so we just have to duplicate
+            all of this code to check for -1 instead.
+            </remarks>
+        </member>
         <member name="T:Umbraco.Core.Security.BackOfficeUserManager">
             <summary>
             Default back office user manager
@@ -24755,6 +24782,20 @@
             <param name="raiseEvents"></param>
             <returns>True if sorting succeeded, otherwise False</returns>
         </member>
+        <member name="M:Umbraco.Core.Services.ContentService.Sort(System.Int32[],System.Int32,System.Boolean)">
+            <summary>
+            Sorts a collection of <see cref="T:Umbraco.Core.Models.IContent"/> objects by updating the SortOrder according
+            to the ordering of node Ids passed in.
+            </summary>
+            <remarks>
+            Using this method will ensure that the Published-state is maintained upon sorting
+            so the cache is updated accordingly - as needed.
+            </remarks>
+            <param name="ids"></param>
+            <param name="userId"></param>
+            <param name="raiseEvents"></param>
+            <returns>True if sorting succeeded, otherwise False</returns>
+        </member>
         <member name="M:Umbraco.Core.Services.ContentService.GetPagedXmlEntries(System.String,System.Int64,System.Int32,System.Int64@)">
             <summary>
             Gets paged content descendants as XML by path
@@ -26794,6 +26835,20 @@
             so the cache is updated accordingly - as needed.
             </remarks>
             <param name="items"></param>
+            <param name="userId"></param>
+            <param name="raiseEvents"></param>
+            <returns>True if sorting succeeded, otherwise False</returns>
+        </member>
+        <member name="M:Umbraco.Core.Services.IContentService.Sort(System.Int32[],System.Int32,System.Boolean)">
+            <summary>
+            Sorts a collection of <see cref="T:Umbraco.Core.Models.IContent"/> objects by updating the SortOrder according
+            to the ordering of node Ids passed in.
+            </summary>
+            <remarks>
+            Using this method will ensure that the Published-state is maintained upon sorting
+            so the cache is updated accordingly - as needed.
+            </remarks>
+            <param name="ids"></param>
             <param name="userId"></param>
             <param name="raiseEvents"></param>
             <returns>True if sorting succeeded, otherwise False</returns>

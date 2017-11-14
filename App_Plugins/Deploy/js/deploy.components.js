@@ -686,58 +686,6 @@
 
     angular
         .module('umbraco.deploy.components')
-        .directive('udRestoreComplete', udRestoreCompleteComponent);
-
-    function udRestoreCompleteComponent() {
-
-        var directive = {
-            restrict: 'E',
-            replace: true,
-            templateUrl: '/App_Plugins/Deploy/views/components/restore/udrestorecomplete/udrestorecomplete.html',
-            scope: {
-                'onBack': "&",
-                'timestamp': "=",
-                'serverTimestamp': "="
-            }
-        };
-
-        return directive;
-
-    }
-
-})();
-(function() {
-    'use strict';
-
-    angular
-        .module('umbraco.deploy.components')
-        .directive('udRestoreProgress', udRestoreProgressComponent);
-
-    function udRestoreProgressComponent() {
-
-        var directive = {
-            restrict: 'E',
-            replace: true,
-            templateUrl: '/App_Plugins/Deploy/views/components/restore/udrestoreprogress/udrestoreprogress.html',
-            scope: {
-                'targetName': "=",
-                'progress': "=",
-                'currentActivity': "=",
-                'timestamp': "=",
-                'serverTimestamp': "="
-            }
-        };
-
-        return directive;
-
-    }
-
-})();
-(function() {
-    'use strict';
-
-    angular
-        .module('umbraco.deploy.components')
         .directive('udCollisionError', udCollisionErrorComponent);
 
     function udCollisionErrorComponent() {
@@ -831,6 +779,58 @@
 
     angular
         .module('umbraco.deploy.components')
+        .directive('udRestoreComplete', udRestoreCompleteComponent);
+
+    function udRestoreCompleteComponent() {
+
+        var directive = {
+            restrict: 'E',
+            replace: true,
+            templateUrl: '/App_Plugins/Deploy/views/components/restore/udrestorecomplete/udrestorecomplete.html',
+            scope: {
+                'onBack': "&",
+                'timestamp': "=",
+                'serverTimestamp': "="
+            }
+        };
+
+        return directive;
+
+    }
+
+})();
+(function() {
+    'use strict';
+
+    angular
+        .module('umbraco.deploy.components')
+        .directive('udRestoreProgress', udRestoreProgressComponent);
+
+    function udRestoreProgressComponent() {
+
+        var directive = {
+            restrict: 'E',
+            replace: true,
+            templateUrl: '/App_Plugins/Deploy/views/components/restore/udrestoreprogress/udrestoreprogress.html',
+            scope: {
+                'targetName': "=",
+                'progress': "=",
+                'currentActivity': "=",
+                'timestamp': "=",
+                'serverTimestamp': "="
+            }
+        };
+
+        return directive;
+
+    }
+
+})();
+(function() {
+    'use strict';
+
+    angular
+        .module('umbraco.deploy.components')
         .directive('udWorkspace', udWorkspaceComponent);
 
     function udWorkspaceComponent() {
@@ -867,6 +867,33 @@
 
     angular
         .module('umbraco.deploy.components')
+        .directive('udWorkspaceInfo', udWorkspaceInfoComponent);
+
+    function udWorkspaceInfoComponent() {
+
+        var directive = {
+            restrict: 'E',
+            replace: true,
+            templateUrl: '/App_Plugins/Deploy/views/components/workspace/udworkspaceinfo/udworkspaceinfo.html',
+            scope: {
+                'websiteUrl': "@",
+                'umbracoUrl': "@",
+                'projectUrl': "@",
+                'projectName': "@"
+            }
+        };
+
+        return directive;
+
+    }
+
+})();
+
+(function() {
+    'use strict';
+
+    angular
+        .module('umbraco.deploy.components')
         .directive('udWorkspaceAdd', udWorkspaceAddComponent);
 
     function udWorkspaceAddComponent() {
@@ -884,33 +911,6 @@
                 'onAddWorkspace': '&'
             },
             link: link
-        };
-
-        return directive;
-
-    }
-
-})();
-
-(function() {
-    'use strict';
-
-    angular
-        .module('umbraco.deploy.components')
-        .directive('udWorkspaceInfo', udWorkspaceInfoComponent);
-
-    function udWorkspaceInfoComponent() {
-
-        var directive = {
-            restrict: 'E',
-            replace: true,
-            templateUrl: '/App_Plugins/Deploy/views/components/workspace/udworkspaceinfo/udworkspaceinfo.html',
-            scope: {
-                'websiteUrl': "@",
-                'umbracoUrl': "@",
-                'projectUrl': "@",
-                'projectName': "@"
-            }
         };
 
         return directive;
