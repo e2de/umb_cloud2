@@ -867,33 +867,6 @@
 
     angular
         .module('umbraco.deploy.components')
-        .directive('udWorkspaceInfo', udWorkspaceInfoComponent);
-
-    function udWorkspaceInfoComponent() {
-
-        var directive = {
-            restrict: 'E',
-            replace: true,
-            templateUrl: '/App_Plugins/Deploy/views/components/workspace/udworkspaceinfo/udworkspaceinfo.html',
-            scope: {
-                'websiteUrl': "@",
-                'umbracoUrl': "@",
-                'projectUrl': "@",
-                'projectName': "@"
-            }
-        };
-
-        return directive;
-
-    }
-
-})();
-
-(function() {
-    'use strict';
-
-    angular
-        .module('umbraco.deploy.components')
         .directive('udWorkspaceAdd', udWorkspaceAddComponent);
 
     function udWorkspaceAddComponent() {
@@ -911,6 +884,33 @@
                 'onAddWorkspace': '&'
             },
             link: link
+        };
+
+        return directive;
+
+    }
+
+})();
+
+(function() {
+    'use strict';
+
+    angular
+        .module('umbraco.deploy.components')
+        .directive('udWorkspaceInfo', udWorkspaceInfoComponent);
+
+    function udWorkspaceInfoComponent() {
+
+        var directive = {
+            restrict: 'E',
+            replace: true,
+            templateUrl: '/App_Plugins/Deploy/views/components/workspace/udworkspaceinfo/udworkspaceinfo.html',
+            scope: {
+                'websiteUrl': "@",
+                'umbracoUrl': "@",
+                'projectUrl': "@",
+                'projectName': "@"
+            }
         };
 
         return directive;
