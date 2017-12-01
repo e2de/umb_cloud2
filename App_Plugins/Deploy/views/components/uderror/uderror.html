@@ -64,6 +64,12 @@
                 </div>
             </div>
 
+            <div class="ud-dependency-error" ng-switch-when="Umbraco.Deploy.Exceptions.DependencyException">
+                <h4 class="bold color-red">Dependency Error</h4>
+                <p>{{exception.Message}}</p>
+                <p>This situation must be fixed before deploy can work.</p>
+            </div>
+
             <div class="ud-busy-error" ng-switch-when="Umbraco.Deploy.Exceptions.EnvironmentBusyException">
                 <h4 class="bold color-red">A content transfer is already in progress</h4>
                 <p>Another content transfer has already been started, by <strong>{{exception.UserName}}</strong> <em>({{exception.UserEmail}})</em>.
@@ -74,7 +80,7 @@
                 <h4 class="bold color-red">Connection error</h4>
                 <p>{{innerException.Message}}</p>
             </div>
-            
+
             <div class="ud-invalid-path-error" ng-switch-when="Umbraco.Deploy.Exceptions.InvalidPathException">
                 <h4 class="bold color-red">Invalid Path in data</h4>
                 <p>
