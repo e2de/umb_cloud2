@@ -107,7 +107,7 @@
                         <a href="<%= IOHelper.ResolveUrl(SystemDirectories.Umbraco) %>" class="button">Open Umbraco</a>
                     </div>
                 </div>
-
+                
                 <ud-error
                     ng-if="vm.restore.error.hasError"
                     comment="vm.restore.error.comment"
@@ -115,6 +115,7 @@
                     exception="vm.restore.error.exception"
                     status="vm.restore.status"
                     class="ud-restore-error"
+                    timestamp="vm.restore.timestamp"
                     operation="restore"
                     no-nodes="true"
                     on-debug="vm.showDebug()">
