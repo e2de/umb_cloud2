@@ -298,6 +298,15 @@
   color: #d3d3d3;
   margin-top: 10px;
 }
+.ud-nonodes .ud-merge-conflict-error__header {
+  margin-top: 20px;
+}
+.ud-nonodes .ud-merge-conflict-error__header + p {
+  margin-top: 0;
+}
+.ud-nonodes .ud-merge-conflict-error a {
+  font-size: inherit;
+}
 .ud-schema-mismatch-error__group {
   margin-bottom: 15px;
 }
