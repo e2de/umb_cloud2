@@ -2620,6 +2620,44 @@
             <param name="media">Specifies the already resolved content item to check against, setting this ignores the nodeId</param>
             <returns></returns>
         </member>
+        <member name="T:Umbraco.Web.ExamineStartup">
+            <summary>
+            Used to configure Examine during startup for the web application
+            </summary>
+        </member>
+        <member name="M:Umbraco.Web.ExamineStartup.Initialize">
+            <summary>
+            Called during the initialize operation of the boot manager process
+            </summary>
+        </member>
+        <member name="M:Umbraco.Web.ExamineStartup.Complete">
+            <summary>
+            Called during the Complete operation of the boot manager process
+            </summary>
+        </member>
+        <member name="M:Umbraco.Web.ExamineStartup.RebuildIndexes">
+            <summary>
+            Called to perform the rebuilding indexes on startup if the indexes don't exist
+            </summary>
+        </member>
+        <member name="M:Umbraco.Web.ExamineStartup.GetIndexesForColdBoot">
+            <summary>
+            The method used to create indexes on a cold boot
+            </summary>
+            <remarks>
+            A cold boot is when the server determines it will not (or cannot) process instructions in the cache table and
+            will rebuild it's own caches itself.
+            </remarks>
+        </member>
+        <member name="M:Umbraco.Web.ExamineStartup.EnsureUnlockedAndConfigured">
+            <summary>
+            Must be called to configure each index and ensure it's unlocked before any indexing occurs
+            </summary>
+            <remarks>
+            Indexing rebuilding can occur on a normal boot if the indexes are empty or on a cold boot by the database server messenger. Before
+            either of these happens, we need to configure the indexes.
+            </remarks>
+        </member>
         <member name="P:Umbraco.Web.HealthCheck.Checks.Config.AbstractConfigCheck.FilePath">
             <summary>
             Gets the config file path.
@@ -18330,6 +18368,7 @@
             <remarks>
             A cold boot is when the server determines it will not (or cannot) process instructions in the cache table and
             will rebuild it's own caches itself.
+            TODO: Does this method need to exist? Is it used publicly elsewhere (i.e. outside of core?)
             </remarks>
         </member>
         <member name="T:Umbraco.Web.PluginManagerExtensions">
