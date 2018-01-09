@@ -153,6 +153,11 @@
             - http://issues.umbraco.org/issue/U4-5391
             </remarks>
         </member>
+        <member name="M:Umbraco.Core.ApplicationContext.ResetUmbracoApplicationUrl">
+            <summary>
+            Resets the url.
+            </summary>
+        </member>
         <member name="P:Umbraco.Core.ApplicationContext.DatabaseContext">
             <summary>
             Gets the current DatabaseContext
@@ -4178,25 +4183,6 @@
             to do with the events when the scope exits and has been completed.</para>
             <para>If the scope exits without being completed, events are ignored.</para>
             </remarks>
-        </member>
-        <member name="M:Umbraco.Core.Events.ScopeEventDispatcherBase.FilterSupersededAndUpdateToLatestEntity(System.Collections.Generic.IReadOnlyList{Umbraco.Core.Events.IEventDefinition})">
-            <summary>
-            This will iterate over the events (latest first) and filter out any events or entities in event args that are included 
-            in more recent events that Supersede previous ones. For example, If an Entity has been Saved and then Deleted, we don't want
-            to raise the Saved event (well actually we just don't want to include it in the args for that saved event)
-            </summary>
-            <param name="events"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Umbraco.Core.Events.ScopeEventDispatcherBase.IsFiltered(Umbraco.Core.Models.EntityBase.IEntity,Umbraco.Core.Events.ScopeEventDispatcherBase.EventDefinitionTypeData,System.Collections.Generic.List{System.Tuple{Umbraco.Core.Models.EntityBase.IEntity,Umbraco.Core.Events.ScopeEventDispatcherBase.EventDefinitionTypeData}})">
-            <summary>
-            This will check against all of the processed entity/events (allEntities) to see if this entity already exists in 
-            event args that supersede the event args being passed in and if so returns true.
-            </summary>
-            <param name="entity"></param>
-            <param name="eventDef"></param>
-            <param name="allEntities"></param>
-            <returns></returns>
         </member>
         <member name="T:Umbraco.Core.Events.ScopeLifespanMessagesFactory">
             <summary>
@@ -32742,9 +32728,9 @@
         </member>
         <member name="M:Umbraco.Core.Services.UserService.Delete(Umbraco.Core.Models.Membership.IUser)">
             <summary>
-            Deletes an <see cref="T:Umbraco.Core.Models.Membership.IUser"/>
+            Disables an <see cref="T:Umbraco.Core.Models.Membership.IUser"/>
             </summary>
-            <param name="membershipUser"><see cref="T:Umbraco.Core.Models.Membership.IUser"/> to Delete</param>
+            <param name="membershipUser"><see cref="T:Umbraco.Core.Models.Membership.IUser"/> to disable</param>
         </member>
         <member name="M:Umbraco.Core.Services.UserService.Delete(Umbraco.Core.Models.Membership.IUser,System.Boolean)">
             <summary>
