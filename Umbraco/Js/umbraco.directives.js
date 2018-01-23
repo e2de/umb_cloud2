@@ -10780,7 +10780,9 @@ Use this directive to render a user group preview, where you can see the permiss
             require: 'ngModel',
             link: function (scope, elm, attrs, ctrl) {
                 elm.focus(function () {
-                    ctrl.$pristine = false;
+                    scope.$watch(function () {
+                        ctrl.$pristine = false;
+                    });
                 });
             }
         };
