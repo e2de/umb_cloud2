@@ -298,6 +298,9 @@
         var groupIndex = -1;
         var itemIndex = -1;
         $scope.selectedItem = undefined;
+        $scope.clearSearch = function () {
+            $scope.searchTerm = null;
+        };
         function iterateResults(up) {
             //default group
             if (!group) {
@@ -10238,7 +10241,7 @@
             initActiveColor();
         }
         $scope.toggleItem = function (color) {
-            var currentColor = $scope.model.value.hasOwnProperty('value') ? $scope.model.value.value : $scope.model.value;
+            var currentColor = $scope.model.value && $scope.model.value.hasOwnProperty('value') ? $scope.model.value.value : $scope.model.value;
             var newColor;
             if (currentColor === color.value) {
                 // deselect
@@ -12222,6 +12225,13 @@
         };
         gridService.getGridEditors().then(function (response) {
             $scope.availableEditors = response.data;
+            //Localize the grid editor names
+            angular.forEach($scope.availableEditors, function (value, key) {
+                //If no translation is provided, keep using the editor name from the manifest
+                if (localizationService.dictionary.hasOwnProperty('grid_' + value.alias)) {
+                    value.name = localizationService.localize('grid_' + value.alias);
+                }
+            });
             $scope.contentReady = true;
             // *********************************************
             // Init grid
@@ -12708,12 +12718,12 @@
         });
         // Return a helper with preserved width of cells
         var fixHelper = function (e, ui) {
-            var h = ui.clone();
-            h.children().each(function () {
+            ui.children().each(function () {
                 $(this).width($(this).width());
             });
-            h.css('background-color', 'lightgray');
-            return h;
+            var row = ui.clone();
+            row.css('background-color', 'lightgray');
+            return row;
         };
         $scope.sortableOptions = {
             helper: fixHelper,
@@ -12724,6 +12734,10 @@
             cursor: 'move',
             items: '> tr',
             tolerance: 'pointer',
+            forcePlaceholderSize: true,
+            start: function (e, ui) {
+                ui.placeholder.height(ui.item.height());
+            },
             update: function (e, ui) {
                 // Get the new and old index for the moved element (using the text as the identifier)
                 var newIndex = ui.item.index();
@@ -15149,7 +15163,7 @@
                         }
                     });
                     editor.on('ObjectResized', function (e) {
-                        var qs = '?width=' + e.width + '&height=' + e.height;
+                        var qs = '?width=' + e.width + '&height=' + e.height + '&mode=max';
                         var srcAttr = $(e.target).attr('src');
                         var path = srcAttr.split('?')[0];
                         $(e.target).attr('data-mce-src', path + qs);
@@ -17430,7 +17444,7 @@
     }());
     (function () {
         'use strict';
-        function UsersController($scope, $timeout, $location, usersResource, userGroupsResource, userService, localizationService, contentEditingHelper, usersHelper, formHelper, notificationsService, dateHelper) {
+        function UsersController($scope, $timeout, $location, $routeParams, usersResource, userGroupsResource, userService, localizationService, contentEditingHelper, usersHelper, formHelper, notificationsService, dateHelper) {
             var vm = this;
             var localizeSaving = localizationService.localize('general_saving');
             vm.page = {};
@@ -17556,6 +17570,11 @@
             function init() {
                 vm.usersOptions.orderBy = 'Name';
                 vm.usersOptions.orderDirection = 'Ascending';
+                if ($routeParams.create) {
+                    setUsersViewState('createUser');
+                } else if ($routeParams.invite) {
+                    setUsersViewState('inviteUser');
+                }
                 // Get users
                 getUsers();
                 // Get user groups
@@ -17593,6 +17612,14 @@
             function setUsersViewState(state) {
                 if (state === 'createUser') {
                     clearAddUserForm();
+                    $location.search('create', 'true');
+                    $location.search('invite', null);
+                } else if (state === 'inviteUser') {
+                    $location.search('create', null);
+                    $location.search('invite', 'true');
+                } else if (state === 'overview') {
+                    $location.search('create', null);
+                    $location.search('invite', null);
                 }
                 vm.usersViewState = state;
             }

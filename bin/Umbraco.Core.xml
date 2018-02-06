@@ -1433,6 +1433,35 @@
             When set, DeepClone will always clone all items
             </summary>
         </member>
+        <member name="T:Umbraco.Core.Collections.CompositeTypeTypeKey">
+            <summary>
+            Represents a composite key of (Type, Type) for fast dictionaries.
+            </summary>
+        </member>
+        <member name="M:Umbraco.Core.Collections.CompositeTypeTypeKey.#ctor(System.Type,System.Type)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Umbraco.Core.Collections.CompositeTypeTypeKey"/> struct.
+            </summary>
+        </member>
+        <member name="P:Umbraco.Core.Collections.CompositeTypeTypeKey.Type1">
+            <summary>
+            Gets the first type.
+            </summary>
+        </member>
+        <member name="P:Umbraco.Core.Collections.CompositeTypeTypeKey.Type2">
+            <summary>
+            Gets the second type.
+            </summary>
+        </member>
+        <member name="M:Umbraco.Core.Collections.CompositeTypeTypeKey.Equals(Umbraco.Core.Collections.CompositeTypeTypeKey)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Umbraco.Core.Collections.CompositeTypeTypeKey.Equals(System.Object)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Umbraco.Core.Collections.CompositeTypeTypeKey.GetHashCode">
+            <inheritdoc/>
+        </member>
         <member name="T:Umbraco.Core.ConcurrentHashSet`1">
             <summary>
             A thread-safe representation of a <see cref="T:System.Collections.Generic.HashSet`1"/>. 
@@ -34033,7 +34062,7 @@
             Cleans a string.
             </summary>
             <param name="text">The text to clean.</param>
-            <param name="stringType">A flag indicating the target casing and encoding of the string. By default, 
+            <param name="stringType">A flag indicating the target casing and encoding of the string. By default,
             strings are cleaned up to camelCase and Ascii.</param>
             <returns>The clean string.</returns>
             <remarks>The string is cleaned in the context of the default culture.</remarks>
@@ -34043,7 +34072,7 @@
             Cleans a string, using a specified separator.
             </summary>
             <param name="text">The text to clean.</param>
-            <param name="stringType">A flag indicating the target casing and encoding of the string. By default, 
+            <param name="stringType">A flag indicating the target casing and encoding of the string. By default,
             strings are cleaned up to camelCase and Ascii.</param>
             <param name="separator">The separator.</param>
             <returns>The clean string.</returns>
@@ -34054,7 +34083,7 @@
             Cleans a string in the context of a specified culture.
             </summary>
             <param name="text">The text to clean.</param>
-            <param name="stringType">A flag indicating the target casing and encoding of the string. By default, 
+            <param name="stringType">A flag indicating the target casing and encoding of the string. By default,
             strings are cleaned up to camelCase and Ascii.</param>
             <param name="culture">The culture.</param>
             <returns>The clean string.</returns>
@@ -34064,7 +34093,7 @@
             Cleans a string in the context of a specified culture, using a specified separator.
             </summary>
             <param name="text">The text to clean.</param>
-            <param name="stringType">A flag indicating the target casing and encoding of the string. By default, 
+            <param name="stringType">A flag indicating the target casing and encoding of the string. By default,
             strings are cleaned up to camelCase and Ascii.</param>
             <param name="separator">The separator.</param>
             <param name="culture">The culture.</param>
@@ -35721,18 +35750,18 @@
             </summary>
         </member>
         <member name="M:Umbraco.Core.ObjectExtensions.AsEnumerableOfOne``1(``0)">
-            <summary>
+             <summary>
             
-            </summary>
-            <param name="input"></param>
-            <typeparam name="T"></typeparam>
-            <returns></returns>
+             </summary>
+             <param name="input"></param>
+             <typeparam name="T"></typeparam>
+             <returns></returns>
         </member>
         <member name="M:Umbraco.Core.ObjectExtensions.DisposeIfDisposable(System.Object)">
-            <summary>
+             <summary>
             
-            </summary>
-            <param name="input"></param>
+             </summary>
+             <param name="input"></param>
         </member>
         <member name="M:Umbraco.Core.ObjectExtensions.SafeCast``1(System.Object)">
             <summary>
@@ -35745,20 +35774,30 @@
         </member>
         <member name="M:Umbraco.Core.ObjectExtensions.TryConvertTo``1(System.Object)">
             <summary>
-            Tries to convert the input object to the output type using TypeConverters
+            Attempts to convert the input object to the output type.
             </summary>
-            <typeparam name="T"></typeparam>
-            <param name="input"></param>
-            <returns></returns>
+            <remarks>This code is an optimized version of the original Umbraco method</remarks>
+            <typeparam name="T">The type to convert to</typeparam>
+            <param name="input">The input.</param>
+            <returns>The <see cref="T:Umbraco.Core.Attempt`1"/></returns>
         </member>
         <member name="M:Umbraco.Core.ObjectExtensions.TryConvertTo(System.Object,System.Type)">
             <summary>
-            Tries to convert the input object to the output type using TypeConverters. If the destination
-            type is a superclass of the input type, if will use <see cref="M:System.Convert.ChangeType(System.Object,System.Type)"/>.
+            Attempts to convert the input object to the output type.
             </summary>
+            <remarks>This code is an optimized version of the original Umbraco method</remarks>
             <param name="input">The input.</param>
-            <param name="destinationType">Type of the destination.</param>
-            <returns></returns>
+            <param name="target">The type to convert to</param>
+            <returns>The <see cref="T:Umbraco.Core.Attempt`1"/></returns>
+        </member>
+        <member name="M:Umbraco.Core.ObjectExtensions.TryConvertToFromString(System.String,System.Type)">
+            <summary>
+            Attempts to convert the input string to the output type.
+            </summary>
+            <remarks>This code is an optimized version of the original Umbraco method</remarks>
+            <param name="input">The input.</param>
+            <param name="target">The type to convert to</param>
+            <returns>The <see cref="T:System.Nullable`1"/></returns>
         </member>
         <member name="M:Umbraco.Core.ObjectExtensions.ToDictionary``3(``0,System.Linq.Expressions.Expression{System.Func{``0,``1}}[])">
             <summary>
