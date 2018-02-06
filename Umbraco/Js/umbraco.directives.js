@@ -1393,6 +1393,8 @@ Use this directive to render a button with a dropdown of alternative actions.
                         init($scope.content);
                         syncTreeNode($scope.content, data.path);
                         $scope.page.buttonGroupState = 'success';
+                    }, function (err) {
+                        $scope.page.buttonGroupState = 'error';
                     });
                 }
             };

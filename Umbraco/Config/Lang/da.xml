@@ -250,7 +250,7 @@
     <key alias="documentTypeWithoutTemplate">Dokumenttype uden skabelon</key>
     <key alias="newFolder">Ny mappe</key>
     <key alias="newDataType">Ny datatype</key>
-    <key alias="newJavascriptFile">Ny javascript fil</key>
+    <key alias="newJavascriptFile">Ny JavaScript-fil</key>
     <key alias="newEmptyPartialView">Ny tom partial view</key>
     <key alias="newFolder">Ny mappe</key>
     <key alias="newPartialViewMacro">Ny partial view makro</key>
@@ -1215,6 +1215,12 @@ Mange hilsner fra Umbraco robotten
   </area>
   
   <area alias="grid">
+    <key alias="rte">Rich Text Editor</key>
+    <key alias="media">Image</key>
+    <key alias="macro">Macro</key>
+    <key alias="embed">Embed</key>
+    <key alias="headline">Headline</key>
+    <key alias="quote">Quote</key>  
     <key alias="insertControl">Vælg indholdstype</key>
     <key alias="chooseLayout">Vælg layout</key>
     <key alias="addRows">Tilføj række</key>
