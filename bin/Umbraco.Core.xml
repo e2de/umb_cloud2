@@ -1574,10 +1574,20 @@
             A utility class for working with CDF config and cache files - use sparingly!
             </summary>
         </member>
+        <member name="M:Umbraco.Core.Configuration.ClientDependencyConfiguration.UpdateVersionNumber(Semver.SemVersion,System.DateTime,System.String)">
+            <summary>
+            Changes the version number in ClientDependency.config to a hashed value for the version and the DateTime.Day
+            </summary>
+            <param name="version">The <see cref="T:Semver.SemVersion">version</see> of Umbraco we're upgrading to</param>
+            <param name="date">A <see cref="T:System.DateTime">date</see> value to use in the hash to prevent this method from updating the version on each startup</param>
+            <param name="dateFormat">Allows the developer to specify the <see cref="T:System.String">date precision</see> for the hash (i.e. "yyyyMMdd" would be a precision for the day)</param>
+            <returns>Boolean to indicate succesful update of the ClientDependency.config file</returns>
+        </member>
         <member name="M:Umbraco.Core.Configuration.ClientDependencyConfiguration.IncreaseVersionNumber">
             <summary>
             Changes the version number in ClientDependency.config to a random value to avoid stale caches
             </summary>
+            <seealso cref="M:Umbraco.Core.Configuration.ClientDependencyConfiguration.UpdateVersionNumber(Semver.SemVersion,System.DateTime,System.String)" />
         </member>
         <member name="M:Umbraco.Core.Configuration.ClientDependencyConfiguration.ClearTempFiles(System.Web.HttpContextBase)">
             <summary>
