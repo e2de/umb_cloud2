@@ -487,6 +487,7 @@ angular.module("umbraco")
 
             $scope.loginError = false;
             $scope.hasLicenses = undefined;
+            $scope.isLoading = true;
 
             licensingResource.getAvailableLicenses(config).then(function (response) {
                 var licenses = response.data;
@@ -499,22 +500,25 @@ angular.module("umbraco")
                     }
                 });
 
-                $scope.configuredLicenses = _.filter(licenses, function (license) { return license.configured; });
-                $scope.openLicenses = _.filter(licenses, function (license) { return license.configured === false; });
+                $scope.configuredLicenses = _.sortBy(_.filter(licenses, function (license) { return license.configured; }), 'currentDomainMatch');
+                $scope.openLicenses = _.filter(licenses, function(license) { return license.configured === false; });
+                $scope.isLoading = false;
 
             }, function (err) {
                 $scope.loginError = true;
                 $scope.hasLicenses = undefined;
+                $scope.isLoading = false;
             });
+
         };
 
 
         $scope.configure = function (config) {
+            $scope.isLoading = true;
             licensingResource.configureLicense(config).then(function (response) {
                 $scope.configuredLicenses.length = 0;
                 $scope.openLicenses.length = 0;
                 $scope.loadStatus();
-
                 notificationsService.success("License configured", "Umbraco forms have been configured to be used on this website");
             });
         };
@@ -522,6 +526,7 @@ angular.module("umbraco")
         $scope.loadStatus = function () {
             licensingResource.getLicenseStatus().then(function (response) {
                 $scope.status = response.data;
+                $scope.isLoading = false;
             });
 
             updatesResource.getUpdateStatus().then(function (response) {
