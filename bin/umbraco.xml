@@ -583,6 +583,68 @@
             Handles User cache invalidation/refreshing
             </summary>
         </member>
+        <member name="T:Umbraco.Web.Features.DisabledFeatures">
+            <summary>
+            Represents disabled features.
+            </summary>
+        </member>
+        <member name="M:Umbraco.Web.Features.DisabledFeatures.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Umbraco.Web.Features.DisabledFeatures"/> class.
+            </summary>
+        </member>
+        <member name="P:Umbraco.Web.Features.DisabledFeatures.Controllers">
+            <summary>
+            Gets the disabled controllers.
+            </summary>
+        </member>
+        <member name="T:Umbraco.Web.Features.EnabledFeatures">
+            <summary>
+            Represents enabled features.
+            </summary>
+        </member>
+        <member name="P:Umbraco.Web.Features.EnabledFeatures.RenderNoTemplate">
+            <summary>
+            Specifies if rendering pipeline should ignore HasTemplate check when handling a request.
+            <remarks>This is to allow JSON preview of content with no template set.</remarks>
+            </summary>
+        </member>
+        <member name="T:Umbraco.Web.Features.UmbracoFeatures">
+            <summary>
+            Represents the Umbraco features.
+            </summary>
+        </member>
+        <member name="M:Umbraco.Web.Features.UmbracoFeatures.#ctor">
+            <summary>
+             Initializes a new instance of the <see cref="T:Umbraco.Web.Features.UmbracoFeatures"/> class.
+            </summary>
+        </member>
+        <member name="P:Umbraco.Web.Features.UmbracoFeatures.Disabled">
+            <summary>
+            Gets the disabled features.
+            </summary>
+        </member>
+        <member name="P:Umbraco.Web.Features.UmbracoFeatures.Enabled">
+            <summary>
+            Gets the enabled features.
+            </summary>
+        </member>
+        <member name="M:Umbraco.Web.Features.UmbracoFeatures.IsEnabled(System.Type)">
+            <summary>
+            Determines whether a feature is enabled.
+            </summary>
+        </member>
+        <member name="M:Umbraco.Web.Features.FeaturesResolver.SetFeatures(Umbraco.Web.Features.UmbracoFeatures)">
+            <summary>
+            Sets the features.
+            </summary>
+            <remarks>For developers, at application startup.</remarks>
+        </member>
+        <member name="P:Umbraco.Web.Features.FeaturesResolver.Features">
+            <summary>
+            Gets the features.
+            </summary>
+        </member>
         <member name="T:Umbraco.Web.Editors.BackOfficeNotificationsController">
             <summary>
             An abstract controller that automatically checks if any request is a non-GET and if the 
@@ -981,11 +1043,12 @@
             </summary>
             <returns></returns>
         </member>
-        <member name="M:Umbraco.Web.Editors.AuthenticationController.SetPrincipalAndReturnUserDetail(Umbraco.Core.Models.Membership.IUser)">
+        <member name="M:Umbraco.Web.Editors.AuthenticationController.SetPrincipalAndReturnUserDetail(Umbraco.Core.Models.Membership.IUser,System.Security.Principal.IPrincipal)">
             <summary>
             This is used when the user is auth'd successfully and we need to return an OK with user details along with setting the current Principal in the request
             </summary>
             <param name="user"></param>
+            <param name="principal"></param>
             <returns></returns>
         </member>
         <member name="T:Umbraco.Web.Editors.ContentController">
@@ -2066,10 +2129,30 @@
             <returns></returns>
             
         </member>
+        <member name="M:Umbraco.Web.Editors.MemberController.ExportMemberData(System.Guid)">
+            <summary>
+            Exports member data based on their unique Id
+            </summary>
+            <param name="key">The unique <see cref="T:System.Guid">member identifier</see></param>
+            <returns><see cref="T:System.Net.Http.HttpResponseMessage"/></returns>
+        </member>
         <member name="T:Umbraco.Web.Editors.CurrentUserController">
             <summary>
             Controller to back the User.Resource service, used for fetching user data when already authenticated. user.service is currently used for handling authentication
             </summary>
+        </member>
+        <member name="M:Umbraco.Web.Editors.CurrentUserController.PostSetUserTour(Umbraco.Web.Models.UserTourStatus)">
+            <summary>
+            Saves a tour status for the current user
+            </summary>
+            <param name="status"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Umbraco.Web.Editors.CurrentUserController.GetUserTours">
+            <summary>
+            Returns the user's tours
+            </summary>
+            <returns></returns>
         </member>
         <member name="M:Umbraco.Web.Editors.CurrentUserController.PostSetInvitedUserPassword(System.String)">
             <summary>
@@ -2620,772 +2703,711 @@
             <param name="media">Specifies the already resolved content item to check against, setting this ignores the nodeId</param>
             <returns></returns>
         </member>
-        <member name="T:Umbraco.Web.ExamineStartup">
+        <member name="M:Umbraco.Web.Models.BackOfficeTourFilter.FilterPlugin(System.Text.RegularExpressions.Regex)">
             <summary>
-            Used to configure Examine during startup for the web application
+            Create a filter to filter out a whole plugin's tours
             </summary>
+            <param name="pluginName"></param>
+            <returns></returns>
         </member>
-        <member name="M:Umbraco.Web.ExamineStartup.Initialize">
+        <member name="M:Umbraco.Web.Models.BackOfficeTourFilter.FilterFile(System.Text.RegularExpressions.Regex)">
             <summary>
-            Called during the initialize operation of the boot manager process
+            Create a filter to filter out a whole tour file
             </summary>
+            <param name="tourFileName"></param>
+            <returns></returns>
         </member>
-        <member name="M:Umbraco.Web.ExamineStartup.Complete">
+        <member name="M:Umbraco.Web.Models.BackOfficeTourFilter.FilterAlias(System.Text.RegularExpressions.Regex)">
             <summary>
-            Called during the Complete operation of the boot manager process
+            Create a filter to filter out a tour alias, this will filter out the same alias found in all files
             </summary>
+            <param name="tourAlias"></param>
+            <returns></returns>
         </member>
-        <member name="M:Umbraco.Web.ExamineStartup.RebuildIndexes">
+        <member name="M:Umbraco.Web.Models.BackOfficeTourFilter.#ctor(System.Text.RegularExpressions.Regex,System.Text.RegularExpressions.Regex,System.Text.RegularExpressions.Regex)">
             <summary>
-            Called to perform the rebuilding indexes on startup if the indexes don't exist
+            Constructor to create a tour filter
             </summary>
-        </member>
-        <member name="M:Umbraco.Web.ExamineStartup.GetIndexesForColdBoot">
-            <summary>
-            The method used to create indexes on a cold boot
-            </summary>
+            <param name="pluginName">Value to filter out tours by a plugin, can be null</param>
+            <param name="tourFileName">Value to filter out a tour file, can be null</param>
+            <param name="tourAlias">Value to filter out a tour alias, can be null</param>
             <remarks>
-            A cold boot is when the server determines it will not (or cannot) process instructions in the cache table and
-            will rebuild it's own caches itself.
+            Depending on what is null will depend on how the filter is applied. 
+            If pluginName is not NULL and it's matched then we check if tourFileName is not NULL and it's matched then we check tour alias is not NULL and then match it,
+            if any steps is NULL then the filters upstream are applied.
+            Example, pluginName = "hello", tourFileName="stuff", tourAlias=NULL = we will filter out the tour file "stuff" from the plugin "hello" but not from other plugins if the same file name exists.
+            Example, tourAlias="test.*" = we will filter out all tour aliases that start with the word "test" regardless of the plugin or file name
             </remarks>
         </member>
-        <member name="M:Umbraco.Web.ExamineStartup.EnsureUnlockedAndConfigured">
+        <member name="M:Umbraco.Web.Models.Mapping.AutoMapperExtensions.MapWithUmbracoContext``2(``0,Umbraco.Web.UmbracoContext)">
             <summary>
-            Must be called to configure each index and ensure it's unlocked before any indexing occurs
+            This maps an object and passes in the current <see cref="T:Umbraco.Web.UmbracoContext"/> so the mapping logic can use it
             </summary>
+            <typeparam name="TIn"></typeparam>
+            <typeparam name="TOut"></typeparam>
+            <param name="obj"></param>
+            <param name="umbCtx"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Umbraco.Web.Models.Mapping.AutoMapperExtensions.GetUmbracoContext(AutoMapper.ResolutionContext)">
+            <summary>
+            Returns an <see cref="T:Umbraco.Web.UmbracoContext"/> from the mapping options
+            </summary>
+            <param name="res"></param>
+            <returns></returns>
             <remarks>
-            Indexing rebuilding can occur on a normal boot if the indexes are empty or on a cold boot by the database server messenger. Before
-            either of these happens, we need to configure the indexes.
+            If an UmbracoContext is not found in the mapping options, it will try to retrieve it from the singleton
             </remarks>
         </member>
-        <member name="P:Umbraco.Web.HealthCheck.Checks.Config.AbstractConfigCheck.FilePath">
+        <member name="T:Umbraco.Web.Models.Mapping.ContentTreeNodeUrlResolver`2">
             <summary>
-            Gets the config file path.
+            Gets the tree node url for the content or media
             </summary>
         </member>
-        <member name="P:Umbraco.Web.HealthCheck.Checks.Config.AbstractConfigCheck.XPath">
+        <member name="T:Umbraco.Web.Models.Mapping.MemberTreeNodeUrlResolver">
             <summary>
-            Gets XPath statement to the config element to check.
+            Gets the tree node url for the IMember
             </summary>
         </member>
-        <member name="P:Umbraco.Web.HealthCheck.Checks.Config.AbstractConfigCheck.Values">
+        <member name="T:Umbraco.Web.Models.Mapping.ContentTypeModelMapperExtensions">
             <summary>
-            Gets the values to compare against.
+            Used as a shared way to do the underlying mapping for content types base classes
+            </summary>
+            <remarks>
+            We used to use 'Include' Automapper inheritance functionality and although this works, the unit test
+                to assert mappings fails which is an Automapper bug. So instead we will use an extension method for the mappings
+                to re-use mappings.
+            </remarks>
+        </member>
+        <member name="M:Umbraco.Web.Models.Mapping.ContentTypeModelMapperExtensions.MapBaseContentTypeSaveToEntity``3(AutoMapper.IMappingExpression{``0,``2},Umbraco.Core.ApplicationContext)">
+            <summary>
+            Display -> Entity class base mapping logic
+            </summary>
+            <typeparam name="TSource"></typeparam>
+            <typeparam name="TDestination"></typeparam>
+            <typeparam name="TSourcePropertyType"></typeparam>
+            <param name="mapping"></param>
+            <param name="applicationContext"></param>
+            <returns></returns>        
+        </member>
+        <member name="T:Umbraco.Web.Models.Mapping.ContentTypeUdiResolver">
+            <summary>
+            Resolves a UDI for a content type based on it's type
             </summary>
         </member>
-        <member name="P:Umbraco.Web.HealthCheck.Checks.Config.AbstractConfigCheck.CurrentValue">
+        <member name="T:Umbraco.Web.Models.Mapping.EntityModelMapperExtensions">
             <summary>
-            Gets the current value
+            Mapping extension methods for re-use with other mappers (saves code duplication)
             </summary>
         </member>
-        <member name="P:Umbraco.Web.HealthCheck.Checks.Config.AbstractConfigCheck.ProvidedValue">
+        <member name="M:Umbraco.Web.Models.Mapping.EntityModelMapperExtensions.IgnoreDeletableEntityCommonProperties``2(AutoMapper.IMappingExpression{``0,``1})">
             <summary>
-            Gets the provided value
+            Ignores readonly properties and the date values
+            </summary>
+            <param name="mapping"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Umbraco.Web.Models.Mapping.EntityModelMapperExtensions.IgnoreEntityCommonProperties``2(AutoMapper.IMappingExpression{``0,``1})">
+            <summary>
+            Ignores readonly properties and the date values
+            </summary>
+            <param name="mapping"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Umbraco.Web.Models.Mapping.UserGroupDefaultPermissionsResolver">
+            <summary>
+            Converts an IUserGroup instance into a dictionary of permissions by category
             </summary>
         </member>
-        <member name="P:Umbraco.Web.HealthCheck.Checks.Config.AbstractConfigCheck.ValueComparisonType">
+        <member name="M:Umbraco.Web.Models.Mapping.PropertyTypeGroupResolver`1.GetContentTypeForPropertyGroup(Umbraco.Core.Models.IContentTypeComposition,System.Int32)">
             <summary>
-            Gets the comparison type for checking the value.
+            Gets the content type that defines a property group, within a composition.
+            </summary>
+            <param name="contentType">The composition.</param>
+            <param name="propertyGroupId">The identifier of the property group.</param>
+            <returns>The composition content type that defines the specified property group.</returns>
+        </member>
+        <member name="M:Umbraco.Web.Models.Mapping.PropertyTypeGroupResolver`1.GetContentTypeForPropertyType(Umbraco.Core.Models.IContentTypeComposition,System.Int32)">
+            <summary>
+            Gets the content type that defines a property group, within a composition.
+            </summary>
+            <param name="contentType">The composition.</param>
+            <param name="propertyTypeId">The identifier of the property type.</param>
+            <returns>The composition content type that defines the specified property group.</returns>
+        </member>
+        <member name="T:Umbraco.Web.Models.Mapping.MiscModelsMapper">
+            <summary>
+            A model mapper used to map models for the various dashboards
             </summary>
         </member>
-        <member name="P:Umbraco.Web.HealthCheck.Checks.Config.AbstractConfigCheck.ValidIfConfigMissing">
+        <member name="T:Umbraco.Web.Models.Mapping.MacroModelMapper">
             <summary>
-            Gets the flag indicating if the check is considered successful if the config value is missing (defaults to false - an error - if missing)
+            Declares model mappings for macros.
             </summary>
         </member>
-        <member name="P:Umbraco.Web.HealthCheck.Checks.Config.AbstractConfigCheck.FileName">
+        <member name="T:Umbraco.Web.Models.Mapping.MemberModelMapper">
             <summary>
-            Gets the name of the file.
+            Declares model mappings for members.
             </summary>
         </member>
-        <member name="P:Umbraco.Web.HealthCheck.Checks.Config.AbstractConfigCheck.AbsoluteFilePath">
+        <member name="M:Umbraco.Web.Models.Mapping.MemberModelMapper.GetLoginProperty(Umbraco.Core.Services.IMemberService,Umbraco.Core.Models.IMember,Umbraco.Core.Services.ILocalizedTextService)">
             <summary>
-            Gets the absolute file path.
+            Returns the login property display field
+            </summary>
+            <param name="memberService"></param>
+            <param name="member"></param>
+            <param name="localizedText"></param>
+            <returns></returns>
+            <remarks>
+            If the membership provider installed is the umbraco membership provider, then we will allow changing the username, however if
+            the membership provider is a custom one, we cannot allow chaning the username because MembershipProvider's do not actually natively
+            allow that.
+            </remarks>
+        </member>
+        <member name="T:Umbraco.Web.Models.Mapping.MemberModelMapper.MemberDtoPropertiesValueResolver">
+            <summary>
+            This ensures that the custom membership provider properties are not mapped - these property values are controller by the membership provider
+            </summary>
+            <remarks>
+            Because these properties don't exist on the form, if we don't remove them for this map we'll get validation errors when posting data
+            </remarks>
+        </member>
+        <member name="T:Umbraco.Web.Models.Mapping.MemberModelMapper.MemberTabsAndPropertiesResolver">
+            <summary>
+            A custom tab/property resolver for members which will ensure that the built-in membership properties are or arent' displayed
+            depending on if the member type has these properties
+            </summary>
+            <remarks>
+            This also ensures that the IsLocked out property is readonly when the member is not locked out - this is because
+            an admin cannot actually set isLockedOut = true, they can only unlock.
+            
+            This also ensures that the IsSensitive property display value is set based on the configured IMemberType property type
+            </remarks>
+        </member>
+        <member name="M:Umbraco.Web.Models.Mapping.MemberModelMapper.MemberTabsAndPropertiesResolver.ResolveCore(Umbraco.Web.UmbracoContext,Umbraco.Core.Models.IMember)">
+            <summary>
+            Overridden to deal with custom member properties and permissions
+            </summary>
+            <param name="umbracoContext"></param>
+            <param name="content"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Umbraco.Web.Models.Mapping.MemberModelMapper.MemberTabsAndPropertiesResolver.MapProperties(Umbraco.Web.UmbracoContext,Umbraco.Core.Models.IContentBase,System.Collections.Generic.List{Umbraco.Core.Models.Property})">
+            <summary>
+            Overridden to assign the IsSensitive property values
+            </summary>
+            <param name="umbracoContext"></param>
+            <param name="content"></param>
+            <param name="properties"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Umbraco.Web.Models.Mapping.MemberModelMapper.MemberProviderFieldMappingResolver">
+            <summary>
+            A resolver to map the provider field aliases
             </summary>
         </member>
-        <member name="P:Umbraco.Web.HealthCheck.Checks.Config.AbstractConfigCheck.CheckSuccessMessage">
+        <member name="T:Umbraco.Web.Models.Mapping.MemberModelMapper.MembershipUserTypeConverter">
             <summary>
-            Gets the message for when the check has succeeded.
+            A converter to go from a <see cref="T:System.Web.Security.MembershipUser"/> to a <see cref="T:Umbraco.Web.Models.ContentEditing.MemberDisplay"/>
             </summary>
         </member>
-        <member name="P:Umbraco.Web.HealthCheck.Checks.Config.AbstractConfigCheck.CheckErrorMessage">
+        <member name="T:Umbraco.Web.Models.Mapping.DatabaseTypeResolver">
             <summary>
-            Gets the message for when the check has failed.
+            Gets the DataTypeDatabaseType from the selected property editor for the data type
             </summary>
         </member>
-        <member name="P:Umbraco.Web.HealthCheck.Checks.Config.AbstractConfigCheck.RectifySuccessMessage">
+        <member name="T:Umbraco.Web.Models.Mapping.DataTypeModelMapper">
             <summary>
-            Gets the rectify success message.
+            Configure's model mappings for Data types
             </summary>
         </member>
-        <member name="P:Umbraco.Web.HealthCheck.Checks.Config.AbstractConfigCheck.CanRectify">
+        <member name="M:Umbraco.Web.Models.Mapping.PreValueDisplayResolver.MapPreValueValuesToPreValueFields(Umbraco.Web.Models.ContentEditing.PreValueFieldDisplay[],System.Collections.Generic.IDictionary{System.String,System.Object})">
             <summary>
-            Gets a value indicating whether this check can be rectified automatically.
+            Maps pre-values in the dictionary to the values for the fields
+            </summary>
+            <param name="fields"></param>
+            <param name="preValues"></param>        
+        </member>
+        <member name="T:Umbraco.Web.Models.Mapping.ContentPropertyBasicConverter`1">
+            <summary>
+            Creates a base generic ContentPropertyBasic from a Property
+            </summary>
+            <typeparam name="T"></typeparam>
+        </member>
+        <member name="M:Umbraco.Web.Models.Mapping.ContentPropertyBasicConverter`1.ConvertCore(Umbraco.Core.Models.Property)">
+            <summary>
+            Assigns the PropertyEditor, Id, Alias and Value to the property
+            </summary>
+            <param name="property"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Umbraco.Web.Models.Mapping.ContentPropertyDisplayConverter">
+            <summary>
+            Creates a ContentPropertyDisplay from a Property
             </summary>
         </member>
-        <member name="P:Umbraco.Web.HealthCheck.Checks.Config.AbstractConfigCheck.CanRectifyWithValue">
+        <member name="T:Umbraco.Web.Models.Mapping.ContentPropertyDtoConverter">
             <summary>
-            Gets a value indicating whether this check can be rectified automatically if a value is provided.
+            Creates a ContentPropertyDto from a Property
             </summary>
         </member>
-        <member name="M:Umbraco.Web.HealthCheck.Checks.Config.AbstractConfigCheck.Rectify">
+        <member name="T:Umbraco.Web.Models.Mapping.ContentPropertyModelMapper">
             <summary>
-            Rectifies this check.
+            A mapper which declares how to map content properties. These mappings are shared among media (and probably members) which is 
+            why they are in their own mapper
+            </summary>
+        </member>
+        <member name="T:Umbraco.Web.Models.Mapping.CreatorResolver">
+            <summary>
+            Maps the Creator for content
+            </summary>
+        </member>
+        <member name="T:Umbraco.Web.Models.Mapping.MediaModelMapper">
+            <summary>
+            Declares model mappings for media.
+            </summary>
+        </member>
+        <member name="T:Umbraco.Web.Models.Mapping.MediaModelMapper.MediaTypeBasicResolver">
+            <summary>
+            Resolves a <see cref="T:Umbraco.Web.Models.ContentEditing.ContentTypeBasic"/> from the <see cref="T:Umbraco.Core.Models.IContent"/> item and checks if the current user
+            has access to see this data
+            </summary>
+        </member>
+        <member name="T:Umbraco.Web.Models.Mapping.ContentTypeModelMapper">
+            <summary>
+            Defines mappings for content/media/members type mappings
+            </summary>
+        </member>
+        <member name="T:Umbraco.Web.Models.Mapping.ContentModelMapper">
+            <summary>
+            Declares how model mappings for content
+            </summary>
+        </member>
+        <member name="T:Umbraco.Web.Models.Mapping.ContentModelMapper.ContentTypeBasicResolver">
+            <summary>
+            Resolves a <see cref="T:Umbraco.Web.Models.ContentEditing.ContentTypeBasic"/> from the <see cref="T:Umbraco.Core.Models.IContent"/> item and checks if the current user
+            has access to see this data
+            </summary>
+        </member>
+        <member name="T:Umbraco.Web.Models.Mapping.ContentModelMapper.ActionButtonsResolver">
+            <summary>
+            Creates the list of action buttons allowed for this user - Publish, Send to publish, save, unpublish returned as the button's 'letter'
+            </summary>
+        </member>
+        <member name="T:Umbraco.Web.Models.Mapping.OwnerResolver`1">
+            <summary>
+            Maps the Owner for IContentBase
+            </summary>
+            <typeparam name="TPersisted"></typeparam>
+        </member>
+        <member name="T:Umbraco.Web.Models.Mapping.TabsAndPropertiesResolver`1">
+            <summary>
+            Creates the tabs collection with properties assigned for display models
+            </summary>
+        </member>
+        <member name="M:Umbraco.Web.Models.Mapping.TabsAndPropertiesResolver`1.Resolve(AutoMapper.ResolutionResult)">
+            <summary>
+            Implements the <see cref="T:AutoMapper.IValueResolver"/>
+            </summary>
+            <param name="source"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Umbraco.Web.Models.Mapping.TabsAndPropertiesResolver`1.AddListView``1(Umbraco.Web.Models.ContentEditing.TabbedContentItem{Umbraco.Web.Models.ContentEditing.ContentPropertyDisplay,``0},System.String,Umbraco.Core.Services.IDataTypeService,Umbraco.Core.Services.ILocalizedTextService)">
+            <summary>
+            Adds the container (listview) tab to the document
+            </summary>
+            <typeparam name="TPersisted"></typeparam>
+            <param name="display"></param>
+            <param name="entityType">This must be either 'content' or 'media'</param>
+            <param name="dataTypeService"></param>
+            <param name="localizedTextService"></param>
+        </member>
+        <member name="M:Umbraco.Web.Models.Mapping.TabsAndPropertiesResolver`1.ResolveCore(Umbraco.Web.UmbracoContext,`0)">
+            <summary>
+            Create the list of tabs for the <see cref="T:Umbraco.Core.Models.IContentBase"/>
+            </summary>
+            <param name="umbracoContext"></param>
+            <param name="content">Source value</param>
+            <returns>Destination</returns>
+        </member>
+        <member name="M:Umbraco.Web.Models.Mapping.TabsAndPropertiesResolver`1.GetCustomGenericProperties(Umbraco.Core.Models.IContentBase)">
+            <summary>
+            Returns a collection of custom generic properties that exist on the generic properties tab
             </summary>
             <returns></returns>
         </member>
-        <member name="M:Umbraco.Web.HealthCheck.Checks.Config.AbstractConfigCheck.Rectify(System.String)">
+        <member name="M:Umbraco.Web.Models.Mapping.TabsAndPropertiesResolver`1.MapGenericProperties(Umbraco.Web.UmbracoContext,Umbraco.Core.Models.IContentBase,System.Collections.Generic.List{Umbraco.Web.Models.ContentEditing.Tab{Umbraco.Web.Models.ContentEditing.ContentPropertyDisplay}})">
             <summary>
-            Rectifies this check with a provided value.
+            Maps properties on to the generic properties tab
             </summary>
-            <param name="value">Value provided</param>
+            <param name="umbracoContext"></param>
+            <param name="content"></param>
+            <param name="tabs"></param>
+            <remarks>
+            The generic properties tab is responsible for 
+            setting up the properties such as Created date, updated date, template selected, etc...
+            </remarks>
+        </member>
+        <member name="M:Umbraco.Web.Models.Mapping.TabsAndPropertiesResolver`1.MapProperties(Umbraco.Web.UmbracoContext,Umbraco.Core.Models.IContentBase,System.Collections.Generic.List{Umbraco.Core.Models.Property})">
+            <summary>
+            Maps a list of <see cref="T:Umbraco.Core.Models.Property"/> to a list of <see cref="T:Umbraco.Web.Models.ContentEditing.ContentPropertyDisplay"/>
+            </summary>
+            <param name="umbracoContext"></param>
+            <param name="content"></param>
+            <param name="properties"></param>
             <returns></returns>
         </member>
-        <member name="M:Umbraco.Web.HealthCheck.Checks.Config.ConfigurationService.#ctor(System.String,System.String,Umbraco.Core.Services.ILocalizedTextService)">
-            <param name="configFilePath">The absolute file location of the configuration file</param>
-            <param name="xPath">The XPath to select the value</param>
+        <member name="T:Umbraco.Web.Models.Trees.ExportMember">
+            <summary>
+            Represents the export member menu item
+            </summary>
+        </member>
+        <member name="T:Umbraco.Web.Models.Trees.CreateChildEntity">
+            <summary>
+            Represents the refresh node menu item
+            </summary>
+        </member>
+        <member name="T:Umbraco.Web.Models.Trees.MenuItemList">
+            <summary>
+            A custom menu list
+            </summary>
+            <remarks>
+            NOTE: We need a sub collection to the MenuItemCollection object due to how json serialization works.
+            </remarks>
+        </member>
+        <member name="M:Umbraco.Web.Models.Trees.MenuItemList.Add(umbraco.interfaces.IAction,System.String)">
+            <summary>
+            Adds a menu item
+            </summary>
+            <param name="action"></param>
+            <param name="name">The text to display for the menu item, will default to the IAction alias if not specified</param>
+        </member>
+        <member name="M:Umbraco.Web.Models.Trees.MenuItemList.Add``2(System.String,System.Boolean,System.Collections.Generic.IDictionary{System.String,System.Object})">
+            <summary>
+            Adds a menu item
+            </summary>
+            <typeparam name="TMenuItem"></typeparam>
+            <typeparam name="TAction"></typeparam>
+            <param name="hasSeparator"></param>
+            <param name="name">The text to display for the menu item, will default to the IAction alias if not specified</param>
+            <param name="additionalData"></param>
             <returns></returns>
         </member>
-        <member name="M:Umbraco.Web.HealthCheck.Checks.Config.ConfigurationService.GetConfigurationValue">
+        <member name="M:Umbraco.Web.Models.Trees.MenuItemList.Add``1(System.String)">
             <summary>
-            Gets a value from a given configuration file with the given XPath  
+            Adds a menu item
             </summary>
+            <param name="name">The text to display for the menu item, will default to the IAction alias if not specified</param>
+            <typeparam name="T"></typeparam>
         </member>
-        <member name="M:Umbraco.Web.HealthCheck.Checks.Config.ConfigurationService.UpdateConfigFile(System.String)">
+        <member name="M:Umbraco.Web.Models.Trees.MenuItemList.Add``1(System.String,System.String,System.String,System.Boolean)">
             <summary>
-            Updates a value in a given configuration file with the given XPath  
+            Adds a menu item with a key value pair which is merged to the AdditionalData bag
             </summary>
+            <typeparam name="T"></typeparam>
+            <param name="key"></param>
             <param name="value"></param>
+            <param name="name">The text to display for the menu item, will default to the IAction alias if not specified</param>
+            <param name="hasSeparator"></param>
+        </member>
+        <member name="M:Umbraco.Web.Models.Trees.MenuItemList.Add``1(System.String,System.Boolean,System.Collections.Generic.IDictionary{System.String,System.Object})">
+            <summary>
+            Adds a menu item with a dictionary which is merged to the AdditionalData bag
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="hasSeparator"></param>
+            /// <param name="name">The text to display for the menu item, will default to the IAction alias if not specified</param>
+            <param name="additionalData"></param>
+        </member>
+        <member name="M:Umbraco.Web.Models.Trees.MenuItemList.CreateMenuItem``1(System.String,System.Boolean,System.Collections.Generic.IDictionary{System.String,System.Object})">
+            <summary>
+            
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="hasSeparator"></param>
+            <param name="name">The text to display for the menu item, will default to the IAction alias if not specified</param>
+            <param name="additionalData"></param>
             <returns></returns>
         </member>
-        <member name="M:Umbraco.Web.HealthCheck.Checks.Services.SmtpCheck.GetStatus">
+        <member name="M:Umbraco.Web.Models.Trees.MenuItemList.DetectLegacyActionMenu(System.Type,Umbraco.Web.Models.Trees.MenuItem)">
             <summary>
-            Get the status for this health check
+            Checks if the IAction type passed in is attributed with LegacyActionMenuItemAttribute and if so 
+            ensures that the correct action metadata is added.
             </summary>
-            <returns></returns>
+            <param name="actionType"></param>
+            <param name="menuItem"></param>
         </member>
-        <member name="M:Umbraco.Web.HealthCheck.Checks.Services.SmtpCheck.ExecuteAction(Umbraco.Web.HealthCheck.HealthCheckAction)">
+        <member name="T:Umbraco.Web.Models.Trees.ActionMenuItem">
             <summary>
-            Executes the action and returns it's status
-            </summary>
-            <param name="action"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Umbraco.Web.HealthCheck.Checks.Permissions.FolderAndFilePermissionsCheck.GetStatus">
-            <summary>
-            Get the status for this health check
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:Umbraco.Web.HealthCheck.Checks.Permissions.FolderAndFilePermissionsCheck.ExecuteAction(Umbraco.Web.HealthCheck.HealthCheckAction)">
-            <summary>
-            Executes the action and returns it's status
-            </summary>
-            <param name="action"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Umbraco.Web.HealthCheck.Checks.Security.ExcessiveHeadersCheck.GetStatus">
-            <summary>
-            Get the status for this health check
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:Umbraco.Web.HealthCheck.Checks.Security.ExcessiveHeadersCheck.ExecuteAction(Umbraco.Web.HealthCheck.HealthCheckAction)">
-            <summary>
-            Executes the action and returns it's status
-            </summary>
-            <param name="action"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Umbraco.Web.HealthCheck.Checks.Security.ClickJackingCheck.GetStatus">
-            <summary>
-            Get the status for this health check
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:Umbraco.Web.HealthCheck.Checks.Security.ClickJackingCheck.ExecuteAction(Umbraco.Web.HealthCheck.HealthCheckAction)">
-            <summary>
-            Executes the action and returns it's status
-            </summary>
-            <param name="action"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Umbraco.Web.HealthCheck.Checks.Security.HttpsCheck.GetStatus">
-            <summary>
-            Get the status for this health check
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:Umbraco.Web.HealthCheck.Checks.Security.HttpsCheck.ExecuteAction(Umbraco.Web.HealthCheck.HealthCheckAction)">
-            <summary>
-            Executes the action and returns it's status
-            </summary>
-            <param name="action"></param>
-            <returns></returns>
-        </member>
-        <member name="T:Umbraco.Web.HealthCheck.Checks.DataIntegrity.XmlDataIntegrityHealthCheck">
-            <summary>
-            This moves the functionality from the XmlIntegrity check dashboard into a health check
-            </summary>
-        </member>
-        <member name="M:Umbraco.Web.HealthCheck.Checks.DataIntegrity.XmlDataIntegrityHealthCheck.GetStatus">
-            <summary>
-            Get the status for this health check
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:Umbraco.Web.HealthCheck.Checks.DataIntegrity.XmlDataIntegrityHealthCheck.ExecuteAction(Umbraco.Web.HealthCheck.HealthCheckAction)">
-            <summary>
-            Executes the action and returns it's status
-            </summary>
-            <param name="action"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Umbraco.Web.HealthCheck.Checks.DataIntegrity.XmlDataIntegrityHealthCheck.CheckMedia">
-            <summary>
-            Checks the cmsContentXml table to see if the number of entries for media matches the number of media entities
-            </summary>
-            <returns></returns>
-            <remarks>
-            Further to just counting the data integrity, this also checks if the XML stored in the cmsContentXml table contains the correct
-            GUID identifier. In older versions of Umbraco, the GUID is not persisted to the content cache, that will cause problems in newer
-            versions of Umbraco, so the xml table would need a rebuild.
-            </remarks>
-        </member>
-        <member name="M:Umbraco.Web.HealthCheck.Checks.DataIntegrity.XmlDataIntegrityHealthCheck.CheckContent">
-            <summary>
-            Checks the cmsContentXml table to see if the number of entries for content matches the number of published content entities
-            </summary>
-            <returns></returns>
-            <remarks>
-            Further to just counting the data integrity, this also checks if the XML stored in the cmsContentXml table contains the correct
-            GUID identifier. In older versions of Umbraco, the GUID is not persisted to the content cache, that will cause problems in newer
-            versions of Umbraco, so the xml table would need a rebuild.
-            </remarks>
-        </member>
-        <member name="M:Umbraco.Web.HealthCheck.HealthCheckAction.#ctor">
-            <summary>
-            Empty ctor used for serialization
-            </summary>
-        </member>
-        <member name="M:Umbraco.Web.HealthCheck.HealthCheckAction.#ctor(System.String,System.Guid)">
-            <summary>
-            Default ctor
-            </summary>
-            <param name="alias"></param>
-            <param name="healthCheckId"></param>
-        </member>
-        <member name="P:Umbraco.Web.HealthCheck.HealthCheckAction.Alias">
-            <summary>
-            The alias of the action - this is used by the Health Check instance to execute the action
-            </summary>
-        </member>
-        <member name="P:Umbraco.Web.HealthCheck.HealthCheckAction.HealthCheckId">
-            <summary>
-            The Id of the Health Check instance
+            A menu item that represents some JS that needs to execute when the menu item is clicked.
             </summary>
             <remarks>
-            This is used to find the Health Check instance to execute this action
+            These types of menu items are rare but they do exist. Things like refresh node simply execute
+            JS and don't launch a dialog.
+            
+            Each action menu item describes what angular service that it's method exists in and what the method name is.
+            
+            An action menu item must describe the angular service name for which it's method exists. It may also define what the 
+            method name is that will be called in this service but if one is not specified then we will assume the method name is the
+            same as the Type name of the current action menu class.
             </remarks>
         </member>
-        <member name="P:Umbraco.Web.HealthCheck.HealthCheckAction.ActionParameters">
+        <member name="T:Umbraco.Web.Models.Trees.ActionMenuItemAttribute">
             <summary>
-            This could be used if the status has a custom view that specifies some parameters to be sent to the server
-            when an action needs to be executed
+            The attribute to assign to any ActionMenuItem objects.
             </summary>
         </member>
-        <member name="F:Umbraco.Web.HealthCheck.HealthCheckAction._name">
+        <member name="M:Umbraco.Web.Models.Trees.ActionMenuItemAttribute.#ctor(System.String,System.String)">
             <summary>
-            The name of the action - this is used to name the fix button
+            This constructor defines both the angular service and method name to use
+            </summary>
+            <param name="serviceName"></param>
+            <param name="methodName"></param>
+        </member>
+        <member name="M:Umbraco.Web.Models.Trees.ActionMenuItemAttribute.#ctor(System.String)">
+            <summary>
+            This constructor will assume that the method name equals the type name of the action menu class
+            </summary>
+            <param name="serviceName"></param>
+        </member>
+        <member name="T:Umbraco.Web.Models.Trees.MenuItem">
+            <summary>
+            A context menu item
             </summary>
         </member>
-        <member name="P:Umbraco.Web.HealthCheck.HealthCheckAction.Description">
+        <member name="P:Umbraco.Web.Models.Trees.MenuItem.AdditionalData">
             <summary>
-            The description of the action - this is used to give a description before executing the action
-            </summary>
-        </member>
-        <member name="P:Umbraco.Web.HealthCheck.HealthCheckAction.ValueRequired">
-            <summary>
-            Indicates if a value is required to rectify the issue
-            </summary>
-        </member>
-        <member name="P:Umbraco.Web.HealthCheck.HealthCheckAction.ProvidedValue">
-            <summary>
-            Provides a value to rectify the issue
-            </summary>
-        </member>
-        <member name="T:Umbraco.Web.HealthCheck.HealthCheckNotificationMethodAttribute">
-            <summary>
-            Metadata attribute for health check notification methods
-            </summary>
-        </member>
-        <member name="T:Umbraco.Web.HealthCheck.HealthCheckAttribute">
-            <summary>
-            Metadata attribute for Health checks
-            </summary>
-        </member>
-        <member name="T:Umbraco.Web.HealthCheck.HealthCheckContext">
-            <summary>
-            Context exposing all services that could be required for health check classes to perform and/or fix their checks
-            </summary>
-        </member>
-        <member name="T:Umbraco.Web.HealthCheck.HealthCheckController">
-            <summary>
-            The API controller used to display the health check info and execute any actions
-            </summary>
-        </member>
-        <member name="M:Umbraco.Web.HealthCheck.HealthCheckController.GetAllHealthChecks">
-            <summary>
-            Gets a grouped list of health checks, but doesn't actively check the status of each health check.
-            </summary>
-            <returns>Returns a collection of anonymous objects representing each group.</returns>
-        </member>
-        <member name="T:Umbraco.Web.HealthCheck.HealthCheckNotificationMethodResolver">
-            <summary>
-            Resolves all health check instances
+            A dictionary to support any additional meta data that should be rendered for the node which is 
+            useful for custom action commands such as 'create', 'copy', etc...
             </summary>
             <remarks>
-            Each instance scoped to the lifespan of the http request
+            We will also use the meta data collection for dealing with legacy menu items (i.e. for loading custom URLs or
+            executing custom JS).
             </remarks>
         </member>
-        <member name="P:Umbraco.Web.HealthCheck.HealthCheckNotificationMethodResolver.NotificationMethods">
+        <member name="P:Umbraco.Web.Models.Trees.MenuItem.SeperatorBefore">
             <summary>
-            Returns all health check notification method instances
+            Ensures a menu separator will exist before this menu item
             </summary>
         </member>
-        <member name="T:Umbraco.Web.HealthCheck.HealthCheckNotificationMethodResolver.HealthCheckNotificationMethodServiceProvider">
+        <member name="F:Umbraco.Web.Models.Trees.MenuItem.DialogTitleKey">
             <summary>
-            This will ctor the IHealthCheckNotificatationMethod instances
+            Used as a key for the AdditionalData to specify a specific dialog title instead of the menu title
             </summary>
         </member>
-        <member name="T:Umbraco.Web.HealthCheck.HealthCheckResolver">
+        <member name="F:Umbraco.Web.Models.Trees.MenuItem.ActionUrlKey">
             <summary>
-            Resolves all health check instances
+            Used to specify the URL that the dialog will launch to in an iframe
+            </summary>
+        </member>
+        <member name="F:Umbraco.Web.Models.Trees.MenuItem.ActionViewKey">
+            <summary>
+            Used to specify the angular view that the dialog will launch
+            </summary>
+        </member>
+        <member name="F:Umbraco.Web.Models.Trees.MenuItem.JsActionKey">
+            <summary>
+            Used to specify the js method to execute for the menu item 
+            </summary>
+        </member>
+        <member name="F:Umbraco.Web.Models.Trees.MenuItem.ActionRouteKey">
+            <summary>
+            Used to specify an angular route to go to for the menu item
+            </summary>
+        </member>
+        <member name="M:Umbraco.Web.Models.Trees.MenuItem.NavigateToRoute(System.String)">
+            <summary>
+            Sets the menu item to navigate to the specified angular route path
+            </summary>
+            <param name="route"></param>
+        </member>
+        <member name="M:Umbraco.Web.Models.Trees.MenuItem.ExecuteLegacyJs(System.String)">
+            <summary>
+            Adds the required meta data to the menu item so that angular knows to attempt to call the Js method.
+            </summary>
+            <param name="jsToExecute"></param>
+        </member>
+        <member name="M:Umbraco.Web.Models.Trees.MenuItem.LaunchDialogView(System.String,System.String)">
+            <summary>
+            Sets the menu item to display a dialog based on an angular view path
+            </summary>
+            <param name="view"></param>
+            <param name="dialogTitle"></param>
+        </member>
+        <member name="M:Umbraco.Web.Models.Trees.MenuItem.LaunchDialogUrl(System.String,System.String)">
+            <summary>
+            Sets the menu item to display a dialog based on a url path in an iframe
+            </summary>
+            <param name="url"></param>
+            <param name="dialogTitle"></param>
+        </member>
+        <member name="M:Umbraco.Web.Models.Trees.MenuItem.SetDialogTitle(System.String)">
+            <summary>
+            Puts a dialog title into the meta data to be displayed on the dialog of the menu item (if there is one)
+            instead of the menu name
+            </summary>
+            <param name="dialogTitle"></param>
+        </member>
+        <member name="M:Umbraco.Web.Models.Trees.MenuItem.SetActionUrl(System.String,Umbraco.Web.Trees.ActionUrlMethod)">
+            <summary>
+            Configures the menu item to launch a URL with the specified action (dialog or new window)
+            </summary>
+            <param name="url"></param>
+            <param name="method"></param>
+        </member>
+        <member name="T:Umbraco.Web.Models.Trees.MenuItemCollection">
+            <summary>
+            A menu item collection for a given tree node
+            </summary>
+        </member>
+        <member name="P:Umbraco.Web.Models.Trees.MenuItemCollection.DefaultMenuAlias">
+            <summary>
+            Sets the default menu item alias to be shown when the menu is launched - this is optional and if not set then the menu will just be shown normally.
+            </summary>
+        </member>
+        <member name="P:Umbraco.Web.Models.Trees.MenuItemCollection.Items">
+            <summary>
+            The list of menu items
             </summary>
             <remarks>
-            Each instance scoped to the lifespan of the http request
+            We require this so the json serialization works correctly
             </remarks>
         </member>
-        <member name="P:Umbraco.Web.HealthCheck.HealthCheckResolver.HealthChecks">
+        <member name="T:Umbraco.Web.Models.Trees.RefreshNode">
             <summary>
-            Returns all health check instances
+            Represents the refresh node menu item
             </summary>
         </member>
-        <member name="T:Umbraco.Web.HealthCheck.HealthCheckResolver.HealthCheckServiceProvider">
+        <member name="T:Umbraco.Web.Models.Trees.SectionRootNode">
             <summary>
-            This will ctor the HealthCheck instances
+            A special tree node that represents the section root node for any section.
             </summary>
             <remarks>
-            This is like a super crappy DI - in v8 we have real DI
+            This is required to return the tree data for a given section. Some sections may only contain one tree which means it's section
+            root should also display a menu, whereas other sections have multiple trees and the section root shouldn't display a menu.
+            
+            The section root also contains an explicit collection of children.
             </remarks>
         </member>
-        <member name="T:Umbraco.Web.HealthCheck.HealthCheck">
+        <member name="T:Umbraco.Web.Models.Trees.TreeNode">
             <summary>
-            The abstract health check class
-            </summary>
-        </member>
-        <member name="M:Umbraco.Web.HealthCheck.HealthCheck.GetStatus">
-            <summary>
-            Get the status for this health check
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:Umbraco.Web.HealthCheck.HealthCheck.ExecuteAction(Umbraco.Web.HealthCheck.HealthCheckAction)">
-            <summary>
-            Executes the action and returns it's status
-            </summary>
-            <param name="action"></param>
-            <returns></returns>
-        </member>
-        <member name="T:Umbraco.Web.HealthCheck.HealthCheckStatus">
-            <summary>
-            The status returned for a health check when it performs it check
-            TODO: This model will be used in the WebApi result so needs attributes for JSON usage
-            </summary>
-        </member>
-        <member name="P:Umbraco.Web.HealthCheck.HealthCheckStatus.Message">
-            <summary>
-            The status message
-            </summary>
-        </member>
-        <member name="P:Umbraco.Web.HealthCheck.HealthCheckStatus.Description">
-            <summary>
-            The status description if one is necessary
-            </summary>
-        </member>
-        <member name="P:Umbraco.Web.HealthCheck.HealthCheckStatus.View">
-            <summary>
-            This is optional but would allow a developer to specify a path to an angular html view
-            in order to either show more advanced information and/or to provide input for the admin
-            to configure how an action is executed
-            </summary>
-        </member>
-        <member name="P:Umbraco.Web.HealthCheck.HealthCheckStatus.ResultType">
-            <summary>
-            The status type
-            </summary>
-        </member>
-        <member name="P:Umbraco.Web.HealthCheck.HealthCheckStatus.Actions">
-            <summary>
-            The potential actions to take (in any)
-            </summary>
-        </member>
-        <member name="M:Umbraco.Web.HealthCheck.NotificationMethods.EmailNotificationMethod.#ctor(System.Boolean,System.Boolean,Umbraco.Core.Configuration.HealthChecks.HealthCheckNotificationVerbosity,System.String)">
-            <summary>
-            Default constructor which is used in the provider model
-            </summary>
-            <param name="enabled"></param>
-            <param name="failureOnly"></param>
-            <param name="verbosity"></param>
-            <param name="recipientEmail"></param>
-        </member>
-        <member name="M:Umbraco.Web.HealthCheck.NotificationMethods.EmailNotificationMethod.#ctor(System.Boolean,System.Boolean,Umbraco.Core.Configuration.HealthChecks.HealthCheckNotificationVerbosity,System.String,Umbraco.Core.Services.ILocalizedTextService)">
-            <summary>
-            Constructor that could be used for testing
-            </summary>
-            <param name="enabled"></param>
-            <param name="failureOnly"></param>
-            <param name="verbosity"></param>
-            <param name="recipientEmail"></param>
-            <param name="textService"></param>
-        </member>
-        <member name="T:Umbraco.Web.IHttpContextAccessor">
-            <summary>
-            Used to retrieve the HttpContext
+            Represents a model in the tree
             </summary>
             <remarks>
-            NOTE: This has a singleton lifespan
+            TreeNode is sealed to prevent developers from adding additional json data to the response
             </remarks>
         </member>
-        <member name="M:Umbraco.Web.Install.InstallSteps.ConfigureMachineKey.HasMachineKey">
+        <member name="M:Umbraco.Web.Models.Trees.TreeNode.#ctor(System.String,System.String,System.String,System.String)">
             <summary>
-            Don't display the view or execute if a machine key already exists
+            Internal constructor, to create a tree node use the CreateTreeNode methods of the TreeApiController.
             </summary>
-            <returns></returns>
+            <param name="nodeId"></param>
+            <param name="parentId">The parent id for the current node</param>
+            <param name="getChildNodesUrl"></param>
+            <param name="menuUrl"></param>
         </member>
-        <member name="M:Umbraco.Web.Install.InstallSteps.ConfigureMachineKey.Execute(System.Nullable{System.Boolean})">
+        <member name="P:Umbraco.Web.Models.Trees.TreeNode.HasChildren">
             <summary>
-            The step execution method
-            </summary>
-            <param name="model"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Umbraco.Web.Install.InstallSteps.Version73FileCleanup.Execute(System.Object)">
-            <summary>
-            The step execution method
-            </summary>
-            <param name="model"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Umbraco.Web.Install.InstallSteps.Version73FileCleanup.RequiresExecution(System.Object)">
-            <summary>
-            Determines if this step needs to execute based on the current state of the application and/or install process
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="T:Umbraco.Web.Install.InstallSteps.UpgradeStep">
-            <summary>
-            This step is purely here to show the button to commence the upgrade
+            A flag to set whether or not this node has children
             </summary>
         </member>
-        <member name="M:Umbraco.Web.Install.InstallSteps.UpgradeStep.CurrentVersion">
+        <member name="P:Umbraco.Web.Models.Trees.TreeNode.NodeType">
             <summary>
-            Gets the Current Version of the Umbraco Site before an upgrade
-            by using the last/most recent Umbraco Migration that has been run
+            The tree nodetype which refers to the type of node rendered in the tree
             </summary>
-            <returns>A SemVersion of the latest Umbraco DB Migration run</returns>
         </member>
-        <member name="T:Umbraco.Web.Install.InstallSteps.NewInstallStep">
+        <member name="P:Umbraco.Web.Models.Trees.TreeNode.RoutePath">
             <summary>
-            This is the first UI step for a brand new install
+            Optional: The Route path for the editor for this node
             </summary>
             <remarks>
-            By default this will show the user view which is the most basic information to configure a new install, but if an install get's interupted because of an 
-            error, etc... and the end-user refreshes the installer then we cannot show the user screen because they've already entered that information so instead we'll    
-            display a simple continue installation view.
+            If this is not set, then the route path will be automatically determined by: {section}/edit/{id}
             </remarks>
         </member>
-        <member name="P:Umbraco.Web.Install.InstallSteps.NewInstallStep.ViewModel">
+        <member name="P:Umbraco.Web.Models.Trees.TreeNode.ChildNodesUrl">
             <summary>
-            Return a custom view model for this step
+            The JSON url to load the nodes children
             </summary>
         </member>
-        <member name="T:Umbraco.Web.Install.InstallException">
+        <member name="P:Umbraco.Web.Models.Trees.TreeNode.MenuUrl">
             <summary>
-            Used for steps to be able to return a json structure back to the UI
+            The JSON url to load the menu from
             </summary>
         </member>
-        <member name="T:Umbraco.Web.Install.InstallStatusTracker">
+        <member name="P:Umbraco.Web.Models.Trees.TreeNode.IconIsClass">
             <summary>
-            An internal in-memory status tracker for the current installation
+            Returns true if the icon represents a CSS class instead of a file path
             </summary>
         </member>
-        <member name="T:Umbraco.Web.Install.Controllers.InstallPackageController">
+        <member name="P:Umbraco.Web.Models.Trees.TreeNode.IconFilePath">
             <summary>
-            A  controller for the installation process regarding packages
+            Returns the icon file path if the icon is not a class, otherwise returns an empty string
+            </summary>
+        </member>
+        <member name="P:Umbraco.Web.Models.Trees.TreeNode.CssClasses">
+            <summary>
+            A list of additional/custom css classes to assign to the node
+            </summary>
+        </member>
+        <member name="M:Umbraco.Web.Models.Trees.TreeNodeExtensions.AssignLegacyJsCallback(Umbraco.Web.Models.Trees.TreeNode,System.String)">
+            <summary>
+            Legacy tree node's assign a JS method callback for when an item is clicked, this method facilitates that.
+            </summary>
+            <param name="treeNode"></param>
+            <param name="jsCallback"></param>
+        </member>
+        <member name="M:Umbraco.Web.Models.Trees.TreeNodeExtensions.SetContainerStyle(Umbraco.Web.Models.Trees.TreeNode)">
+            <summary>
+            Sets the node style to show that it is currently protected publicly
+            </summary>
+            <param name="treeNode"></param>
+        </member>
+        <member name="M:Umbraco.Web.Models.Trees.TreeNodeExtensions.SetProtectedStyle(Umbraco.Web.Models.Trees.TreeNode)">
+            <summary>
+            Sets the node style to show that it is currently protected publicly
+            </summary>
+            <param name="treeNode"></param>
+        </member>
+        <member name="M:Umbraco.Web.Models.Trees.TreeNodeExtensions.SetLockedStyle(Umbraco.Web.Models.Trees.TreeNode)">
+            <summary>
+            Sets the node style to show that it is currently locked / non-deletable
+            </summary>
+            <param name="treeNode"></param>
+        </member>
+        <member name="M:Umbraco.Web.Models.Trees.TreeNodeExtensions.SetHasUnpublishedVersionStyle(Umbraco.Web.Models.Trees.TreeNode)">
+            <summary>
+            Sets the node style to show that it is has unpublished versions (but is currently published)
+            </summary>
+            <param name="treeNode"></param>
+        </member>
+        <member name="M:Umbraco.Web.Models.Trees.TreeNodeExtensions.SetNotPublishedStyle(Umbraco.Web.Models.Trees.TreeNode)">
+            <summary>
+            Sets the node style to show that it is is not published
+            </summary>
+            <param name="treeNode"></param>
+        </member>
+        <member name="T:Umbraco.Web.Models.BackOfficeTourFile">
+            <summary>
+            A model representing the file used to load a tour.
+            </summary>
+        </member>
+        <member name="P:Umbraco.Web.Models.BackOfficeTourFile.FileName">
+            <summary>
+            The file name for the tour
+            </summary>
+        </member>
+        <member name="P:Umbraco.Web.Models.BackOfficeTourFile.PluginName">
+            <summary>
+            The plugin folder that the tour comes from
             </summary>
             <remarks>
-            Currently this is used for web services however we should/could eventually migrate the whole installer to MVC as it
-            is a bit of a mess currently.
+            If this is null it means it's a Core tour
             </remarks>
         </member>
-        <member name="M:Umbraco.Web.Install.Controllers.InstallPackageController.Index">
+        <member name="T:Umbraco.Web.Models.BackOfficeTourStep">
             <summary>
-            Empty action, useful for retrieving the base url for this controller
+            A model representing a step in a tour.
             </summary>
-            <returns></returns>
-        </member>
-        <member name="M:Umbraco.Web.Install.Controllers.InstallPackageController.DownloadPackageFiles(Umbraco.Web.Install.Models.InstallPackageModel)">
-            <summary>
-            Connects to the repo, downloads the package and creates the manifest
-            </summary>
-            <param name="model"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Umbraco.Web.Install.Controllers.InstallPackageController.InstallPackageFiles(Umbraco.Web.Install.Models.InstallPackageModel)">
-            <summary>
-            Installs the files in the package
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:Umbraco.Web.Install.Controllers.InstallPackageController.RestartAppPool">
-            <summary>
-            Ensures the app pool is restarted
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:Umbraco.Web.Install.Controllers.InstallPackageController.CheckAppPoolRestart">
-            <summary>
-            Checks if the app pool has completed restarted
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:Umbraco.Web.Install.Controllers.InstallPackageController.InstallBusinessLogic(Umbraco.Web.Install.Models.InstallPackageModel)">
-            <summary>
-            Installs the business logic portion of the package after app restart
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:Umbraco.Web.Install.Controllers.InstallPackageController.CleanupInstallation(Umbraco.Web.Install.Models.InstallPackageModel)">
-            <summary>
-            Cleans up the package installation
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="P:Umbraco.Web.Install.Controllers.InstallApiController.UmbracoContext">
-            <summary>
-            Returns the current UmbracoContext
-            </summary>
-        </member>
-        <member name="M:Umbraco.Web.Install.Controllers.InstallApiController.GetSetup">
-            <summary>
-            Gets the install setup
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:Umbraco.Web.Install.Controllers.InstallApiController.PostPerformInstall(Umbraco.Web.Install.Models.InstallInstructions)">
-            <summary>
-            Does the install
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:Umbraco.Web.Install.Controllers.InstallApiController.IterateNextRequiredStep(Umbraco.Web.Install.Models.InstallSetupStep,System.Collections.Generic.Queue{Umbraco.Web.Install.Models.InstallTrackingItem},System.Guid,Umbraco.Web.Install.Models.InstallInstructions)">
-            <summary>
-            We'll peek ahead and check if it's RequiresExecution is returning true. If it
-            is not, we'll dequeue that step and peek ahead again (recurse)
-            </summary>
-            <param name="current"></param>
-            <param name="queue"></param>
-            <param name="installId"></param>
-            <param name="installModel"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Umbraco.Web.Install.Controllers.InstallApiController.StepRequiresExecution(Umbraco.Web.Install.Models.InstallSetupStep,Newtonsoft.Json.Linq.JToken)">
-            <summary>
-            Check if the step requires execution
-            </summary>
-            <param name="step"></param>
-            <param name="instruction"></param>
-            <returns></returns>
-        </member>
-        <member name="T:Umbraco.Web.Install.Controllers.InstallController">
-            <summary>
-            The MVC Installation controller
-            </summary>
-            <remarks>
-            NOTE: All views must have their full paths as we do not have a custom view engine for the installation views!
-            </remarks>
-        </member>
-        <member name="T:Umbraco.Web.Install.Models.InstallProgressResultModel">
-            <summary>
-            Returned to the UI for each installation step that is completed
-            </summary>
-        </member>
-        <member name="P:Umbraco.Web.Install.Models.InstallProgressResultModel.View">
-            <summary>
-            The UI view to show when this step executes, by default no views are shown for the completion of a step unless explicitly specified.
-            </summary>
-        </member>
-        <member name="P:Umbraco.Web.Install.Models.InstallProgressResultModel.ViewModel">
-            <summary>
-            The view model to return to the UI if this step is returning a view (optional)
-            </summary>
-        </member>
-        <member name="T:Umbraco.Web.Install.Models.InstallSetup">
-            <summary>
-            Model containing all the install steps for setting up the UI
-            </summary>
-        </member>
-        <member name="T:Umbraco.Web.Install.Models.InstallSetupResult">
-            <summary>
-            The object returned from each installation step
-            </summary>
-        </member>
-        <member name="P:Umbraco.Web.Install.Models.InstallSetupResult.SavedStepData">
-            <summary>
-            Data that is persisted to the installation file which can be used from other installation steps
-            </summary>
-        </member>
-        <member name="P:Umbraco.Web.Install.Models.InstallSetupResult.View">
-            <summary>
-            The UI view to show when this step executes, by default no views are shown for the completion of a step unless explicitly specified.
-            </summary>
-        </member>
-        <member name="P:Umbraco.Web.Install.Models.InstallSetupResult.ViewModel">
-            <summary>
-            The view model to return to the UI if this step is returning a view (optional)
-            </summary>
-        </member>
-        <member name="T:Umbraco.Web.Install.Models.InstallSetupStep`1">
-            <summary>
-            Model to give to the front-end to collect the information for each step
-            </summary>
-        </member>
-        <member name="P:Umbraco.Web.Install.Models.InstallSetupStep`1.StepType">
-            <summary>
-            Defines the step model type on the server side so we can bind it
-            </summary>
-        </member>
-        <member name="M:Umbraco.Web.Install.Models.InstallSetupStep`1.Execute(`0)">
-            <summary>
-            The step execution method
-            </summary>
-            <param name="model"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Umbraco.Web.Install.Models.InstallSetupStep`1.RequiresExecution(`0)">
-            <summary>
-            Determines if this step needs to execute based on the current state of the application and/or install process
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="P:Umbraco.Web.Install.Models.InstallSetupStep.ViewModel">
-            <summary>
-            The view model used to render the view, by default is null but can be populated
-            </summary>
-        </member>
-        <member name="P:Umbraco.Web.Install.Models.InstallSetupStep.ServerOrder">
-            <summary>
-            Defines what order this step needs to execute on the server side since the 
-            steps might be shown out of order on the front-end
-            </summary>
-        </member>
-        <member name="P:Umbraco.Web.Install.Models.InstallSetupStep.StepType">
-            <summary>
-            Defines the step model type on the server side so we can bind it
-            </summary>
-        </member>
-        <member name="P:Umbraco.Web.Install.Models.InstallSetupStepAttribute.PerformsAppRestart">
-            <summary>
-            A flag to notify the installer that this step performs an app pool restart, this can be handy to know since if the current
-            step is performing a restart, we cannot 'look ahead' to see if the next step can execute since we won't know until the app pool
-            is restarted.
-            </summary>
-        </member>
-        <member name="T:Umbraco.Web.Install.UmbracoInstallArea">
-            <summary>
-            An area registration for back office components
-            </summary>
-        </member>
-        <member name="M:Umbraco.Web.Install.UmbracoInstallArea.RegisterArea(System.Web.Mvc.AreaRegistrationContext)">
-            <summary>
-            Create the routes for the area
-            </summary>
-            <param name="context"></param>
-            <remarks>
-            By using the context to register the routes it means that the area is already applied to them all 
-            and that the namespaces searched for the controllers are ONLY the ones specified.
-            </remarks>
-        </member>
-        <member name="T:Umbraco.Web.Install.InstallAuthorizeAttribute">
-            <summary>
-            Ensures authorization occurs for the installer if it has already completed. If install has not yet occured
-            then the authorization is successful
-            </summary>
-        </member>
-        <member name="M:Umbraco.Web.Install.InstallAuthorizeAttribute.#ctor(Umbraco.Web.UmbracoContext)">
-            <summary>
-            THIS SHOULD BE ONLY USED FOR UNIT TESTS
-            </summary>
-            <param name="umbracoContext"></param>
-        </member>
-        <member name="M:Umbraco.Web.Install.InstallAuthorizeAttribute.AuthorizeCore(System.Web.HttpContextBase)">
-            <summary>
-            Ensures that the user must be logged in or that the application is not configured just yet.
-            </summary>
-            <param name="httpContext"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Umbraco.Web.Install.InstallAuthorizeAttribute.HandleUnauthorizedRequest(System.Web.Mvc.AuthorizationContext)">
-            <summary>
-            Override to redirect instead of throwing an exception
-            </summary>
-            <param name="filterContext"></param>
-        </member>
-        <member name="M:Umbraco.Web.Install.FilePermissionHelper.TestDirectories(System.String[],System.Collections.Generic.List{System.String}@,System.Boolean)">
-            <summary>
-            This will test the directories for write access
-            </summary>
-            <param name="directories"></param>
-            <param name="errorReport"></param>
-            <param name="writeCausesRestart">
-            If this is false, the easiest way to test for write access is to write a temp file, however some folder will cause
-            an App Domain restart if a file is written to the folder, so in that case we need to use the ACL APIs which aren't as
-            reliable but we cannot write a file since it will cause an app domain restart.
-            </param>
-            <returns></returns>
-        </member>
-        <member name="M:Umbraco.Web.Install.InstallHelper.GetAllSteps">
-            <summary>
-            Get the installer steps
-            </summary>
-            <returns></returns>
-            <remarks>
-            The step order returned here is how they will appear on the front-end if they have views assigned
-            </remarks>
-        </member>
-        <member name="M:Umbraco.Web.Install.InstallHelper.GetStepsForCurrentInstallType">
-            <summary>
-            Returns the steps that are used only for the current installation type
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="P:Umbraco.Web.Install.InstallHelper.IsBrandNewInstall">
-            <summary>
-            Checks if this is a brand new install meaning that there is no configured version and there is no configured database connection
-            </summary>
-        </member>
-        <member name="T:Umbraco.Web.Install.HttpInstallAuthorizeAttribute">
-            <summary>
-            Ensures authorization occurs for the installer if it has already completed. If install has not yet occured
-            then the authorization is successful
-            </summary>
-        </member>
-        <member name="M:Umbraco.Web.Install.HttpInstallAuthorizeAttribute.#ctor(Umbraco.Web.UmbracoContext)">
-            <summary>
-            THIS SHOULD BE ONLY USED FOR UNIT TESTS
-            </summary>
-            <param name="umbracoContext"></param>
         </member>
         <member name="T:Umbraco.Web.Models.ContentEditing.AssignedContentPermissions">
             <summary>
@@ -3416,6 +3438,11 @@
         <member name="P:Umbraco.Web.Models.ContentEditing.AssignedUserGroupPermissions.DefaultPermissions">
             <summary>
             The default permissions for the user group organized by permission group name
+            </summary>
+        </member>
+        <member name="T:Umbraco.Web.Models.ContentEditing.EditorNavigation">
+            <summary>
+            A model representing the navigation ("apps") inside an editor in the back office
             </summary>
         </member>
         <member name="P:Umbraco.Web.Models.ContentEditing.GetAvailableCompositionsFilter.FilterPropertyTypes">
@@ -4049,11 +4076,6 @@
             Property Group
             </summary>
         </member>
-        <member name="T:Umbraco.Web.Models.ContentEditing.AuditLogType">
-            <summary>
-            Defines audit trail log types
-            </summary>
-        </member>
         <member name="F:Umbraco.Web.Models.ContentEditing.AuditLogType.New">
             <summary>
             Used when new nodes are added
@@ -4585,256 +4607,6 @@
             The minimum umbraco version that this package is pinned to
             </summary>
         </member>
-        <member name="T:Umbraco.Web.Models.Mapping.ContentTypeModelMapperExtensions">
-            <summary>
-            Used as a shared way to do the underlying mapping for content types base classes
-            </summary>
-            <remarks>
-            We used to use 'Include' Automapper inheritance functionality and although this works, the unit test
-                to assert mappings fails which is an Automapper bug. So instead we will use an extension method for the mappings
-                to re-use mappings.
-            </remarks>
-        </member>
-        <member name="M:Umbraco.Web.Models.Mapping.ContentTypeModelMapperExtensions.MapBaseContentTypeSaveToEntity``3(AutoMapper.IMappingExpression{``0,``2},Umbraco.Core.ApplicationContext)">
-            <summary>
-            Display -> Entity class base mapping logic
-            </summary>
-            <typeparam name="TSource"></typeparam>
-            <typeparam name="TDestination"></typeparam>
-            <typeparam name="TSourcePropertyType"></typeparam>
-            <param name="mapping"></param>
-            <param name="applicationContext"></param>
-            <returns></returns>        
-        </member>
-        <member name="T:Umbraco.Web.Models.Mapping.ContentTypeUdiResolver">
-            <summary>
-            Resolves a UDI for a content type based on it's type
-            </summary>
-        </member>
-        <member name="T:Umbraco.Web.Models.Mapping.EntityModelMapperExtensions">
-            <summary>
-            Mapping extension methods for re-use with other mappers (saves code duplication)
-            </summary>
-        </member>
-        <member name="M:Umbraco.Web.Models.Mapping.EntityModelMapperExtensions.IgnoreDeletableEntityCommonProperties``2(AutoMapper.IMappingExpression{``0,``1})">
-            <summary>
-            Ignores readonly properties and the date values
-            </summary>
-            <param name="mapping"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Umbraco.Web.Models.Mapping.EntityModelMapperExtensions.IgnoreEntityCommonProperties``2(AutoMapper.IMappingExpression{``0,``1})">
-            <summary>
-            Ignores readonly properties and the date values
-            </summary>
-            <param name="mapping"></param>
-            <returns></returns>
-        </member>
-        <member name="T:Umbraco.Web.Models.Mapping.UserGroupDefaultPermissionsResolver">
-            <summary>
-            Converts an IUserGroup instance into a dictionary of permissions by category
-            </summary>
-        </member>
-        <member name="M:Umbraco.Web.Models.Mapping.PropertyTypeGroupResolver`1.GetContentTypeForPropertyGroup(Umbraco.Core.Models.IContentTypeComposition,System.Int32)">
-            <summary>
-            Gets the content type that defines a property group, within a composition.
-            </summary>
-            <param name="contentType">The composition.</param>
-            <param name="propertyGroupId">The identifier of the property group.</param>
-            <returns>The composition content type that defines the specified property group.</returns>
-        </member>
-        <member name="M:Umbraco.Web.Models.Mapping.PropertyTypeGroupResolver`1.GetContentTypeForPropertyType(Umbraco.Core.Models.IContentTypeComposition,System.Int32)">
-            <summary>
-            Gets the content type that defines a property group, within a composition.
-            </summary>
-            <param name="contentType">The composition.</param>
-            <param name="propertyTypeId">The identifier of the property type.</param>
-            <returns>The composition content type that defines the specified property group.</returns>
-        </member>
-        <member name="T:Umbraco.Web.Models.Mapping.DashboardModelsMapper">
-            <summary>
-            A model mapper used to map models for the various dashboards
-            </summary>
-        </member>
-        <member name="T:Umbraco.Web.Models.Mapping.MacroModelMapper">
-            <summary>
-            Declares model mappings for macros.
-            </summary>
-        </member>
-        <member name="T:Umbraco.Web.Models.Mapping.MemberModelMapper">
-            <summary>
-            Declares model mappings for members.
-            </summary>
-        </member>
-        <member name="M:Umbraco.Web.Models.Mapping.MemberModelMapper.MapGenericCustomProperties(Umbraco.Core.Services.IMemberService,Umbraco.Core.Services.IUserService,Umbraco.Core.Models.IMember,Umbraco.Web.Models.ContentEditing.MemberDisplay,Umbraco.Core.Services.ILocalizedTextService)">
-            <summary>
-            Maps the generic tab with custom properties for content
-            </summary>
-            <param name="memberService"></param>
-            <param name="userService"></param>
-            <param name="member"></param>
-            <param name="display"></param>
-            <param name="localizedText"></param>
-            <remarks>
-            If this is a new entity and there is an approved field then we'll set it to true by default.
-            </remarks>
-        </member>
-        <member name="M:Umbraco.Web.Models.Mapping.MemberModelMapper.GetLoginProperty(Umbraco.Core.Services.IMemberService,Umbraco.Core.Models.IMember,Umbraco.Web.Models.ContentEditing.MemberDisplay,Umbraco.Core.Services.ILocalizedTextService)">
-            <summary>
-            Returns the login property display field
-            </summary>
-            <param name="memberService"></param>
-            <param name="member"></param>
-            <param name="display"></param>
-            <param name="localizedText"></param>
-            <returns></returns>
-            <remarks>
-            If the membership provider installed is the umbraco membership provider, then we will allow changing the username, however if
-            the membership provider is a custom one, we cannot allow chaning the username because MembershipProvider's do not actually natively
-            allow that.
-            </remarks>
-        </member>
-        <member name="T:Umbraco.Web.Models.Mapping.MemberModelMapper.MemberDtoPropertiesValueResolver">
-            <summary>
-            This ensures that the custom membership provider properties are not mapped - these property values are controller by the membership provider
-            </summary>
-            <remarks>
-            Because these properties don't exist on the form, if we don't remove them for this map we'll get validation errors when posting data
-            </remarks>
-        </member>
-        <member name="T:Umbraco.Web.Models.Mapping.MemberModelMapper.MemberTabsAndPropertiesResolver">
-            <summary>
-            A custom tab/property resolver for members which will ensure that the built-in membership properties are or arent' displayed
-            depending on if the member type has these properties
-            </summary>
-            <remarks>
-            This also ensures that the IsLocked out property is readonly when the member is not locked out - this is because
-            an admin cannot actually set isLockedOut = true, they can only unlock.
-            </remarks>
-        </member>
-        <member name="T:Umbraco.Web.Models.Mapping.MemberModelMapper.MemberProviderFieldMappingResolver">
-            <summary>
-            A resolver to map the provider field aliases
-            </summary>
-        </member>
-        <member name="T:Umbraco.Web.Models.Mapping.DatabaseTypeResolver">
-            <summary>
-            Gets the DataTypeDatabaseType from the selected property editor for the data type
-            </summary>
-        </member>
-        <member name="T:Umbraco.Web.Models.Mapping.DataTypeModelMapper">
-            <summary>
-            Configure's model mappings for Data types
-            </summary>
-        </member>
-        <member name="M:Umbraco.Web.Models.Mapping.PreValueDisplayResolver.MapPreValueValuesToPreValueFields(Umbraco.Web.Models.ContentEditing.PreValueFieldDisplay[],System.Collections.Generic.IDictionary{System.String,System.Object})">
-            <summary>
-            Maps pre-values in the dictionary to the values for the fields
-            </summary>
-            <param name="fields"></param>
-            <param name="preValues"></param>        
-        </member>
-        <member name="T:Umbraco.Web.Models.Mapping.ContentPropertyBasicConverter`1">
-            <summary>
-            Creates a base generic ContentPropertyBasic from a Property
-            </summary>
-            <typeparam name="T"></typeparam>
-        </member>
-        <member name="M:Umbraco.Web.Models.Mapping.ContentPropertyBasicConverter`1.ConvertCore(Umbraco.Core.Models.Property)">
-            <summary>
-            Assigns the PropertyEditor, Id, Alias and Value to the property
-            </summary>
-            <param name="property"></param>
-            <returns></returns>
-        </member>
-        <member name="T:Umbraco.Web.Models.Mapping.ContentPropertyDisplayConverter">
-            <summary>
-            Creates a ContentPropertyDisplay from a Property
-            </summary>
-        </member>
-        <member name="T:Umbraco.Web.Models.Mapping.ContentPropertyDtoConverter">
-            <summary>
-            Creates a ContentPropertyDto from a Property
-            </summary>
-        </member>
-        <member name="T:Umbraco.Web.Models.Mapping.ContentPropertyModelMapper">
-            <summary>
-            A mapper which declares how to map content properties. These mappings are shared among media (and probably members) which is 
-            why they are in their own mapper
-            </summary>
-        </member>
-        <member name="T:Umbraco.Web.Models.Mapping.CreatorResolver">
-            <summary>
-            Maps the Creator for content
-            </summary>
-        </member>
-        <member name="T:Umbraco.Web.Models.Mapping.MediaModelMapper">
-            <summary>
-            Declares model mappings for media.
-            </summary>
-        </member>
-        <member name="T:Umbraco.Web.Models.Mapping.ContentTypeModelMapper">
-            <summary>
-            Defines mappings for content/media/members type mappings
-            </summary>
-        </member>
-        <member name="T:Umbraco.Web.Models.Mapping.ContentModelMapper">
-            <summary>
-            Declares how model mappings for content
-            </summary>
-        </member>
-        <member name="M:Umbraco.Web.Models.Mapping.ContentModelMapper.AfterMap(Umbraco.Core.Models.IContent,Umbraco.Web.Models.ContentEditing.ContentItemDisplay,Umbraco.Core.Services.IDataTypeService,Umbraco.Core.Services.ILocalizedTextService,Umbraco.Core.Services.IContentTypeService)">
-            <summary>
-            Maps the generic tab with custom properties for content
-            </summary>
-            <param name="content"></param>
-            <param name="display"></param>
-            <param name="dataTypeService"></param>
-            <param name="localizedText"></param>
-            <param name="contentTypeService"></param>
-        </member>
-        <member name="T:Umbraco.Web.Models.Mapping.ContentModelMapper.ActionButtonsResolver">
-            <summary>
-            Creates the list of action buttons allowed for this user - Publish, Send to publish, save, unpublish returned as the button's 'letter'
-            </summary>
-        </member>
-        <member name="T:Umbraco.Web.Models.Mapping.OwnerResolver`1">
-            <summary>
-            Maps the Owner for IContentBase
-            </summary>
-            <typeparam name="TPersisted"></typeparam>
-        </member>
-        <member name="T:Umbraco.Web.Models.Mapping.TabsAndPropertiesResolver">
-            <summary>
-            Creates the tabs collection with properties assigned for display models
-            </summary>
-        </member>
-        <member name="M:Umbraco.Web.Models.Mapping.TabsAndPropertiesResolver.MapGenericProperties``1(``0,Umbraco.Web.Models.ContentEditing.ContentItemDisplayBase{Umbraco.Web.Models.ContentEditing.ContentPropertyDisplay,``0},Umbraco.Core.Services.ILocalizedTextService,System.Collections.Generic.IEnumerable{Umbraco.Web.Models.ContentEditing.ContentPropertyDisplay},System.Action{System.Collections.Generic.List{Umbraco.Web.Models.ContentEditing.ContentPropertyDisplay}})">
-            <summary>
-            Maps properties on to the generic properties tab
-            </summary>
-            <param name="content"></param>
-            <param name="display"></param>
-            <param name="localizedTextService"></param>
-            <param name="customProperties">
-            Any additional custom properties to assign to the generic properties tab. 
-            </param>
-            <param name="onGenericPropertiesMapped"></param>
-            <remarks>
-            The generic properties tab is mapped during AfterMap and is responsible for 
-            setting up the properties such as Created date, updated date, template selected, etc...
-            </remarks>
-        </member>
-        <member name="M:Umbraco.Web.Models.Mapping.TabsAndPropertiesResolver.AddListView``1(Umbraco.Web.Models.ContentEditing.TabbedContentItem{Umbraco.Web.Models.ContentEditing.ContentPropertyDisplay,``0},System.String,Umbraco.Core.Services.IDataTypeService,Umbraco.Core.Services.ILocalizedTextService)">
-            <summary>
-            Adds the container (listview) tab to the document
-            </summary>
-            <typeparam name="TPersisted"></typeparam>
-            <param name="display"></param>
-            <param name="entityType">This must be either 'content' or 'media'</param>
-            <param name="dataTypeService"></param>
-            <param name="localizedTextService"></param>
-        </member>
         <member name="T:Umbraco.Web.Models.PackageInstallResult">
             <summary>
             Model that is returned when a package is totally finished installing
@@ -4868,6 +4640,31 @@
         <member name="T:Umbraco.Web.Models.PublishedContentWithKeyBase">
             <summary>
             Provide an abstract base class for <c>IPublishedContent</c> implementations.
+            </summary>
+        </member>
+        <member name="T:Umbraco.Web.Models.BackOfficeTour">
+            <summary>
+            A model representing a tour.
+            </summary>
+        </member>
+        <member name="T:Umbraco.Web.Models.UserTourStatus">
+            <summary>
+            A model representing the tours a user has taken/completed
+            </summary>
+        </member>
+        <member name="P:Umbraco.Web.Models.UserTourStatus.Alias">
+            <summary>
+            The tour alias
+            </summary>
+        </member>
+        <member name="P:Umbraco.Web.Models.UserTourStatus.Completed">
+            <summary>
+            If the tour is completed
+            </summary>
+        </member>
+        <member name="P:Umbraco.Web.Models.UserTourStatus.Disabled">
+            <summary>
+            If the tour is disabled
             </summary>
         </member>
         <member name="M:Umbraco.Web.Models.ContentExtensions.GetCulture(Umbraco.Core.Models.IContent,System.Uri)">
@@ -5157,330 +4954,6 @@
             <summary>
             If the password was reset, this is the value it has been changed to
             </summary>
-        </member>
-        <member name="T:Umbraco.Web.Models.Trees.CreateChildEntity">
-            <summary>
-            Represents the refresh node menu item
-            </summary>
-        </member>
-        <member name="T:Umbraco.Web.Models.Trees.MenuItemList">
-            <summary>
-            A custom menu list
-            </summary>
-            <remarks>
-            NOTE: We need a sub collection to the MenuItemCollection object due to how json serialization works.
-            </remarks>
-        </member>
-        <member name="M:Umbraco.Web.Models.Trees.MenuItemList.Add(umbraco.interfaces.IAction,System.String)">
-            <summary>
-            Adds a menu item
-            </summary>
-            <param name="action"></param>
-            <param name="name">The text to display for the menu item, will default to the IAction alias if not specified</param>
-        </member>
-        <member name="M:Umbraco.Web.Models.Trees.MenuItemList.Add``2(System.String,System.Boolean,System.Collections.Generic.IDictionary{System.String,System.Object})">
-            <summary>
-            Adds a menu item
-            </summary>
-            <typeparam name="TMenuItem"></typeparam>
-            <typeparam name="TAction"></typeparam>
-            <param name="hasSeparator"></param>
-            <param name="name">The text to display for the menu item, will default to the IAction alias if not specified</param>
-            <param name="additionalData"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Umbraco.Web.Models.Trees.MenuItemList.Add``1(System.String)">
-            <summary>
-            Adds a menu item
-            </summary>
-            <param name="name">The text to display for the menu item, will default to the IAction alias if not specified</param>
-            <typeparam name="T"></typeparam>
-        </member>
-        <member name="M:Umbraco.Web.Models.Trees.MenuItemList.Add``1(System.String,System.String,System.String,System.Boolean)">
-            <summary>
-            Adds a menu item with a key value pair which is merged to the AdditionalData bag
-            </summary>
-            <typeparam name="T"></typeparam>
-            <param name="key"></param>
-            <param name="value"></param>
-            <param name="name">The text to display for the menu item, will default to the IAction alias if not specified</param>
-            <param name="hasSeparator"></param>
-        </member>
-        <member name="M:Umbraco.Web.Models.Trees.MenuItemList.Add``1(System.String,System.Boolean,System.Collections.Generic.IDictionary{System.String,System.Object})">
-            <summary>
-            Adds a menu item with a dictionary which is merged to the AdditionalData bag
-            </summary>
-            <typeparam name="T"></typeparam>
-            <param name="hasSeparator"></param>
-            /// <param name="name">The text to display for the menu item, will default to the IAction alias if not specified</param>
-            <param name="additionalData"></param>
-        </member>
-        <member name="M:Umbraco.Web.Models.Trees.MenuItemList.CreateMenuItem``1(System.String,System.Boolean,System.Collections.Generic.IDictionary{System.String,System.Object})">
-            <summary>
-            
-            </summary>
-            <typeparam name="T"></typeparam>
-            <param name="hasSeparator"></param>
-            <param name="name">The text to display for the menu item, will default to the IAction alias if not specified</param>
-            <param name="additionalData"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Umbraco.Web.Models.Trees.MenuItemList.DetectLegacyActionMenu(System.Type,Umbraco.Web.Models.Trees.MenuItem)">
-            <summary>
-            Checks if the IAction type passed in is attributed with LegacyActionMenuItemAttribute and if so 
-            ensures that the correct action metadata is added.
-            </summary>
-            <param name="actionType"></param>
-            <param name="menuItem"></param>
-        </member>
-        <member name="T:Umbraco.Web.Models.Trees.ActionMenuItem">
-            <summary>
-            A menu item that represents some JS that needs to execute when the menu item is clicked.
-            </summary>
-            <remarks>
-            These types of menu items are rare but they do exist. Things like refresh node simply execute
-            JS and don't launch a dialog.
-            
-            Each action menu item describes what angular service that it's method exists in and what the method name is.
-            
-            An action menu item must describe the angular service name for which it's method exists. It may also define what the 
-            method name is that will be called in this service but if one is not specified then we will assume the method name is the
-            same as the Type name of the current action menu class.
-            </remarks>
-        </member>
-        <member name="T:Umbraco.Web.Models.Trees.ActionMenuItemAttribute">
-            <summary>
-            The attribute to assign to any ActionMenuItem objects.
-            </summary>
-        </member>
-        <member name="M:Umbraco.Web.Models.Trees.ActionMenuItemAttribute.#ctor(System.String,System.String)">
-            <summary>
-            This constructor defines both the angular service and method name to use
-            </summary>
-            <param name="serviceName"></param>
-            <param name="methodName"></param>
-        </member>
-        <member name="M:Umbraco.Web.Models.Trees.ActionMenuItemAttribute.#ctor(System.String)">
-            <summary>
-            This constructor will assume that the method name equals the type name of the action menu class
-            </summary>
-            <param name="serviceName"></param>
-        </member>
-        <member name="T:Umbraco.Web.Models.Trees.MenuItem">
-            <summary>
-            A context menu item
-            </summary>
-        </member>
-        <member name="P:Umbraco.Web.Models.Trees.MenuItem.AdditionalData">
-            <summary>
-            A dictionary to support any additional meta data that should be rendered for the node which is 
-            useful for custom action commands such as 'create', 'copy', etc...
-            </summary>
-            <remarks>
-            We will also use the meta data collection for dealing with legacy menu items (i.e. for loading custom URLs or
-            executing custom JS).
-            </remarks>
-        </member>
-        <member name="P:Umbraco.Web.Models.Trees.MenuItem.SeperatorBefore">
-            <summary>
-            Ensures a menu separator will exist before this menu item
-            </summary>
-        </member>
-        <member name="F:Umbraco.Web.Models.Trees.MenuItem.DialogTitleKey">
-            <summary>
-            Used as a key for the AdditionalData to specify a specific dialog title instead of the menu title
-            </summary>
-        </member>
-        <member name="F:Umbraco.Web.Models.Trees.MenuItem.ActionUrlKey">
-            <summary>
-            Used to specify the URL that the dialog will launch to in an iframe
-            </summary>
-        </member>
-        <member name="F:Umbraco.Web.Models.Trees.MenuItem.ActionViewKey">
-            <summary>
-            Used to specify the angular view that the dialog will launch
-            </summary>
-        </member>
-        <member name="F:Umbraco.Web.Models.Trees.MenuItem.JsActionKey">
-            <summary>
-            Used to specify the js method to execute for the menu item 
-            </summary>
-        </member>
-        <member name="F:Umbraco.Web.Models.Trees.MenuItem.ActionRouteKey">
-            <summary>
-            Used to specify an angular route to go to for the menu item
-            </summary>
-        </member>
-        <member name="M:Umbraco.Web.Models.Trees.MenuItem.NavigateToRoute(System.String)">
-            <summary>
-            Sets the menu item to navigate to the specified angular route path
-            </summary>
-            <param name="route"></param>
-        </member>
-        <member name="M:Umbraco.Web.Models.Trees.MenuItem.ExecuteLegacyJs(System.String)">
-            <summary>
-            Adds the required meta data to the menu item so that angular knows to attempt to call the Js method.
-            </summary>
-            <param name="jsToExecute"></param>
-        </member>
-        <member name="M:Umbraco.Web.Models.Trees.MenuItem.LaunchDialogView(System.String,System.String)">
-            <summary>
-            Sets the menu item to display a dialog based on an angular view path
-            </summary>
-            <param name="view"></param>
-            <param name="dialogTitle"></param>
-        </member>
-        <member name="M:Umbraco.Web.Models.Trees.MenuItem.LaunchDialogUrl(System.String,System.String)">
-            <summary>
-            Sets the menu item to display a dialog based on a url path in an iframe
-            </summary>
-            <param name="url"></param>
-            <param name="dialogTitle"></param>
-        </member>
-        <member name="M:Umbraco.Web.Models.Trees.MenuItem.SetDialogTitle(System.String)">
-            <summary>
-            Puts a dialog title into the meta data to be displayed on the dialog of the menu item (if there is one)
-            instead of the menu name
-            </summary>
-            <param name="dialogTitle"></param>
-        </member>
-        <member name="M:Umbraco.Web.Models.Trees.MenuItem.SetActionUrl(System.String,Umbraco.Web.Trees.ActionUrlMethod)">
-            <summary>
-            Configures the menu item to launch a URL with the specified action (dialog or new window)
-            </summary>
-            <param name="url"></param>
-            <param name="method"></param>
-        </member>
-        <member name="T:Umbraco.Web.Models.Trees.MenuItemCollection">
-            <summary>
-            A menu item collection for a given tree node
-            </summary>
-        </member>
-        <member name="P:Umbraco.Web.Models.Trees.MenuItemCollection.DefaultMenuAlias">
-            <summary>
-            Sets the default menu item alias to be shown when the menu is launched - this is optional and if not set then the menu will just be shown normally.
-            </summary>
-        </member>
-        <member name="P:Umbraco.Web.Models.Trees.MenuItemCollection.Items">
-            <summary>
-            The list of menu items
-            </summary>
-            <remarks>
-            We require this so the json serialization works correctly
-            </remarks>
-        </member>
-        <member name="T:Umbraco.Web.Models.Trees.RefreshNode">
-            <summary>
-            Represents the refresh node menu item
-            </summary>
-        </member>
-        <member name="T:Umbraco.Web.Models.Trees.SectionRootNode">
-            <summary>
-            A special tree node that represents the section root node for any section.
-            </summary>
-            <remarks>
-            This is required to return the tree data for a given section. Some sections may only contain one tree which means it's section
-            root should also display a menu, whereas other sections have multiple trees and the section root shouldn't display a menu.
-            
-            The section root also contains an explicit collection of children.
-            </remarks>
-        </member>
-        <member name="T:Umbraco.Web.Models.Trees.TreeNode">
-            <summary>
-            Represents a model in the tree
-            </summary>
-            <remarks>
-            TreeNode is sealed to prevent developers from adding additional json data to the response
-            </remarks>
-        </member>
-        <member name="M:Umbraco.Web.Models.Trees.TreeNode.#ctor(System.String,System.String,System.String,System.String)">
-            <summary>
-            Internal constructor, to create a tree node use the CreateTreeNode methods of the TreeApiController.
-            </summary>
-            <param name="nodeId"></param>
-            <param name="parentId">The parent id for the current node</param>
-            <param name="getChildNodesUrl"></param>
-            <param name="menuUrl"></param>
-        </member>
-        <member name="P:Umbraco.Web.Models.Trees.TreeNode.HasChildren">
-            <summary>
-            A flag to set whether or not this node has children
-            </summary>
-        </member>
-        <member name="P:Umbraco.Web.Models.Trees.TreeNode.NodeType">
-            <summary>
-            The tree nodetype which refers to the type of node rendered in the tree
-            </summary>
-        </member>
-        <member name="P:Umbraco.Web.Models.Trees.TreeNode.RoutePath">
-            <summary>
-            Optional: The Route path for the editor for this node
-            </summary>
-            <remarks>
-            If this is not set, then the route path will be automatically determined by: {section}/edit/{id}
-            </remarks>
-        </member>
-        <member name="P:Umbraco.Web.Models.Trees.TreeNode.ChildNodesUrl">
-            <summary>
-            The JSON url to load the nodes children
-            </summary>
-        </member>
-        <member name="P:Umbraco.Web.Models.Trees.TreeNode.MenuUrl">
-            <summary>
-            The JSON url to load the menu from
-            </summary>
-        </member>
-        <member name="P:Umbraco.Web.Models.Trees.TreeNode.IconIsClass">
-            <summary>
-            Returns true if the icon represents a CSS class instead of a file path
-            </summary>
-        </member>
-        <member name="P:Umbraco.Web.Models.Trees.TreeNode.IconFilePath">
-            <summary>
-            Returns the icon file path if the icon is not a class, otherwise returns an empty string
-            </summary>
-        </member>
-        <member name="P:Umbraco.Web.Models.Trees.TreeNode.CssClasses">
-            <summary>
-            A list of additional/custom css classes to assign to the node
-            </summary>
-        </member>
-        <member name="M:Umbraco.Web.Models.Trees.TreeNodeExtensions.AssignLegacyJsCallback(Umbraco.Web.Models.Trees.TreeNode,System.String)">
-            <summary>
-            Legacy tree node's assign a JS method callback for when an item is clicked, this method facilitates that.
-            </summary>
-            <param name="treeNode"></param>
-            <param name="jsCallback"></param>
-        </member>
-        <member name="M:Umbraco.Web.Models.Trees.TreeNodeExtensions.SetContainerStyle(Umbraco.Web.Models.Trees.TreeNode)">
-            <summary>
-            Sets the node style to show that it is currently protected publicly
-            </summary>
-            <param name="treeNode"></param>
-        </member>
-        <member name="M:Umbraco.Web.Models.Trees.TreeNodeExtensions.SetProtectedStyle(Umbraco.Web.Models.Trees.TreeNode)">
-            <summary>
-            Sets the node style to show that it is currently protected publicly
-            </summary>
-            <param name="treeNode"></param>
-        </member>
-        <member name="M:Umbraco.Web.Models.Trees.TreeNodeExtensions.SetLockedStyle(Umbraco.Web.Models.Trees.TreeNode)">
-            <summary>
-            Sets the node style to show that it is currently locked / non-deletable
-            </summary>
-            <param name="treeNode"></param>
-        </member>
-        <member name="M:Umbraco.Web.Models.Trees.TreeNodeExtensions.SetHasUnpublishedVersionStyle(Umbraco.Web.Models.Trees.TreeNode)">
-            <summary>
-            Sets the node style to show that it is has unpublished versions (but is currently published)
-            </summary>
-            <param name="treeNode"></param>
-        </member>
-        <member name="M:Umbraco.Web.Models.Trees.TreeNodeExtensions.SetNotPublishedStyle(Umbraco.Web.Models.Trees.TreeNode)">
-            <summary>
-            Sets the node style to show that it is is not published
-            </summary>
-            <param name="treeNode"></param>
         </member>
         <member name="T:Umbraco.Web.Models.ProfileModel">
             <summary>
@@ -5815,6 +5288,814 @@
             <summary>
             Returns the current Culture assigned to the page being rendered
             </summary>
+        </member>
+        <member name="T:Umbraco.Web.TourFilterResolver">
+            <summary>
+            Allows for adding filters for tours during startup
+            </summary>
+        </member>
+        <member name="M:Umbraco.Web.TourFilterResolver.AddFilter(Umbraco.Web.Models.BackOfficeTourFilter)">
+            <summary>
+            Adds a filter instance
+            </summary>
+            <param name="filter"></param>
+        </member>
+        <member name="M:Umbraco.Web.TourFilterResolver.AddFilterByPlugin(System.String)">
+            <summary>
+            Helper method for adding a filter by exact plugin name
+            </summary>
+            <param name="pluginName">Regex string used for matching</param>
+        </member>
+        <member name="M:Umbraco.Web.TourFilterResolver.AddFilterByFile(System.String)">
+            <summary>
+            Helper method for adding a filter by exact file name
+            </summary>
+            <param name="file"></param>
+        </member>
+        <member name="M:Umbraco.Web.TourFilterResolver.AddFilterByAlias(System.String)">
+            <summary>
+            Helper method for adding a filter by exact tour alias
+            </summary>
+            <param name="alias"></param>
+        </member>
+        <member name="M:Umbraco.Web.TourFilterResolver.RemoveFilter(Umbraco.Web.Models.BackOfficeTourFilter)">
+            <summary>
+            Removes a filter instance
+            </summary>
+            <param name="filter"></param>
+        </member>
+        <member name="M:Umbraco.Web.TourFilterResolver.RemoveFilterWhere(System.Func{Umbraco.Web.Models.BackOfficeTourFilter,System.Boolean})">
+            <summary>
+            Removes a filter instance based on callback
+            </summary>
+            <param name="filter"></param>
+        </member>
+        <member name="M:Umbraco.Web.TourFilterResolver.CreateInstances">
+            <inheritdoc />
+            <summary>
+            Overridden to return the combined created instances based on the resolved Types and the Concrete values added with AddFilter
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:Umbraco.Web.ExamineStartup">
+            <summary>
+            Used to configure Examine during startup for the web application
+            </summary>
+        </member>
+        <member name="M:Umbraco.Web.ExamineStartup.Initialize">
+            <summary>
+            Called during the initialize operation of the boot manager process
+            </summary>
+        </member>
+        <member name="M:Umbraco.Web.ExamineStartup.Complete">
+            <summary>
+            Called during the Complete operation of the boot manager process
+            </summary>
+        </member>
+        <member name="M:Umbraco.Web.ExamineStartup.RebuildIndexes">
+            <summary>
+            Called to perform the rebuilding indexes on startup if the indexes don't exist
+            </summary>
+        </member>
+        <member name="M:Umbraco.Web.ExamineStartup.GetIndexesForColdBoot">
+            <summary>
+            The method used to create indexes on a cold boot
+            </summary>
+            <remarks>
+            A cold boot is when the server determines it will not (or cannot) process instructions in the cache table and
+            will rebuild it's own caches itself.
+            </remarks>
+        </member>
+        <member name="M:Umbraco.Web.ExamineStartup.EnsureUnlockedAndConfigured">
+            <summary>
+            Must be called to configure each index and ensure it's unlocked before any indexing occurs
+            </summary>
+            <remarks>
+            Indexing rebuilding can occur on a normal boot if the indexes are empty or on a cold boot by the database server messenger. Before
+            either of these happens, we need to configure the indexes.
+            </remarks>
+        </member>
+        <member name="P:Umbraco.Web.HealthCheck.Checks.Config.AbstractConfigCheck.FilePath">
+            <summary>
+            Gets the config file path.
+            </summary>
+        </member>
+        <member name="P:Umbraco.Web.HealthCheck.Checks.Config.AbstractConfigCheck.XPath">
+            <summary>
+            Gets XPath statement to the config element to check.
+            </summary>
+        </member>
+        <member name="P:Umbraco.Web.HealthCheck.Checks.Config.AbstractConfigCheck.Values">
+            <summary>
+            Gets the values to compare against.
+            </summary>
+        </member>
+        <member name="P:Umbraco.Web.HealthCheck.Checks.Config.AbstractConfigCheck.CurrentValue">
+            <summary>
+            Gets the current value
+            </summary>
+        </member>
+        <member name="P:Umbraco.Web.HealthCheck.Checks.Config.AbstractConfigCheck.ProvidedValue">
+            <summary>
+            Gets the provided value
+            </summary>
+        </member>
+        <member name="P:Umbraco.Web.HealthCheck.Checks.Config.AbstractConfigCheck.ValueComparisonType">
+            <summary>
+            Gets the comparison type for checking the value.
+            </summary>
+        </member>
+        <member name="P:Umbraco.Web.HealthCheck.Checks.Config.AbstractConfigCheck.ValidIfConfigMissing">
+            <summary>
+            Gets the flag indicating if the check is considered successful if the config value is missing (defaults to false - an error - if missing)
+            </summary>
+        </member>
+        <member name="P:Umbraco.Web.HealthCheck.Checks.Config.AbstractConfigCheck.FileName">
+            <summary>
+            Gets the name of the file.
+            </summary>
+        </member>
+        <member name="P:Umbraco.Web.HealthCheck.Checks.Config.AbstractConfigCheck.AbsoluteFilePath">
+            <summary>
+            Gets the absolute file path.
+            </summary>
+        </member>
+        <member name="P:Umbraco.Web.HealthCheck.Checks.Config.AbstractConfigCheck.CheckSuccessMessage">
+            <summary>
+            Gets the message for when the check has succeeded.
+            </summary>
+        </member>
+        <member name="P:Umbraco.Web.HealthCheck.Checks.Config.AbstractConfigCheck.CheckErrorMessage">
+            <summary>
+            Gets the message for when the check has failed.
+            </summary>
+        </member>
+        <member name="P:Umbraco.Web.HealthCheck.Checks.Config.AbstractConfigCheck.RectifySuccessMessage">
+            <summary>
+            Gets the rectify success message.
+            </summary>
+        </member>
+        <member name="P:Umbraco.Web.HealthCheck.Checks.Config.AbstractConfigCheck.CanRectify">
+            <summary>
+            Gets a value indicating whether this check can be rectified automatically.
+            </summary>
+        </member>
+        <member name="P:Umbraco.Web.HealthCheck.Checks.Config.AbstractConfigCheck.CanRectifyWithValue">
+            <summary>
+            Gets a value indicating whether this check can be rectified automatically if a value is provided.
+            </summary>
+        </member>
+        <member name="M:Umbraco.Web.HealthCheck.Checks.Config.AbstractConfigCheck.Rectify">
+            <summary>
+            Rectifies this check.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Umbraco.Web.HealthCheck.Checks.Config.AbstractConfigCheck.Rectify(System.String)">
+            <summary>
+            Rectifies this check with a provided value.
+            </summary>
+            <param name="value">Value provided</param>
+            <returns></returns>
+        </member>
+        <member name="M:Umbraco.Web.HealthCheck.Checks.Config.ConfigurationService.#ctor(System.String,System.String,Umbraco.Core.Services.ILocalizedTextService)">
+            <param name="configFilePath">The absolute file location of the configuration file</param>
+            <param name="xPath">The XPath to select the value</param>
+            <returns></returns>
+        </member>
+        <member name="M:Umbraco.Web.HealthCheck.Checks.Config.ConfigurationService.GetConfigurationValue">
+            <summary>
+            Gets a value from a given configuration file with the given XPath  
+            </summary>
+        </member>
+        <member name="M:Umbraco.Web.HealthCheck.Checks.Config.ConfigurationService.UpdateConfigFile(System.String)">
+            <summary>
+            Updates a value in a given configuration file with the given XPath  
+            </summary>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Umbraco.Web.HealthCheck.Checks.Services.SmtpCheck.GetStatus">
+            <summary>
+            Get the status for this health check
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Umbraco.Web.HealthCheck.Checks.Services.SmtpCheck.ExecuteAction(Umbraco.Web.HealthCheck.HealthCheckAction)">
+            <summary>
+            Executes the action and returns it's status
+            </summary>
+            <param name="action"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Umbraco.Web.HealthCheck.Checks.Permissions.FolderAndFilePermissionsCheck.GetStatus">
+            <summary>
+            Get the status for this health check
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Umbraco.Web.HealthCheck.Checks.Permissions.FolderAndFilePermissionsCheck.ExecuteAction(Umbraco.Web.HealthCheck.HealthCheckAction)">
+            <summary>
+            Executes the action and returns it's status
+            </summary>
+            <param name="action"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Umbraco.Web.HealthCheck.Checks.Security.ExcessiveHeadersCheck.GetStatus">
+            <summary>
+            Get the status for this health check
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Umbraco.Web.HealthCheck.Checks.Security.ExcessiveHeadersCheck.ExecuteAction(Umbraco.Web.HealthCheck.HealthCheckAction)">
+            <summary>
+            Executes the action and returns it's status
+            </summary>
+            <param name="action"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Umbraco.Web.HealthCheck.Checks.Security.ClickJackingCheck.GetStatus">
+            <summary>
+            Get the status for this health check
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Umbraco.Web.HealthCheck.Checks.Security.ClickJackingCheck.ExecuteAction(Umbraco.Web.HealthCheck.HealthCheckAction)">
+            <summary>
+            Executes the action and returns it's status
+            </summary>
+            <param name="action"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Umbraco.Web.HealthCheck.Checks.Security.HttpsCheck.GetStatus">
+            <summary>
+            Get the status for this health check
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Umbraco.Web.HealthCheck.Checks.Security.HttpsCheck.ExecuteAction(Umbraco.Web.HealthCheck.HealthCheckAction)">
+            <summary>
+            Executes the action and returns it's status
+            </summary>
+            <param name="action"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Umbraco.Web.HealthCheck.Checks.DataIntegrity.XmlDataIntegrityHealthCheck">
+            <summary>
+            This moves the functionality from the XmlIntegrity check dashboard into a health check
+            </summary>
+        </member>
+        <member name="M:Umbraco.Web.HealthCheck.Checks.DataIntegrity.XmlDataIntegrityHealthCheck.GetStatus">
+            <summary>
+            Get the status for this health check
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Umbraco.Web.HealthCheck.Checks.DataIntegrity.XmlDataIntegrityHealthCheck.ExecuteAction(Umbraco.Web.HealthCheck.HealthCheckAction)">
+            <summary>
+            Executes the action and returns it's status
+            </summary>
+            <param name="action"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Umbraco.Web.HealthCheck.Checks.DataIntegrity.XmlDataIntegrityHealthCheck.CheckMedia">
+            <summary>
+            Checks the cmsContentXml table to see if the number of entries for media matches the number of media entities
+            </summary>
+            <returns></returns>
+            <remarks>
+            Further to just counting the data integrity, this also checks if the XML stored in the cmsContentXml table contains the correct
+            GUID identifier. In older versions of Umbraco, the GUID is not persisted to the content cache, that will cause problems in newer
+            versions of Umbraco, so the xml table would need a rebuild.
+            </remarks>
+        </member>
+        <member name="M:Umbraco.Web.HealthCheck.Checks.DataIntegrity.XmlDataIntegrityHealthCheck.CheckContent">
+            <summary>
+            Checks the cmsContentXml table to see if the number of entries for content matches the number of published content entities
+            </summary>
+            <returns></returns>
+            <remarks>
+            Further to just counting the data integrity, this also checks if the XML stored in the cmsContentXml table contains the correct
+            GUID identifier. In older versions of Umbraco, the GUID is not persisted to the content cache, that will cause problems in newer
+            versions of Umbraco, so the xml table would need a rebuild.
+            </remarks>
+        </member>
+        <member name="M:Umbraco.Web.HealthCheck.HealthCheckAction.#ctor">
+            <summary>
+            Empty ctor used for serialization
+            </summary>
+        </member>
+        <member name="M:Umbraco.Web.HealthCheck.HealthCheckAction.#ctor(System.String,System.Guid)">
+            <summary>
+            Default ctor
+            </summary>
+            <param name="alias"></param>
+            <param name="healthCheckId"></param>
+        </member>
+        <member name="P:Umbraco.Web.HealthCheck.HealthCheckAction.Alias">
+            <summary>
+            The alias of the action - this is used by the Health Check instance to execute the action
+            </summary>
+        </member>
+        <member name="P:Umbraco.Web.HealthCheck.HealthCheckAction.HealthCheckId">
+            <summary>
+            The Id of the Health Check instance
+            </summary>
+            <remarks>
+            This is used to find the Health Check instance to execute this action
+            </remarks>
+        </member>
+        <member name="P:Umbraco.Web.HealthCheck.HealthCheckAction.ActionParameters">
+            <summary>
+            This could be used if the status has a custom view that specifies some parameters to be sent to the server
+            when an action needs to be executed
+            </summary>
+        </member>
+        <member name="F:Umbraco.Web.HealthCheck.HealthCheckAction._name">
+            <summary>
+            The name of the action - this is used to name the fix button
+            </summary>
+        </member>
+        <member name="P:Umbraco.Web.HealthCheck.HealthCheckAction.Description">
+            <summary>
+            The description of the action - this is used to give a description before executing the action
+            </summary>
+        </member>
+        <member name="P:Umbraco.Web.HealthCheck.HealthCheckAction.ValueRequired">
+            <summary>
+            Indicates if a value is required to rectify the issue
+            </summary>
+        </member>
+        <member name="P:Umbraco.Web.HealthCheck.HealthCheckAction.ProvidedValue">
+            <summary>
+            Provides a value to rectify the issue
+            </summary>
+        </member>
+        <member name="T:Umbraco.Web.HealthCheck.HealthCheckNotificationMethodAttribute">
+            <summary>
+            Metadata attribute for health check notification methods
+            </summary>
+        </member>
+        <member name="T:Umbraco.Web.HealthCheck.HealthCheckAttribute">
+            <summary>
+            Metadata attribute for Health checks
+            </summary>
+        </member>
+        <member name="T:Umbraco.Web.HealthCheck.HealthCheckContext">
+            <summary>
+            Context exposing all services that could be required for health check classes to perform and/or fix their checks
+            </summary>
+        </member>
+        <member name="T:Umbraco.Web.HealthCheck.HealthCheckController">
+            <summary>
+            The API controller used to display the health check info and execute any actions
+            </summary>
+        </member>
+        <member name="M:Umbraco.Web.HealthCheck.HealthCheckController.GetAllHealthChecks">
+            <summary>
+            Gets a grouped list of health checks, but doesn't actively check the status of each health check.
+            </summary>
+            <returns>Returns a collection of anonymous objects representing each group.</returns>
+        </member>
+        <member name="T:Umbraco.Web.HealthCheck.HealthCheckNotificationMethodResolver">
+            <summary>
+            Resolves all health check instances
+            </summary>
+            <remarks>
+            Each instance scoped to the lifespan of the http request
+            </remarks>
+        </member>
+        <member name="P:Umbraco.Web.HealthCheck.HealthCheckNotificationMethodResolver.NotificationMethods">
+            <summary>
+            Returns all health check notification method instances
+            </summary>
+        </member>
+        <member name="T:Umbraco.Web.HealthCheck.HealthCheckNotificationMethodResolver.HealthCheckNotificationMethodServiceProvider">
+            <summary>
+            This will ctor the IHealthCheckNotificatationMethod instances
+            </summary>
+        </member>
+        <member name="T:Umbraco.Web.HealthCheck.HealthCheckResolver">
+            <summary>
+            Resolves all health check instances
+            </summary>
+            <remarks>
+            Each instance scoped to the lifespan of the http request
+            </remarks>
+        </member>
+        <member name="P:Umbraco.Web.HealthCheck.HealthCheckResolver.HealthChecks">
+            <summary>
+            Returns all health check instances
+            </summary>
+        </member>
+        <member name="T:Umbraco.Web.HealthCheck.HealthCheckResolver.HealthCheckServiceProvider">
+            <summary>
+            This will ctor the HealthCheck instances
+            </summary>
+            <remarks>
+            This is like a super crappy DI - in v8 we have real DI
+            </remarks>
+        </member>
+        <member name="T:Umbraco.Web.HealthCheck.HealthCheck">
+            <summary>
+            The abstract health check class
+            </summary>
+        </member>
+        <member name="M:Umbraco.Web.HealthCheck.HealthCheck.GetStatus">
+            <summary>
+            Get the status for this health check
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Umbraco.Web.HealthCheck.HealthCheck.ExecuteAction(Umbraco.Web.HealthCheck.HealthCheckAction)">
+            <summary>
+            Executes the action and returns it's status
+            </summary>
+            <param name="action"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Umbraco.Web.HealthCheck.HealthCheckStatus">
+            <summary>
+            The status returned for a health check when it performs it check
+            TODO: This model will be used in the WebApi result so needs attributes for JSON usage
+            </summary>
+        </member>
+        <member name="P:Umbraco.Web.HealthCheck.HealthCheckStatus.Message">
+            <summary>
+            The status message
+            </summary>
+        </member>
+        <member name="P:Umbraco.Web.HealthCheck.HealthCheckStatus.Description">
+            <summary>
+            The status description if one is necessary
+            </summary>
+        </member>
+        <member name="P:Umbraco.Web.HealthCheck.HealthCheckStatus.View">
+            <summary>
+            This is optional but would allow a developer to specify a path to an angular html view
+            in order to either show more advanced information and/or to provide input for the admin
+            to configure how an action is executed
+            </summary>
+        </member>
+        <member name="P:Umbraco.Web.HealthCheck.HealthCheckStatus.ResultType">
+            <summary>
+            The status type
+            </summary>
+        </member>
+        <member name="P:Umbraco.Web.HealthCheck.HealthCheckStatus.Actions">
+            <summary>
+            The potential actions to take (in any)
+            </summary>
+        </member>
+        <member name="M:Umbraco.Web.HealthCheck.NotificationMethods.EmailNotificationMethod.#ctor(System.Boolean,System.Boolean,Umbraco.Core.Configuration.HealthChecks.HealthCheckNotificationVerbosity,System.String)">
+            <summary>
+            Default constructor which is used in the provider model
+            </summary>
+            <param name="enabled"></param>
+            <param name="failureOnly"></param>
+            <param name="verbosity"></param>
+            <param name="recipientEmail"></param>
+        </member>
+        <member name="M:Umbraco.Web.HealthCheck.NotificationMethods.EmailNotificationMethod.#ctor(System.Boolean,System.Boolean,Umbraco.Core.Configuration.HealthChecks.HealthCheckNotificationVerbosity,System.String,Umbraco.Core.Services.ILocalizedTextService)">
+            <summary>
+            Constructor that could be used for testing
+            </summary>
+            <param name="enabled"></param>
+            <param name="failureOnly"></param>
+            <param name="verbosity"></param>
+            <param name="recipientEmail"></param>
+            <param name="textService"></param>
+        </member>
+        <member name="T:Umbraco.Web.IHttpContextAccessor">
+            <summary>
+            Used to retrieve the HttpContext
+            </summary>
+            <remarks>
+            NOTE: This has a singleton lifespan
+            </remarks>
+        </member>
+        <member name="M:Umbraco.Web.Install.InstallSteps.ConfigureMachineKey.HasMachineKey">
+            <summary>
+            Don't display the view or execute if a machine key already exists
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Umbraco.Web.Install.InstallSteps.ConfigureMachineKey.Execute(System.Nullable{System.Boolean})">
+            <summary>
+            The step execution method
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Umbraco.Web.Install.InstallSteps.Version73FileCleanup.Execute(System.Object)">
+            <summary>
+            The step execution method
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Umbraco.Web.Install.InstallSteps.Version73FileCleanup.RequiresExecution(System.Object)">
+            <summary>
+            Determines if this step needs to execute based on the current state of the application and/or install process
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:Umbraco.Web.Install.InstallSteps.UpgradeStep">
+            <summary>
+            This step is purely here to show the button to commence the upgrade
+            </summary>
+        </member>
+        <member name="T:Umbraco.Web.Install.InstallSteps.NewInstallStep">
+            <summary>
+            This is the first UI step for a brand new install
+            </summary>
+            <remarks>
+            By default this will show the user view which is the most basic information to configure a new install, but if an install get's interupted because of an 
+            error, etc... and the end-user refreshes the installer then we cannot show the user screen because they've already entered that information so instead we'll    
+            display a simple continue installation view.
+            </remarks>
+        </member>
+        <member name="P:Umbraco.Web.Install.InstallSteps.NewInstallStep.ViewModel">
+            <summary>
+            Return a custom view model for this step
+            </summary>
+        </member>
+        <member name="T:Umbraco.Web.Install.InstallException">
+            <summary>
+            Used for steps to be able to return a json structure back to the UI
+            </summary>
+        </member>
+        <member name="T:Umbraco.Web.Install.InstallStatusTracker">
+            <summary>
+            An internal in-memory status tracker for the current installation
+            </summary>
+        </member>
+        <member name="T:Umbraco.Web.Install.Controllers.InstallPackageController">
+            <summary>
+            A  controller for the installation process regarding packages
+            </summary>
+            <remarks>
+            Currently this is used for web services however we should/could eventually migrate the whole installer to MVC as it
+            is a bit of a mess currently.
+            </remarks>
+        </member>
+        <member name="M:Umbraco.Web.Install.Controllers.InstallPackageController.Index">
+            <summary>
+            Empty action, useful for retrieving the base url for this controller
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Umbraco.Web.Install.Controllers.InstallPackageController.DownloadPackageFiles(Umbraco.Web.Install.Models.InstallPackageModel)">
+            <summary>
+            Connects to the repo, downloads the package and creates the manifest
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Umbraco.Web.Install.Controllers.InstallPackageController.InstallPackageFiles(Umbraco.Web.Install.Models.InstallPackageModel)">
+            <summary>
+            Installs the files in the package
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Umbraco.Web.Install.Controllers.InstallPackageController.RestartAppPool">
+            <summary>
+            Ensures the app pool is restarted
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Umbraco.Web.Install.Controllers.InstallPackageController.CheckAppPoolRestart">
+            <summary>
+            Checks if the app pool has completed restarted
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Umbraco.Web.Install.Controllers.InstallPackageController.InstallBusinessLogic(Umbraco.Web.Install.Models.InstallPackageModel)">
+            <summary>
+            Installs the business logic portion of the package after app restart
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Umbraco.Web.Install.Controllers.InstallPackageController.CleanupInstallation(Umbraco.Web.Install.Models.InstallPackageModel)">
+            <summary>
+            Cleans up the package installation
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="P:Umbraco.Web.Install.Controllers.InstallApiController.UmbracoContext">
+            <summary>
+            Returns the current UmbracoContext
+            </summary>
+        </member>
+        <member name="M:Umbraco.Web.Install.Controllers.InstallApiController.GetSetup">
+            <summary>
+            Gets the install setup
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Umbraco.Web.Install.Controllers.InstallApiController.PostPerformInstall(Umbraco.Web.Install.Models.InstallInstructions)">
+            <summary>
+            Does the install
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Umbraco.Web.Install.Controllers.InstallApiController.IterateNextRequiredStep(Umbraco.Web.Install.Models.InstallSetupStep,System.Collections.Generic.Queue{Umbraco.Web.Install.Models.InstallTrackingItem},System.Guid,Umbraco.Web.Install.Models.InstallInstructions)">
+            <summary>
+            We'll peek ahead and check if it's RequiresExecution is returning true. If it
+            is not, we'll dequeue that step and peek ahead again (recurse)
+            </summary>
+            <param name="current"></param>
+            <param name="queue"></param>
+            <param name="installId"></param>
+            <param name="installModel"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Umbraco.Web.Install.Controllers.InstallApiController.StepRequiresExecution(Umbraco.Web.Install.Models.InstallSetupStep,Newtonsoft.Json.Linq.JToken)">
+            <summary>
+            Check if the step requires execution
+            </summary>
+            <param name="step"></param>
+            <param name="instruction"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Umbraco.Web.Install.Controllers.InstallController">
+            <summary>
+            The MVC Installation controller
+            </summary>
+            <remarks>
+            NOTE: All views must have their full paths as we do not have a custom view engine for the installation views!
+            </remarks>
+        </member>
+        <member name="T:Umbraco.Web.Install.Models.InstallProgressResultModel">
+            <summary>
+            Returned to the UI for each installation step that is completed
+            </summary>
+        </member>
+        <member name="P:Umbraco.Web.Install.Models.InstallProgressResultModel.View">
+            <summary>
+            The UI view to show when this step executes, by default no views are shown for the completion of a step unless explicitly specified.
+            </summary>
+        </member>
+        <member name="P:Umbraco.Web.Install.Models.InstallProgressResultModel.ViewModel">
+            <summary>
+            The view model to return to the UI if this step is returning a view (optional)
+            </summary>
+        </member>
+        <member name="T:Umbraco.Web.Install.Models.InstallSetup">
+            <summary>
+            Model containing all the install steps for setting up the UI
+            </summary>
+        </member>
+        <member name="T:Umbraco.Web.Install.Models.InstallSetupResult">
+            <summary>
+            The object returned from each installation step
+            </summary>
+        </member>
+        <member name="P:Umbraco.Web.Install.Models.InstallSetupResult.SavedStepData">
+            <summary>
+            Data that is persisted to the installation file which can be used from other installation steps
+            </summary>
+        </member>
+        <member name="P:Umbraco.Web.Install.Models.InstallSetupResult.View">
+            <summary>
+            The UI view to show when this step executes, by default no views are shown for the completion of a step unless explicitly specified.
+            </summary>
+        </member>
+        <member name="P:Umbraco.Web.Install.Models.InstallSetupResult.ViewModel">
+            <summary>
+            The view model to return to the UI if this step is returning a view (optional)
+            </summary>
+        </member>
+        <member name="T:Umbraco.Web.Install.Models.InstallSetupStep`1">
+            <summary>
+            Model to give to the front-end to collect the information for each step
+            </summary>
+        </member>
+        <member name="P:Umbraco.Web.Install.Models.InstallSetupStep`1.StepType">
+            <summary>
+            Defines the step model type on the server side so we can bind it
+            </summary>
+        </member>
+        <member name="M:Umbraco.Web.Install.Models.InstallSetupStep`1.Execute(`0)">
+            <summary>
+            The step execution method
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Umbraco.Web.Install.Models.InstallSetupStep`1.RequiresExecution(`0)">
+            <summary>
+            Determines if this step needs to execute based on the current state of the application and/or install process
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="P:Umbraco.Web.Install.Models.InstallSetupStep.ViewModel">
+            <summary>
+            The view model used to render the view, by default is null but can be populated
+            </summary>
+        </member>
+        <member name="P:Umbraco.Web.Install.Models.InstallSetupStep.ServerOrder">
+            <summary>
+            Defines what order this step needs to execute on the server side since the 
+            steps might be shown out of order on the front-end
+            </summary>
+        </member>
+        <member name="P:Umbraco.Web.Install.Models.InstallSetupStep.StepType">
+            <summary>
+            Defines the step model type on the server side so we can bind it
+            </summary>
+        </member>
+        <member name="P:Umbraco.Web.Install.Models.InstallSetupStepAttribute.PerformsAppRestart">
+            <summary>
+            A flag to notify the installer that this step performs an app pool restart, this can be handy to know since if the current
+            step is performing a restart, we cannot 'look ahead' to see if the next step can execute since we won't know until the app pool
+            is restarted.
+            </summary>
+        </member>
+        <member name="T:Umbraco.Web.Install.UmbracoInstallArea">
+            <summary>
+            An area registration for back office components
+            </summary>
+        </member>
+        <member name="M:Umbraco.Web.Install.UmbracoInstallArea.RegisterArea(System.Web.Mvc.AreaRegistrationContext)">
+            <summary>
+            Create the routes for the area
+            </summary>
+            <param name="context"></param>
+            <remarks>
+            By using the context to register the routes it means that the area is already applied to them all 
+            and that the namespaces searched for the controllers are ONLY the ones specified.
+            </remarks>
+        </member>
+        <member name="T:Umbraco.Web.Install.InstallAuthorizeAttribute">
+            <summary>
+            Ensures authorization occurs for the installer if it has already completed. If install has not yet occured
+            then the authorization is successful
+            </summary>
+        </member>
+        <member name="M:Umbraco.Web.Install.InstallAuthorizeAttribute.#ctor(Umbraco.Web.UmbracoContext)">
+            <summary>
+            THIS SHOULD BE ONLY USED FOR UNIT TESTS
+            </summary>
+            <param name="umbracoContext"></param>
+        </member>
+        <member name="M:Umbraco.Web.Install.InstallAuthorizeAttribute.AuthorizeCore(System.Web.HttpContextBase)">
+            <summary>
+            Ensures that the user must be logged in or that the application is not configured just yet.
+            </summary>
+            <param name="httpContext"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Umbraco.Web.Install.InstallAuthorizeAttribute.HandleUnauthorizedRequest(System.Web.Mvc.AuthorizationContext)">
+            <summary>
+            Override to redirect instead of throwing an exception
+            </summary>
+            <param name="filterContext"></param>
+        </member>
+        <member name="M:Umbraco.Web.Install.FilePermissionHelper.TestDirectories(System.String[],System.Collections.Generic.List{System.String}@,System.Boolean)">
+            <summary>
+            This will test the directories for write access
+            </summary>
+            <param name="directories"></param>
+            <param name="errorReport"></param>
+            <param name="writeCausesRestart">
+            If this is false, the easiest way to test for write access is to write a temp file, however some folder will cause
+            an App Domain restart if a file is written to the folder, so in that case we need to use the ACL APIs which aren't as
+            reliable but we cannot write a file since it will cause an app domain restart.
+            </param>
+            <returns></returns>
+        </member>
+        <member name="M:Umbraco.Web.Install.InstallHelper.GetAllSteps">
+            <summary>
+            Get the installer steps
+            </summary>
+            <returns></returns>
+            <remarks>
+            The step order returned here is how they will appear on the front-end if they have views assigned
+            </remarks>
+        </member>
+        <member name="M:Umbraco.Web.Install.InstallHelper.GetStepsForCurrentInstallType">
+            <summary>
+            Returns the steps that are used only for the current installation type
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="P:Umbraco.Web.Install.InstallHelper.IsBrandNewInstall">
+            <summary>
+            Checks if this is a brand new install meaning that there is no configured version and there is no configured database connection
+            </summary>
+        </member>
+        <member name="T:Umbraco.Web.Install.HttpInstallAuthorizeAttribute">
+            <summary>
+            Ensures authorization occurs for the installer if it has already completed. If install has not yet occured
+            then the authorization is successful
+            </summary>
+        </member>
+        <member name="M:Umbraco.Web.Install.HttpInstallAuthorizeAttribute.#ctor(Umbraco.Web.UmbracoContext)">
+            <summary>
+            THIS SHOULD BE ONLY USED FOR UNIT TESTS
+            </summary>
+            <param name="umbracoContext"></param>
         </member>
         <member name="T:Umbraco.Web.HtmlHelperBackOfficeExtensions">
             <summary>
@@ -7733,6 +8014,16 @@
             <returns>
             The <see cref="T:System.Object"/>.
             </returns>
+        </member>
+        <member name="M:Umbraco.Web.PropertyEditors.ValueConverters.MultiNodeTreePickerPropertyConverter.GetPublishedContent``1(``0,Umbraco.Core.Models.UmbracoObjectTypes@,Umbraco.Core.Models.UmbracoObjectTypes,System.Func{``0,Umbraco.Core.Models.IPublishedContent})">
+            <summary>
+            Attempt to get an IPublishedContent instance based on ID and content type
+            </summary>
+            <param name="nodeId">The content node ID</param>
+            <param name="actualType">The type of content being requested</param>
+            <param name="expectedType">The type of content expected/supported by <paramref name="contentFetcher"/></param>
+            <param name="contentFetcher">A function to fetch content of type <paramref name="expectedType"/></param>
+            <returns>The requested content, or null if either it does not exist or <paramref name="actualType"/> does not match <paramref name="expectedType"/></returns>
         </member>
         <member name="T:Umbraco.Web.PropertyEditors.ValueConverters.LegacyMediaPickerPropertyConverter">
             <summary>
@@ -10652,6 +10943,12 @@
             A callback executed during account auto-linking and before the user is persisted
             </summary>
         </member>
+        <member name="P:Umbraco.Web.Security.Identity.ExternalSignInAutoLinkOptions.OnExternalLogin">
+            <summary>
+            A callback executed during every time a user authenticates using an external login.
+            returns a boolean indicating if sign in should continue or not.
+            </summary>
+        </member>
         <member name="M:Umbraco.Web.Security.Identity.ExternalSignInAutoLinkOptions.GetDefaultUserGroups(Umbraco.Web.UmbracoContext,Microsoft.AspNet.Identity.Owin.ExternalLoginInfo)">
             <summary>
             The default User group aliases to use for auto-linking users
@@ -11013,27 +11310,13 @@
             <param name="ticket"></param>
             <returns></returns>
         </member>
-        <member name="M:Umbraco.Web.Security.OwinExtensions.TryGetHttpContext(Microsoft.Owin.IOwinContext)">
-            <summary>
-            Nasty little hack to get httpcontextbase from an owin context
-            </summary>
-            <param name="owinContext"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Umbraco.Web.Security.WebAuthExtensions.SetPrincipalForRequest(System.Net.Http.HttpRequestMessage,Umbraco.Core.Models.Membership.IUser)">
-            <summary>
-            This will set a an authenticated IPrincipal to the current request given the IUser object
-            </summary>
-            <param name="request"></param>
-            <param name="user"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Umbraco.Web.Security.WebAuthExtensions.SetPrincipalForRequest(System.Web.HttpContextBase,Umbraco.Core.Security.UserData)">
+        <!-- Badly formed XML comment ignored for member "M:Umbraco.Web.Security.WebAuthExtensions.SetPrincipalForRequest(System.Net.Http.HttpRequestMessage,System.Security.Principal.IPrincipal)" -->
+        <member name="M:Umbraco.Web.Security.WebAuthExtensions.SetPrincipalForRequest(System.Web.HttpContextBase,System.Security.Principal.IPrincipal)">
             <summary>
             This will set a an authenticated IPrincipal to the current request given the IUser object
             </summary>
             <param name="httpContext"></param>
-            <param name="userData"></param>
+            <param name="principal"></param>
             <returns></returns>
         </member>
         <member name="T:Umbraco.Web.Security.MembershipHelper">
@@ -12110,12 +12393,11 @@
             <param name="currentSection"></param>
             <returns></returns>
         </member>
-        <member name="M:Umbraco.Web.Trees.LegacyTreeDataConverter.GetLegacyConfirmView(umbraco.interfaces.IAction,System.String)">
+        <member name="M:Umbraco.Web.Trees.LegacyTreeDataConverter.GetLegacyConfirmView(umbraco.interfaces.IAction)">
             <summary>
             This will look at the legacy IAction's JsFunctionName and convert it to a confirmation dialog view if possible
             </summary>
             <param name="action"></param>
-            <param name="currentSection"></param>
             <returns></returns>
         </member>
         <member name="M:Umbraco.Web.Trees.LegacyTreeDataConverter.GetUrlAndTitleFromLegacyAction(umbraco.interfaces.IAction,System.String,System.String,System.String,System.String)">
@@ -12476,12 +12758,35 @@
             <param name="searchProvider"></param>
             <returns></returns>
         </member>
+        <member name="M:Umbraco.Web.ITypedPublishedContentQuery.TypedSearch(System.Int32,System.Int32,System.Int32@,System.String,System.Boolean,System.String)">
+            <summary>
+            Searches content
+            </summary>
+            <param name="skip"></param>
+            <param name="take"></param>
+            <param name="totalRecords"></param>
+            <param name="term"></param>
+            <param name="useWildCards"></param>
+            <param name="searchProvider"></param>
+            <returns></returns>
+        </member>
         <member name="M:Umbraco.Web.ITypedPublishedContentQuery.TypedSearch(Examine.SearchCriteria.ISearchCriteria,Examine.Providers.BaseSearchProvider)">
             <summary>
             Searhes content
             </summary>
             <param name="criteria"></param>
             <param name="searchProvider"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Umbraco.Web.ITypedPublishedContentQuery.TypedSearch(System.Int32,System.Int32,System.Int32@,Examine.SearchCriteria.ISearchCriteria,Examine.Providers.BaseSearchProvider)">
+            <summary>
+            Searhes content
+            </summary>
+            <param name="totalrecords"></param>
+            <param name="criteria"></param>
+            <param name="searchProvider"></param>
+            <param name="skip"></param>
+            <param name="take"></param>
             <returns></returns>
         </member>
         <member name="T:Umbraco.Web.IUmbracoComponentRenderer">
@@ -12524,6 +12829,18 @@
             <returns></returns>
         </member>
         <!-- Badly formed XML comment ignored for member "T:Umbraco.Web.BatchedDatabaseServerMessenger" -->
+        <member name="M:Umbraco.Web.BatchedDatabaseServerMessenger.Scheduler_Initializing(System.Object,System.Collections.Generic.List{Umbraco.Web.Scheduling.IBackgroundTask})">
+            <summary>
+            Occurs when the scheduler initializes all scheduling activity when the app is ready
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="T:Umbraco.Web.BatchedDatabaseServerMessenger.InstructionProcessing">
+            <summary>
+            This will process cache instructions on a background thread and will run every 5 seconds (or whatever is defined in the <see cref="P:Umbraco.Core.Sync.DatabaseServerMessengerOptions.ThrottleSeconds"/>)
+            </summary>
+        </member>
         <member name="T:Umbraco.Web.BatchedWebServiceServerMessenger">
             <summary>
             An <see cref="T:Umbraco.Core.Sync.IServerMessenger"/> that works by messaging servers via web services.
@@ -13350,12 +13667,35 @@
             <param name="searchProvider"></param>
             <returns></returns>
         </member>
+        <member name="M:Umbraco.Web.PublishedContentQuery.TypedSearch(System.Int32,System.Int32,System.Int32@,System.String,System.Boolean,System.String)">
+            <summary>
+            Searches content
+            </summary>
+            <param name="skip"></param>
+            <param name="take"></param>
+            <param name="totalRecords"></param>
+            <param name="term"></param>
+            <param name="useWildCards"></param>
+            <param name="searchProvider"></param>
+            <returns></returns>
+        </member>
         <member name="M:Umbraco.Web.PublishedContentQuery.TypedSearch(System.String,System.Boolean,System.String)">
             <summary>
             Searches content
             </summary>
             <param name="term"></param>
             <param name="useWildCards"></param>
+            <param name="searchProvider"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Umbraco.Web.PublishedContentQuery.TypedSearch(System.Int32,System.Int32,System.Int32@,Examine.SearchCriteria.ISearchCriteria,Examine.Providers.BaseSearchProvider)">
+            <summary>
+            Searhes content
+            </summary>
+            <param name="skip"></param>
+            <param name="take"></param>
+            <param name="totalRecords"></param>
+            <param name="criteria"></param>
             <param name="searchProvider"></param>
             <returns></returns>
         </member>
@@ -13366,6 +13706,18 @@
             <param name="criteria"></param>
             <param name="searchProvider"></param>
             <returns></returns>
+        </member>
+        <member name="M:Umbraco.Web.PublishedContentQuery.SearchAllFields(System.String,System.Boolean,Examine.LuceneEngine.Providers.BaseLuceneSearcher)">
+            <summary>
+            Helper method to create an ISearchCriteria for searching all fields in a <see cref="T:Examine.LuceneEngine.Providers.BaseLuceneSearcher"/>
+            </summary>
+            <param name="searchText"></param>
+            <param name="useWildcards"></param>
+            <param name="searcher"></param>
+            <returns></returns>
+            <remarks>
+            This is here because some of this stuff is internal in Examine
+            </remarks>
         </member>
         <member name="T:Umbraco.Web.ImageCropperTemplateExtensions">
             <summary>
@@ -15052,6 +15404,16 @@
             <param name="actionContext"></param>
             <returns></returns>           
         </member>
+        <member name="M:Umbraco.Web.WebApi.Binders.MemberBinder.MemberValidationHelper.ValidateProperties(Umbraco.Web.Models.ContentEditing.ContentItemBasic{Umbraco.Web.Models.ContentEditing.ContentPropertyBasic,Umbraco.Core.Models.IMember},System.Web.Http.Controllers.HttpActionContext)">
+            <summary>
+            This ensures that the internal membership property types are removed from validation before processing the validation
+            since those properties are actually mapped to real properties of the IMember.
+            This also validates any posted data for fields that are sensitive.
+            </summary>
+            <param name="postedItem"></param>
+            <param name="actionContext"></param>
+            <returns></returns>
+        </member>
         <member name="T:Umbraco.Web.WebApi.Binders.ContentItemBaseBinder`2">
             <summary>
             Binds the content model to the controller action for the posted multi-part Post
@@ -15183,6 +15545,12 @@
             This attribute can be applied at the class level and will indicate to any class level auth attribute that inherits from OverridableAuthorizationAttribute
             </remarks>
         </member>
+        <member name="T:Umbraco.Web.WebApi.Filters.FeatureAuthorizeAttribute">
+            <summary>
+            Ensures that the controller is an authorized feature.
+            </summary>
+            <remarks>Else returns unauthorized.</remarks>
+        </member>
         <member name="T:Umbraco.Web.WebApi.Filters.FilterGrouping">
             <summary>
             Quickly split filters into different types 
@@ -15265,6 +15633,9 @@
             to what is persisted for the current user and will update the current auth ticket with the correct data if required and output
             a custom response header for the UI to be notified of it.
             </summary>
+            <remarks>
+            This could/should be created as a filter on the BackOfficeCookieAuthenticationProvider just like the SecurityStampValidator does
+            </remarks>
         </member>
         <member name="M:Umbraco.Web.WebApi.Filters.CheckIfUserTicketDataIsStaleAttribute.ReSync(Umbraco.Core.Models.Membership.IUser,System.Web.Http.Controllers.HttpActionContext)">
             <summary>
@@ -15318,7 +15689,7 @@
             <param name="actionContext"></param>
             <returns></returns>
         </member>
-        <member name="M:Umbraco.Web.WebApi.Filters.ContentItemValidationHelper`2.ValidateProperties(Umbraco.Web.Models.ContentEditing.ContentPropertyBasic[],Umbraco.Core.Models.Property[],System.Web.Http.Controllers.HttpActionContext)">
+        <member name="M:Umbraco.Web.WebApi.Filters.ContentItemValidationHelper`2.ValidateProperties(System.Collections.Generic.List{Umbraco.Web.Models.ContentEditing.ContentPropertyBasic},System.Collections.Generic.List{Umbraco.Core.Models.Property},System.Web.Http.Controllers.HttpActionContext)">
             <summary>
             This validates that all of the posted properties exist on the persisted entity
             </summary>
@@ -18119,6 +18490,29 @@
             </summary>
             <param name="term"></param>
             <param name="useWildCards"></param>
+            <param name="searchProvider"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Umbraco.Web.UmbracoHelper.TypedSearch(System.Int32,System.Int32,System.Int32@,System.String,System.Boolean,System.String)">
+            <summary>
+            Searches content
+            </summary>
+            <param name="skip"></param>
+            <param name="take"></param>
+            <param name="totalRecords"></param>
+            <param name="term"></param>
+            <param name="useWildCards"></param>
+            <param name="searchProvider"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Umbraco.Web.UmbracoHelper.TypedSearch(System.Int32,System.Int32,System.Int32@,Examine.SearchCriteria.ISearchCriteria,Examine.Providers.BaseSearchProvider)">
+            <summary>
+            Searhes content
+            </summary>
+            <param name="skip"></param>
+            <param name="take"></param>
+            <param name="totalRecords"></param>
+            <param name="criteria"></param>
             <param name="searchProvider"></param>
             <returns></returns>
         </member>
@@ -29917,11 +30311,6 @@
             </summary>
             <param name="Javascript">The javascript.</param>
         </member>
-        <member name="T:umbraco.loadMacros">
-            <summary>
-            Handles loading of the cache application into the developer application tree
-            </summary>
-        </member>
         <member name="P:umbraco.loadMacros.SqlHelper">
             <summary>
             Unused, please do not use
@@ -30033,11 +30422,6 @@
             Renders the Javascript.
             </summary>
             <param name="Javascript">The javascript.</param>
-        </member>
-        <member name="T:umbraco.loadXslt">
-            <summary>
-            Handles loading of the xslt files into the application tree
-            </summary>
         </member>
         <member name="M:umbraco.loadXslt.RenderJS(System.Text.StringBuilder@)">
             <summary>

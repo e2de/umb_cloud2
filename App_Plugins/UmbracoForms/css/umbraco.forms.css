@@ -1703,6 +1703,10 @@ a.umb-forms-workflow-preview__item:hover {
   width: 100%;
   margin-bottom: 5px;
 }
+.umb-forms__store-records-disabled {
+  margin-top: -30px;
+  /* Used to help remove top whitespace between the date filter */
+}
 .umb-forms-button {
   display: inline-flex;
   justify-content: center;

@@ -1296,6 +1296,8 @@ angular.module("umbraco").controller("UmbracoForms.Editors.Form.EntriesControlle
     vm.prevEntryDetails = prevEntryDetails;
     vm.datePickerChange = datePickerChange;
     vm.toggleRecordState = toggleRecordState;
+    vm.canEditSensitiveData = false;
+    
 
     vm.keyboardShortcutsOverview = [
 
@@ -1337,6 +1339,9 @@ angular.module("umbraco").controller("UmbracoForms.Editors.Form.EntriesControlle
     userService.getCurrentUser().then(function (response) {
         currentUserId = response.id;
         vm.userLocale = response.locale;
+
+        //Set the API controller response on the Angular ViewModel
+        vm.canEditSensitiveData = response.userGroups.indexOf("sensitiveData") !== -1;
 
         //Now we can make a call to form securityResource
         securityResource.getByUserId(currentUserId).then(function (response) {
@@ -1512,7 +1517,8 @@ angular.module("umbraco").controller("UmbracoForms.Editors.Form.EntriesControlle
                     name: schemaItem.name,
                     value: valueItem,
                     viewName: schemaItem.view,
-                    view: '/app_plugins/umbracoforms/Backoffice/common/rendertypes/' + schemaItem.view + '.html'
+                    view: '/app_plugins/umbracoforms/Backoffice/common/rendertypes/' + schemaItem.view + '.html',
+                    containsSensitiveData: schemaItem.containsSensitiveData
                 };
 
                 var excludeItems = ["member", "state", "created", "updated"];
@@ -2318,13 +2324,15 @@ angular.module("umbraco").controller("UmbracoForms.Editors.Form.Dialogs.Workflow
 (function() {
     "use strict";
 
-    function FieldSettingsOverlay($scope, localizationService, formService) {
+    function FieldSettingsOverlay($scope, localizationService, formService, userService) {
 
         var vm = this;
 
         vm.showValidationPattern = false;
         vm.focusOnPatternField = false;
         vm.focusOnMandatoryField = false;
+        vm.canEditSensitiveData = false; //Default to false - until we check with the server for this user to see if they have rights to edit/set this property
+        vm.loading = true;  //We need to do a serverside call lookup at init/active to check is user has access to sensitive data
         vm.selectedValidationType = {};
         vm.actionTypes = [];
         vm.logicTypes = [];
@@ -2360,6 +2368,7 @@ angular.module("umbraco").controller("UmbracoForms.Editors.Form.Dialogs.Workflow
         vm.addConditionRule = addConditionRule;
         vm.getPrevalues = getPrevalues;
         vm.conditionFieldSelected = conditionFieldSelected;
+        
 
         //Creating duplicate of the fields array on the model
         //As the select for the conditions needs to ensure it does not include itself
@@ -2383,6 +2392,17 @@ angular.module("umbraco").controller("UmbracoForms.Editors.Form.Dialogs.Workflow
             vm.logicTypes = formService.getLogicTypes();
             vm.operators = formService.getOperators();
 
+
+            //Verify that the current user is allowed to view & change the property 'containsSensitiveData'
+            userService.getCurrentUser().then(function(user) {
+
+                //Set the API controller response on the Angular ViewModel
+                vm.canEditSensitiveData = user.userGroups.indexOf("sensitiveData") !== -1;
+
+                //Got a response back from promise - so lets load up the UI
+                vm.loading = false;
+            });
+            
             if(!$scope.model.field.condition) {
                 $scope.model.field.condition = {};
                 $scope.model.field.condition.actionType = vm.actionTypes[0].value;
@@ -3847,6 +3867,7 @@ function securityResource($http) {
         getByUserId: function (userId) {
             return $http.get(apiRoot + "GetByUserId?userId=" + userId);
         },
+
         save: function (userSecurity) {
             return $http.post(apiRoot + "PostSave", userSecurity);
         }
@@ -4905,7 +4926,8 @@ angular.module("umbraco.directives")
             replace: true,
             templateUrl: '/App_Plugins/UmbracoForms/directives/umb-forms-entry-detail.html',
             scope: {
-                entry: '='
+                entry: '=',
+                sensitiveDataAccess: '='
             },
             link: link
         };
@@ -5098,8 +5120,10 @@ angular.module("umbraco.directives")
             replace: true,
             templateUrl: '/App_Plugins/UmbracoForms/directives/umb-forms-render-type.html',
             scope: {
-                view: "=",
-                field: '='
+                view: '=',
+                field: '=',
+                sensitive: '=',
+                hasAccess: '='
             }
         };
 
