@@ -10227,6 +10227,7 @@
         //NOTE: We need to make each item an object, not just a string because you cannot 2-way bind to a primitive.
         $scope.newItem = '';
         $scope.hasError = false;
+        $scope.focusOnNew = false;
         if (!angular.isArray($scope.model.value)) {
             //make an array from the dictionary
             var items = [];
@@ -10257,6 +10258,7 @@
                     $scope.model.value.push({ value: $scope.newItem });
                     $scope.newItem = '';
                     $scope.hasError = false;
+                    $scope.focusOnNew = true;
                     return;
                 }
             }
@@ -10281,6 +10283,11 @@
                     $scope.model.value.splice(originalIndex, 1);
                     $scope.model.value.splice(newIndex, 0, movedElement);
                 }
+            }
+        };
+        $scope.createNew = function (event) {
+            if (event.keyCode == 13) {
+                $scope.add(event);
             }
         };
         function getElementIndexByPrevalueText(value) {
@@ -10608,7 +10615,7 @@
             initActiveColor();
         }
         $scope.toggleItem = function (color) {
-            var currentColor = $scope.model.value.hasOwnProperty('value') ? $scope.model.value.value : $scope.model.value;
+            var currentColor = $scope.model.value && $scope.model.value.hasOwnProperty('value') ? $scope.model.value.value : $scope.model.value;
             var newColor;
             if (currentColor === color.value) {
                 // deselect
@@ -11443,6 +11450,8 @@
                 // in the description of this controller, it states that this value isn't actually used for persistence,
                 // but we need to set it so that the editor and the server can detect that it's been changed, and it is used for validation.
                 $scope.model.value = { selectedFiles: newVal.trimEnd(',') };
+                //need to explicity setDirty here as file upload field can't track dirty & we can't use the fileCount (hidden field/model)
+                $scope.propertyForm.$setDirty();
             });
         });
         //listen for when the model value has changed
@@ -13331,6 +13340,7 @@
             vm.dragLeave = dragLeave;
             vm.onFilesQueue = onFilesQueue;
             vm.onUploadComplete = onUploadComplete;
+            markAsSensitive();
             function activate() {
                 if ($scope.entityType === 'media') {
                     mediaTypeHelper.getAllowedImagetypes(vm.nodeId).then(function (types) {
@@ -13373,6 +13383,18 @@
             }
             function onUploadComplete() {
                 $scope.getContent($scope.contentId);
+            }
+            function markAsSensitive() {
+                angular.forEach($scope.options.includeProperties, function (option) {
+                    option.isSensitive = false;
+                    angular.forEach($scope.items, function (item) {
+                        angular.forEach(item.properties, function (property) {
+                            if (option.alias === property.alias) {
+                                option.isSensitive = property.isSensitive;
+                            }
+                        });
+                    });
+                });
             }
             activate();
         }
@@ -14217,6 +14239,7 @@
                 // init the md editor after this digest because the DOM needs to be ready first
                 // so run the init on a timeout
                 $timeout(function () {
+                    $scope.markdownEditorInitComplete = false;
                     var converter2 = new Markdown.Converter();
                     var editor2 = new Markdown.Editor(converter2, '-' + $scope.model.alias);
                     editor2.run();
@@ -14228,7 +14251,12 @@
                     editor2.hooks.set('onPreviewRefresh', function () {
                         // We must manually update the model as there is no way to hook into the markdown editor events without exstensive edits to the library.
                         if ($scope.model.value !== $('textarea', $element).val()) {
-                            angularHelper.getCurrentForm($scope).$setDirty();
+                            if ($scope.markdownEditorInitComplete) {
+                                //only set dirty after init load to avoid "unsaved" dialogue when we don't want it
+                                angularHelper.getCurrentForm($scope).$setDirty();
+                            } else {
+                                $scope.markdownEditorInitComplete = true;
+                            }
                             $scope.model.value = $('textarea', $element).val();
                         }
                     });
@@ -15610,7 +15638,8 @@
                 //this is instead of doing a watch on the model.value = faster
                 $scope.model.onValueChanged = function (newVal, oldVal) {
                     //update the display val again if it has changed from the server;
-                    tinyMceEditor.setContent(newVal, { format: 'raw' });
+                    //uses an empty string in the editor when the value is null
+                    tinyMceEditor.setContent(newVal || '', { format: 'raw' });
                     //we need to manually fire this event since it is only ever fired based on loading from the DOM, this
                     // is required for our plugins listening to this event to execute
                     tinyMceEditor.fire('LoadContent', null);
@@ -15812,7 +15841,6 @@
             $scope.model.config.ticksPositions = _.map($scope.model.config.ticksPositions.split(','), function (item) {
                 return parseInt(item.trim());
             });
-            console.log($scope.model.config.ticksPositions);
         }
         if (!$scope.model.config.ticksLabels) {
             $scope.model.config.ticksLabels = [];
