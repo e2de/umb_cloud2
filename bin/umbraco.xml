@@ -2911,6 +2911,11 @@
             A converter to go from a <see cref="T:System.Web.Security.MembershipUser"/> to a <see cref="T:Umbraco.Web.Models.ContentEditing.MemberDisplay"/>
             </summary>
         </member>
+        <member name="T:Umbraco.Web.Models.Mapping.MemberModelMapper.MemberBasicPropertiesResolver">
+            <summary>
+            A resolver to map <see cref="T:Umbraco.Core.Models.IMember"/> properties to a collection of <see cref="T:Umbraco.Web.Models.ContentEditing.ContentPropertyBasic"/>
+            </summary>
+        </member>
         <member name="T:Umbraco.Web.Models.Mapping.DatabaseTypeResolver">
             <summary>
             Gets the DataTypeDatabaseType from the selected property editor for the data type
@@ -4571,6 +4576,11 @@
             <remarks>
             This is not really used for anything
             </remarks>
+        </member>
+        <member name="P:Umbraco.Web.Models.ContentEditing.ContentPropertyBasic.IsSensitive">
+            <summary>
+            Flags the property to denote that it can contain sensitive data
+            </summary>
         </member>
         <member name="P:Umbraco.Web.Models.ContentEditing.ContentPropertyBasic.PropertyEditor">
             <summary>

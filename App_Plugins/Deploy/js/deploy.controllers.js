@@ -10,19 +10,25 @@ angular.module('umbraco.deploy')
             vm.showStarterKitSelector = true;
 
             vm.openProject = openProject;
+            vm.openPayment = openPayment;
             vm.openDocumentation = openDocumentation;
             vm.selectStarterKit = selectStarterKit;
 
             function init() {
-                
+
                 assetsService.load(["lib/moment/moment-with-locales.js"], $scope);
-                
+
                 openStarterKitSelector();
 
             }
 
             function openProject() {
                 $window.open("https://www.s1.umbraco.io/project/" + vm.config.ProjectAlias);
+            };
+
+            
+            function openPayment() {
+                $window.open("https://www.s1.umbraco.io/project/" + vm.config.ProjectAlias + '/paymentmethod');
             };
 
             function openDocumentation() {
