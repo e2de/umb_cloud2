@@ -1,0 +1,14 @@
+{
+  "EditorAlias": "Umbraco.ImageCropper",
+  "DatabaseType": 0,
+  "PreValues": {
+    "crops": "[\r\n  {\r\n    \"alias\": \"thumb\",\r\n    \"width\": 150,\r\n    \"height\": 150\r\n  },\r\n  {\r\n    \"alias\": \"Home\",\r\n    \"width\": 2500,\r\n    \"height\": 1400\r\n  }\r\n]"
+  },
+  "Parent": null,
+  "Udi": "umb://data-type/1df9f033e6d4451fb8d2e0cbc50a836f",
+  "Dependencies": [],
+  "Name": "Image Cropper",
+  "Alias": null,
+  "__type": "Umbraco.Deploy,Umbraco.Deploy.Artifacts.DataTypeArtifact",
+  "__version": "2.0.12"
+}
