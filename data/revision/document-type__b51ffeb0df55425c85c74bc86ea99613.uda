@@ -56,11 +56,11 @@
         },
         {
           "Key": "503bfce4-cc9b-4ebd-ac1f-6d8923598d0b",
-          "Alias": "homeImages",
+          "Alias": "homeImage",
           "DataType": "umb://data-type/84c6b44131df4ffeb67e67d5bc3ae65a",
           "Description": null,
           "Mandatory": false,
-          "Name": "Home Images",
+          "Name": "Home Image",
           "SortOrder": 0,
           "Validation": null
         }

@@ -29,11 +29,11 @@
         },
         {
           "Key": "5732f21c-0ef1-4547-bc1e-b11e4fe514a4",
-          "Alias": "catgories",
+          "Alias": "categories",
           "DataType": "umb://data-type/06ffa5c28d8149da9c1c1805bf751c9c",
           "Description": null,
           "Mandatory": false,
-          "Name": "Catgories",
+          "Name": "Categories",
           "SortOrder": 2,
           "Validation": null
         },

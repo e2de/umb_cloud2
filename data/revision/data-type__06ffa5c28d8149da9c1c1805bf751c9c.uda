@@ -8,7 +8,7 @@
   "Parent": null,
   "Udi": "umb://data-type/06ffa5c28d8149da9c1c1805bf751c9c",
   "Dependencies": [],
-  "Name": "Blog Item - Catgories - Tags",
+  "Name": "Blog Item - Categories - Tags",
   "Alias": null,
   "__type": "Umbraco.Deploy,Umbraco.Deploy.Artifacts.DataTypeArtifact",
   "__version": "2.0.12"
