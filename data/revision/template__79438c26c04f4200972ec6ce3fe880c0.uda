@@ -1,1 +1,21 @@
-{"File":"umb://template-file/BlogItem.cshtml","Master":"umb://template/6a428b2ed8e542ce8cedf2fdea7df1de","Udi":"umb://template/79438c26c04f4200972ec6ce3fe880c0","Dependencies":[{"Udi":"umb://template/6a428b2ed8e542ce8cedf2fdea7df1de","Ordering":true,"Mode":0},{"Udi":"umb://template-file/BlogItem.cshtml","Ordering":true,"Mode":0}],"Name":"Blog Item","Alias":"BlogItem","__type":"Umbraco.Deploy,Umbraco.Deploy.Artifacts.TemplateArtifact","__version":"1.0.9"}
+{
+  "File": "umb://template-file/BlogItem.cshtml",
+  "Master": "umb://template/6a428b2ed8e542ce8cedf2fdea7df1de",
+  "Udi": "umb://template/79438c26c04f4200972ec6ce3fe880c0",
+  "Dependencies": [
+    {
+      "Udi": "umb://template/6a428b2ed8e542ce8cedf2fdea7df1de",
+      "Ordering": true,
+      "Mode": 0
+    },
+    {
+      "Udi": "umb://template-file/BlogItem.cshtml",
+      "Ordering": true,
+      "Mode": 0
+    }
+  ],
+  "Name": "Blog Item",
+  "Alias": "BlogItem",
+  "__type": "Umbraco.Deploy,Umbraco.Deploy.Artifacts.TemplateArtifact",
+  "__version": "2.0.12"
+}

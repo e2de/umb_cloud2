@@ -51,3 +51,4 @@ App_Plugins/UmbracoForms/[Ii]nstalled
 
 node_modules/
 bower_components/
+\.vscode/

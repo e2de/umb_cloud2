@@ -1,0 +1,19 @@
+﻿@inherits Umbraco.Web.Mvc.UmbracoTemplatePage
+
+
+@{ var selection = Model.Content.Children().Where(x => x.IsVisible() ); }
+
+@if (selection.Any())
+{
+    <ul>
+        @foreach (var item in selection)
+        {
+            <li>
+				<strong><a href="@item.Url">@item.Name</a></strong>
+				<p>
+					@item.CreateDate.ToLongDateString()
+				</p>
+            </li>
+        }
+    </ul>
+}

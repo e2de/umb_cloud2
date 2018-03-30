@@ -4,55 +4,57 @@
 	Layout = "Master.cshtml";
 	
 	//fetch nodes
-    var docs = Model.Content.Site().FirstChild<Documentation>().Children<Documentation>().Where(x => x.IsVisible() );
+    var docs = Model.Content
+                .Site()
+                .FirstChild<Documentation>()
+                .Children<Documentation>()
+                .Where(x => x.IsVisible() );
 }
 
 
 <section class="section section--themed section--header section--content-center-bottom">
     <div class="section__hero-content">
-        <!-- Replace with "PageName" value -->
-        <h1 class="no-air">@Umbraco.Field("pageName")</h1>
+        <h1 class="no-air">@Model.Content.Name</h1>
     </div>
 </section>
 
 <section class="section">
     <div class="container">
-        <div class="col-md-9">
-           
-           	<!--=========== REPLACE THE FOLLOWING WITH NEW GRID PROPERTY ================== -->
-			@Umbraco.Field("header")
-			@Umbraco.Field("images")
-	        <!--=========================================================================== -->
-           
+        <div class="row">
+            
+            <div class="col-md-9">
+            
+                <!--=========== REPLACE THE FOLLOWING WITH NEW GRID PROPERTY ================== -->
+                @Model.Content.Header
+                @Model.Content.Images
+                <!--=========================================================================== -->
+            
+            </div>
+
+            <div class="col-md-3">
+                <nav class="nav-bar nav-bar--list">
+                    
+                @if (docs.Any())
+                {	
+                    <h4>Documentation</h4>
+                    foreach (var item in docs)
+                    {
+                        <a class="nav-link nav-link--black nav-link--air-bottom"
+                            href="@item.Url">@item.Name</a>
+                    }
+                }
+
+                <hr />
+                
+                <!-- =========== GREAT PLACE FOR CURRATED FORUM POSTS =========== -->
+            
+                    
+                    
+                <!-- ============================================================ -->
+                    
+                </nav>
+            </div>
+
         </div>
-
-        <div class="col-md-3">
-            <nav class="nav-bar nav-bar--list">
-                
-            @if (docs.Any())
-			{
-				
-				<h4>Documentation</h4>
-				foreach (var item in docs)
-				{
-					<a class="nav-link nav-link--black nav-link--air-bottom"
-                         href="@item.Url">@item.Name</a>
-				}
-			}
-
-		<hr />
-			
-		<!-- =========== GREAT PLACE FOR CURRATED FORUM POSTS =========== -->
-           
-				
-				
-		<!-- ============================================================ -->
-                
-             
-                
-            </nav>
-        </div>
-
-
     </div>
 </section>

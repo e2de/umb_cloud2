@@ -1,1 +1,16 @@
-{"File":"umb://template-file/Master.cshtml","Master":null,"Udi":"umb://template/29846bf1fd6b46beac30acddc9ffa7ec","Dependencies":[{"Udi":"umb://template-file/Master.cshtml","Ordering":true,"Mode":0}],"Name":"Master","Alias":"Master","__type":"Umbraco.Deploy,Umbraco.Deploy.Artifacts.TemplateArtifact","__version":"1.0.9"}
+{
+  "File": "umb://template-file/Master.cshtml",
+  "Master": null,
+  "Udi": "umb://template/29846bf1fd6b46beac30acddc9ffa7ec",
+  "Dependencies": [
+    {
+      "Udi": "umb://template-file/Master.cshtml",
+      "Ordering": true,
+      "Mode": 0
+    }
+  ],
+  "Name": "Master",
+  "Alias": "Master",
+  "__type": "Umbraco.Deploy,Umbraco.Deploy.Artifacts.TemplateArtifact",
+  "__version": "2.0.12"
+}

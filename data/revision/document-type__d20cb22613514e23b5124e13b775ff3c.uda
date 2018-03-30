@@ -1,0 +1,94 @@
+{
+  "DefaultTemplate": null,
+  "AllowedTemplates": [],
+  "Icon": "icon-document",
+  "Thumbnail": "folder.png",
+  "Description": null,
+  "AllowedAtRoot": false,
+  "IsContainer": false,
+  "Parent": "umb://document-type-container/8545b47247d443f0b751e71b055929a8",
+  "AllowedChildContentTypes": [],
+  "CompositionContentTypes": [],
+  "PropertyGroups": [
+    {
+      "Key": "d337e298-7bbf-4ee2-825c-5f37e1b8d256",
+      "Name": "Content",
+      "SortOrder": 0,
+      "PropertyTypes": [
+        {
+          "Key": "15bfe1da-e07c-47ac-aed5-0f17780506d0",
+          "Alias": "subheading",
+          "DataType": "umb://data-type/0cc0eba1996042c9bf9b60e150b429ae",
+          "Description": null,
+          "Mandatory": false,
+          "Name": "Subheading",
+          "SortOrder": 0,
+          "Validation": null
+        },
+        {
+          "Key": "53ae1315-bafd-4830-b729-a813c2f639e6",
+          "Alias": "description",
+          "DataType": "umb://data-type/c6bac0dd4ab945b18e30e4b619ee5da3",
+          "Description": null,
+          "Mandatory": false,
+          "Name": "Description",
+          "SortOrder": 1,
+          "Validation": null
+        },
+        {
+          "Key": "6d0200f5-88e2-4648-96ac-493cfd3da7b9",
+          "Alias": "image",
+          "DataType": "umb://data-type/7ca929d0af8942c7a59b8754722fa847",
+          "Description": null,
+          "Mandatory": false,
+          "Name": "Image",
+          "SortOrder": 3,
+          "Validation": null
+        },
+        {
+          "Key": "72dc5999-9f02-4b41-930c-70524611b6ff",
+          "Alias": "link",
+          "DataType": "umb://data-type/fd1e0da556064862b6795d0cf3a52a59",
+          "Description": null,
+          "Mandatory": false,
+          "Name": "Link",
+          "SortOrder": 2,
+          "Validation": null
+        }
+      ]
+    }
+  ],
+  "PropertyTypes": [],
+  "Udi": "umb://document-type/d20cb22613514e23b5124e13b775ff3c",
+  "Dependencies": [
+    {
+      "Udi": "umb://data-type/0cc0eba1996042c9bf9b60e150b429ae",
+      "Ordering": true,
+      "Mode": 0
+    },
+    {
+      "Udi": "umb://data-type/7ca929d0af8942c7a59b8754722fa847",
+      "Ordering": true,
+      "Mode": 0
+    },
+    {
+      "Udi": "umb://data-type/c6bac0dd4ab945b18e30e4b619ee5da3",
+      "Ordering": true,
+      "Mode": 0
+    },
+    {
+      "Udi": "umb://data-type/fd1e0da556064862b6795d0cf3a52a59",
+      "Ordering": true,
+      "Mode": 0
+    },
+    {
+      "Udi": "umb://document-type-container/8545b47247d443f0b751e71b055929a8",
+      "Ordering": true,
+      "Mode": 0
+    }
+  ],
+  "Name": "Banner Item",
+  "Alias": "bannerItem",
+  "__type": "Umbraco.Deploy,Umbraco.Deploy.Artifacts.DocumentTypeArtifact",
+  "__version": "2.0.12"
+}

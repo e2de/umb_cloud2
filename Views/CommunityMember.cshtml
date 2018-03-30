@@ -8,11 +8,13 @@
     <div class="row">
         <div class="col-md-9">
             <div class="page-header">
-                <h1>@Umbraco.Field("pageName")</h1>
+                <h1>@Model.Content.Name</h1>
             </div>
 
 			<strong><p>Community Member</p></strong>
-			
+            <p>Contact @Model.Content.Name on <a href="mailto:@Model.Content.Email">@Model.Content.Email</a></p>
+            
+            <!-- A great place to show the twitter handle --> 
 				
 		</div>
     </div>
@@ -21,9 +23,9 @@
         <div class="col-md-12">
             <footer>
                 Updated by
-                @Umbraco.Field("writerName")
+                @Model.Content.WriterName
                 on
-                @Umbraco.Field("updateDate", formatAsDate: true)
+                @Model.Content.UpdateDate.ToShortDateString()
             </footer>
         </div>
     </div>

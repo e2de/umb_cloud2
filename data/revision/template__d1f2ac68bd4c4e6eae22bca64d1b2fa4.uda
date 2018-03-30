@@ -1,1 +1,21 @@
-{"File":"umb://template-file/HomePage.cshtml","Master":"umb://template/29846bf1fd6b46beac30acddc9ffa7ec","Udi":"umb://template/d1f2ac68bd4c4e6eae22bca64d1b2fa4","Dependencies":[{"Udi":"umb://template/29846bf1fd6b46beac30acddc9ffa7ec","Ordering":true,"Mode":0},{"Udi":"umb://template-file/HomePage.cshtml","Ordering":true,"Mode":0}],"Name":"Home Page","Alias":"HomePage","__type":"Umbraco.Deploy,Umbraco.Deploy.Artifacts.TemplateArtifact","__version":"1.0.9"}
+{
+  "File": "umb://template-file/HomePage.cshtml",
+  "Master": "umb://template/29846bf1fd6b46beac30acddc9ffa7ec",
+  "Udi": "umb://template/d1f2ac68bd4c4e6eae22bca64d1b2fa4",
+  "Dependencies": [
+    {
+      "Udi": "umb://template/29846bf1fd6b46beac30acddc9ffa7ec",
+      "Ordering": true,
+      "Mode": 0
+    },
+    {
+      "Udi": "umb://template-file/HomePage.cshtml",
+      "Ordering": true,
+      "Mode": 0
+    }
+  ],
+  "Name": "Home Page",
+  "Alias": "HomePage",
+  "__type": "Umbraco.Deploy,Umbraco.Deploy.Artifacts.TemplateArtifact",
+  "__version": "2.0.12"
+}

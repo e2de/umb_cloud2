@@ -1,26 +1,26 @@
 {
-  "DefaultTemplate": "umb://template/75d02821923b4a91843814d0ff28c727",
+  "DefaultTemplate": "umb://template/de52e07ee8324d0f889508cb6d74be7b",
   "AllowedTemplates": [
-    "umb://template/75d02821923b4a91843814d0ff28c727"
+    "umb://template/de52e07ee8324d0f889508cb6d74be7b"
   ],
   "Icon": "icon-document",
   "Thumbnail": "folder.png",
   "Description": null,
   "AllowedAtRoot": false,
   "IsContainer": false,
-  "Parent": "umb://document-type-container/2ba029662d3e4768a6da2296f50b2230",
+  "Parent": "umb://document-type-container/28d280800dd743a29ac686157709c23f",
   "AllowedChildContentTypes": [
-    "umb://document-type/22bc5ae340f54f5e895620b3a5929378"
+    "umb://document-type/2ee38e10803948a5be421ea86ba992d4"
   ],
   "CompositionContentTypes": [],
   "PropertyGroups": [
     {
-      "Key": "1abe8a06-cd42-4f4c-8f90-104dc727d53b",
-      "Name": "Introduction",
+      "Key": "d616b845-39bd-4115-8dd9-4177cae99f3b",
+      "Name": "Content",
       "SortOrder": 0,
       "PropertyTypes": [
         {
-          "Key": "6bf2eb77-ad35-43a6-bef1-f027ebd682f5",
+          "Key": "ce69e36b-884a-4b69-960d-1b058210d375",
           "Alias": "bodyText",
           "DataType": "umb://data-type/ca90c9500aff4e72b976a30b1ac57dad",
           "Description": null,
@@ -33,7 +33,7 @@
     }
   ],
   "PropertyTypes": [],
-  "Udi": "umb://document-type/c2cc341522c549cd83bc626554b8a1e6",
+  "Udi": "umb://document-type/2db035e85f6942ab89b6cb266bafda4f",
   "Dependencies": [
     {
       "Udi": "umb://data-type/ca90c9500aff4e72b976a30b1ac57dad",
@@ -41,23 +41,23 @@
       "Mode": 0
     },
     {
-      "Udi": "umb://document-type/22bc5ae340f54f5e895620b3a5929378",
+      "Udi": "umb://document-type/2ee38e10803948a5be421ea86ba992d4",
       "Ordering": false,
       "Mode": 0
     },
     {
-      "Udi": "umb://document-type-container/2ba029662d3e4768a6da2296f50b2230",
+      "Udi": "umb://document-type-container/28d280800dd743a29ac686157709c23f",
       "Ordering": true,
       "Mode": 0
     },
     {
-      "Udi": "umb://template/75d02821923b4a91843814d0ff28c727",
+      "Udi": "umb://template/de52e07ee8324d0f889508cb6d74be7b",
       "Ordering": true,
       "Mode": 0
     }
   ],
-  "Name": "News Area",
-  "Alias": "newsArea",
+  "Name": "Blog",
+  "Alias": "blog",
   "__type": "Umbraco.Deploy,Umbraco.Deploy.Artifacts.DocumentTypeArtifact",
   "__version": "2.0.12"
 }

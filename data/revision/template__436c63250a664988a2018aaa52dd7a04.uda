@@ -1,1 +1,21 @@
-{"File":"umb://template-file/Products.cshtml","Master":"umb://template/6a428b2ed8e542ce8cedf2fdea7df1de","Udi":"umb://template/436c63250a664988a2018aaa52dd7a04","Dependencies":[{"Udi":"umb://template/6a428b2ed8e542ce8cedf2fdea7df1de","Ordering":true,"Mode":0},{"Udi":"umb://template-file/Products.cshtml","Ordering":true,"Mode":0}],"Name":"Products","Alias":"Products","__type":"Umbraco.Deploy,Umbraco.Deploy.Artifacts.TemplateArtifact","__version":"1.0.9"}
+{
+  "File": "umb://template-file/Products.cshtml",
+  "Master": "umb://template/6a428b2ed8e542ce8cedf2fdea7df1de",
+  "Udi": "umb://template/436c63250a664988a2018aaa52dd7a04",
+  "Dependencies": [
+    {
+      "Udi": "umb://template/6a428b2ed8e542ce8cedf2fdea7df1de",
+      "Ordering": true,
+      "Mode": 0
+    },
+    {
+      "Udi": "umb://template-file/Products.cshtml",
+      "Ordering": true,
+      "Mode": 0
+    }
+  ],
+  "Name": "Products",
+  "Alias": "Products",
+  "__type": "Umbraco.Deploy,Umbraco.Deploy.Artifacts.TemplateArtifact",
+  "__version": "2.0.12"
+}

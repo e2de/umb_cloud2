@@ -1,31 +1,29 @@
 {
-  "DefaultTemplate": "umb://template/410b23d2c95e48cf8fdd42057e1bb592",
-  "AllowedTemplates": [
-    "umb://template/410b23d2c95e48cf8fdd42057e1bb592"
-  ],
+  "DefaultTemplate": null,
+  "AllowedTemplates": [],
   "Icon": "icon-document",
   "Thumbnail": "folder.png",
   "Description": null,
   "AllowedAtRoot": false,
   "IsContainer": false,
-  "Parent": null,
+  "Parent": "umb://document-type-container/8545b47247d443f0b751e71b055929a8",
   "AllowedChildContentTypes": [
-    "umb://document-type/2c833703e31e4c979006f9f66d487de7"
+    "umb://document-type/d20cb22613514e23b5124e13b775ff3c"
   ],
   "CompositionContentTypes": [],
   "PropertyGroups": [
     {
-      "Key": "aedbe90f-fb38-47c9-a085-bec95bf3b049",
-      "Name": "Hide in Nav",
+      "Key": "63741797-dd3e-4772-b147-251e26657090",
+      "Name": "Hide",
       "SortOrder": 0,
       "PropertyTypes": [
         {
-          "Key": "6b1b3fd1-f868-41fa-9145-c9ac0d0559a6",
+          "Key": "cd4c7da9-b763-4d04-8de0-21b53d0485b5",
           "Alias": "umbracoNaviHide",
           "DataType": "umb://data-type/92897bc6a5f34ffeae27f2e7e33dda49",
           "Description": null,
           "Mandatory": false,
-          "Name": "Hide in Navigation?",
+          "Name": "Hide in navigation?",
           "SortOrder": 0,
           "Validation": null
         }
@@ -33,7 +31,7 @@
     }
   ],
   "PropertyTypes": [],
-  "Udi": "umb://document-type/71e3021524ba4c96b2dae1cffa029164",
+  "Udi": "umb://document-type/3167b978121945f1a794ddd02f876da9",
   "Dependencies": [
     {
       "Udi": "umb://data-type/92897bc6a5f34ffeae27f2e7e33dda49",
@@ -41,18 +39,18 @@
       "Mode": 0
     },
     {
-      "Udi": "umb://document-type/2c833703e31e4c979006f9f66d487de7",
+      "Udi": "umb://document-type/d20cb22613514e23b5124e13b775ff3c",
       "Ordering": false,
       "Mode": 0
     },
     {
-      "Udi": "umb://template/410b23d2c95e48cf8fdd42057e1bb592",
+      "Udi": "umb://document-type-container/8545b47247d443f0b751e71b055929a8",
       "Ordering": true,
       "Mode": 0
     }
   ],
-  "Name": "Community",
-  "Alias": "community",
+  "Name": "Banner Repository",
+  "Alias": "bannerRepository",
   "__type": "Umbraco.Deploy,Umbraco.Deploy.Artifacts.DocumentTypeArtifact",
   "__version": "2.0.12"
 }

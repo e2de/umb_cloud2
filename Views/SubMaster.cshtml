@@ -1,6 +1,8 @@
 ﻿@inherits Umbraco.Web.Mvc.UmbracoTemplatePage
 @{
 	Layout = "Master.cshtml";
+
+    var hasChildren = Model.Content.Children().Any();
 }
 
 <section class="section section--themed section--header section--content-center-bottom">
@@ -12,25 +14,28 @@
 
 <section class="section">
     <div class="container">
-        <div class="col-md-9">
-           
-                @RenderBody()
+        <div class="@(hasChildren ? "col-md-9" : "col-md-12")">
+        
+            @RenderBody()
             
         </div>
 
-        <div class="col-md-3">
-            <nav class="nav-bar nav-bar--list">
-                
-                 @foreach (var item in Model.Content.Children() )
-                {
-                    <a class="nav-link nav-link--black nav-link--air-bottom nav-link--active"
-                   href="@item.Url">@item.Name</a>
+        @if (hasChildren)
+        {
+            <div class="col-md-3">
+                <h3>In this section</h3>
+                <nav class="nav-bar nav-bar--list">
 
-                }
-                
-            </nav>
-        </div>
+                    @foreach (var item in Model.Content.Children())
+                    {
+                        <a class="nav-link nav-link--black nav-link--air-bottom @(item.IsAncestorOrSelf(Model.Content, "nav-link--active"))"
+                           href="@item.Url">@item.Name</a>
 
+                    }
 
+                </nav>
+            </div>
+        }
+        
     </div>
 </section>

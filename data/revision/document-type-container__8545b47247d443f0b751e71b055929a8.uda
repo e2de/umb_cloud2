@@ -1,0 +1,10 @@
+{
+  "ContainedObjectType": "a2cb7800-f571-4787-9638-bc48539a0efb",
+  "Parent": null,
+  "Udi": "umb://document-type-container/8545b47247d443f0b751e71b055929a8",
+  "Dependencies": [],
+  "Name": "Banner",
+  "Alias": null,
+  "__type": "Umbraco.Deploy,Umbraco.Deploy.Artifacts.ContainerArtifact",
+  "__version": "2.0.12"
+}

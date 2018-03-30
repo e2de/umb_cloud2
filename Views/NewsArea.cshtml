@@ -1,30 +1,30 @@
 ﻿@inherits Umbraco.Web.Mvc.UmbracoTemplatePage<ContentModels.NewsArea>
 @using ContentModels = Umbraco.Web.PublishedContentModels;
 @{
-	Layout = "SubMaster.cshtml";
-    var news = Model.Content.Children<NewsItem>().Where(x => x.IsVisible() ).OrderByDescending(x => x.CreateDate);
+    Layout = "SubMaster.cshtml";
+
+    var articles = Model.Content.Children<NewsItem>()
+                    .Where(x => x.IsVisible() )
+                    .OrderByDescending(x => x.CreateDate);
 }
 
 @Model.Content.BodyText
 
-<div class="blogposts">
+<div class="articles">
+    @foreach (var article in articles)
+    {
+	    <a href="@article.Url" class="article article-with-image">
+		    <div class="article-info">
+			    <div class="article-meta">
+				    <small class="article-date">@article.CreateDate</small>
+			    </div>
 
-			<!-- Implement the Home Page news listing here -->
-            @foreach(var item in news){
-			<a href="#" class="blogpost blogpost-with-image">
-				<div class="blogpost-info">
-					<div class="blogpost-meta">
-						<small class="blogpost-date">@item.CreateDate</small>
-					</div>
+			    <h3 class="article-title">@article.Name</h3>
+			    <div class="article-excerpt">@article.Summary</div>
+		    </div>
 
-					<h3 class="blogpost-title">@item.Name</h3>
-					<div class="blogpost-excerpt">@item.Summary</div>
-				</div>
-
-				<!--- optional  - if the article has a image assigned to it -->
-				<div class="blogpost-image" style="background-image: url('')"></div>	
-			</a>
-            }
-            
-		
-		</div>
+		    <!--- optional  - if the article has a image assigned to it -->
+		    <div class="article-image" style="background-image: url('')"></div>	
+	    </a>
+    }
+</div>

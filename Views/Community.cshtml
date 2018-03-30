@@ -7,38 +7,32 @@
 
 <section class="section section--themed section--header section--content-center-bottom">
     <div class="section__hero-content">
-        <!-- Replace with "PageName" value -->
-        <h1 class="no-air">@Umbraco.Field("pageName")</h1>
+        <h1 class="no-air">@Model.Content.Name</h1>
     </div>
 </section>
 
 <section class="section">
     <div class="container">
         <div class="col-md-12">
-            
-        <div class="container">
-        
-        		<!-- start of row -->
-        		<div class="row">
-        			
-                    
-                     @foreach(var person in people){
-            			<!-- Testimonial start -->
-            			<div class="col-sm-6 col-lg-4">
-            				<a href="@person.Url" class="testimonial">
-            					<div >
-            						<div class="testimonial-image" style="background-image: url('')"></div>
-            						<div class="testimonial-content">
-            							<h3 class="testimonial-title">@person.Name</h3>
-            							<p class="testimonial-text no-air">@person.Email
-            					    </div>
-            				    </div>
-            			    </a>
+        	
+            @foreach (var person in people)
+            {
+            	
+                <!-- Testimonial start -->
+                <div class="col-sm-6 col-lg-4">
+            		<a href="@person.Url" class="testimonial">
+            			<div >
+                            <!-- Render the twitter avatar here --> 
+            				<div class="testimonial-image" style="background-image: url('')"></div>
+            				<div class="testimonial-content">
+            					<h3 class="testimonial-title">@person.Name</h3>
+            					<p class="testimonial-text no-air">@person.Email</p>
+            				</div>
             			</div>
-                    }
-                </div>
-        </div>
-        
+            		</a>
+            	</div>
+            }
+
         </div>
     </div>
 </section>

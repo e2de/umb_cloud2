@@ -1,50 +1,53 @@
 ﻿@inherits UmbracoTemplatePage
+@using ContentModels = Umbraco.Web.PublishedContentModels;
 @{
-	Layout = null;
-	var topNavigation = Model.Content.Site().Children().Where(x => x.IsVisible());
+    Layout = null;
+
+    var site = Model.Content.Site() as HomePage;
+    var topNavigation = site.Children().Where(x => x.IsVisible());
 }
+<!DOCTYPE html>
+<html>
+    <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-<!doctype html>
-<head>
-<meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-
-    <!-- Add CompanyName and PageName here -->
-    <title>@Umbraco.Field("pageName")</title>
+        <!-- Add CompanyName and PageName here -->
+        <title>@Model.Content.Name - @site.CompanyName</title>
     
     
-    <!-- you could implement these in your document types, couldn't you?  -->
-    <meta name="description" content="">
-    <meta name="author" content="">
+        <!-- you could implement these in your document types, couldn't you?  -->
+        <meta name="description" content="">
+        <meta name="author" content="">
     
-    <!-- Link to stylesheet - will be addded later -->
-    <link rel="stylesheet" href="/css/style.css" />
-    <script type="text/javascript" src="/scripts/jquery.min.js"></script>
+        <!-- Link to stylesheet -->
+        <link rel="stylesheet" href="/css/style.css" />
+        <script type="text/javascript" src="/scripts/jquery.min.js"></script>
 
-</head>
+    </head>
 
     <body class="frontpage theme-font-standard theme-color-sun">
 
         <header class="header">
 
             <div class="logo">
-                <a class="nav-link nav-link--home nav-link--home__text logo-text" href="/">Editor Experience</a>
+                <a class="nav-link nav-link--home nav-link--home__text logo-text" href="@site.Url">Editor Experience</a>
             </div>
 
             <!-- Our Top navigation -->
             <nav class="nav-bar top-nav">
-                <a class="nav-link" href="/">Home</a>
-                @foreach(var child in topNavigation){
+                @foreach (var child in topNavigation)
+                {
                     <a class="nav-link @child.IsAncestorOrSelf(Model.Content, "nav-link--active")" href="@child.Url">@child.Name</a>
                 }
             </nav>
-
+            <!-- End of top navigation -->
         </header>
 
         <main>
 			
-            <!-- End of top navigation -->
+            
 
         
             <!-- Great place to render the body of our page -->
@@ -83,22 +86,22 @@
 
                     <div class="col-md-12 ta-center">
                         <!-- Use the companyName value here -->
-                        CompanyName
+                        @site.CompanyName
                         
 						&nbsp;&nbsp;&nbsp; - &nbsp;&nbsp;&nbsp; 
 
                         <!-- Use the companyAddress value here -->
-                        Road 5, Zipcode-60000
+                        @site.CompanyAddress
                         
 						&nbsp;&nbsp;&nbsp; - &nbsp;&nbsp;&nbsp; 
 						
                         <!-- Use the companyPhone value here -->
-						+45 21 22 22 22
+						@site.CompanyPhone
                     </div>
                 </div>
             </div>
         </footer>
-    
+        <!-- End of footer -->		
         
     </body>
 </html>

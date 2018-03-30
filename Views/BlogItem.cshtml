@@ -3,3 +3,10 @@
 @{
 	Layout = "SubMaster.cshtml";
 }
+
+<small class="blogpost-date">@Model.Content.CreateDate.ToShortDateString()</small>
+<small class="blogpost-cat">Categorized as: @String.Join(" ,", Model.Content.Categories)</small>
+
+<h3>@Model.Content.Summary</h3>
+
+@Model.Content.BodyText

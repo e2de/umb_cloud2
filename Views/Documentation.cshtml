@@ -3,37 +3,36 @@
 @{
 	Layout = "SubMaster.cshtml";
 	
-	
     //fetch nodes
-    var products = CurrentPage.Site().FirstChild("products").Children("landingPage").Where("Visible");
+    var products = Model.Content
+                        .Site()
+                        .FirstChild<Products>()
+                        .Children<ProductItem>()
+                        .Where(x => x.IsVisible() );
+}
+
+@Model.Content.BodyText
+            
+@if (products.Any())
+{
+    <hr />
+    <h4>Documentation Applies to Products:</h4>
+
+    <ul>
+        @foreach (var landingPage in products)
+        {
+            <li><a href="@landingPage.Url">@landingPage.Name</a></li>
+        }
+    </ul>
 }
 
 
+@if (Model.Content.Images.Any())
+{
+    <h4>Documentation media:</h4>
 
-
-            @Umbraco.Field("bodyText")
-
-
-            @if (products.Any())
-            {
-                <hr />
-                <h4>Documentation Applies to Products:</h4>
-
-                <ul>
-                    @foreach (var landingPage in products)
-                    {
-                        <li><a href="@landingPage.Url">@landingPage.Name</a></li>
-                    }
-                </ul>
-            }
-
-
-            @if (Model.Content.Images.Any())
-            {
-                <h4>Documentation media:</h4>
-
-                foreach (var image in Model.Content.Images)
-                {
-                    <img src="@image.GetCropUrl("thumb")" alt="..." class="img-thumbnail">
-                }
-            }
+    foreach (var image in Model.Content.Images)
+    {
+        <img src="@image.GetCropUrl("thumb")" alt="..." class="img-thumbnail">
+    }
+}

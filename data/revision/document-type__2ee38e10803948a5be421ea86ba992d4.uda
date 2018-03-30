@@ -1,24 +1,24 @@
 {
-  "DefaultTemplate": "umb://template/41a75d25d0d04fb09bdc03d4d6b62f48",
+  "DefaultTemplate": "umb://template/79438c26c04f4200972ec6ce3fe880c0",
   "AllowedTemplates": [
-    "umb://template/41a75d25d0d04fb09bdc03d4d6b62f48"
+    "umb://template/79438c26c04f4200972ec6ce3fe880c0"
   ],
   "Icon": "icon-document",
   "Thumbnail": "folder.png",
   "Description": null,
   "AllowedAtRoot": false,
   "IsContainer": false,
-  "Parent": "umb://document-type-container/2ba029662d3e4768a6da2296f50b2230",
+  "Parent": "umb://document-type-container/28d280800dd743a29ac686157709c23f",
   "AllowedChildContentTypes": [],
   "CompositionContentTypes": [],
   "PropertyGroups": [
     {
-      "Key": "13851e46-eacd-4ea4-b38e-8c009e103ce5",
-      "Name": "Summary",
+      "Key": "f256f2d3-74e3-4b12-b63a-0f1f6af0f879",
+      "Name": "Content",
       "SortOrder": 0,
       "PropertyTypes": [
         {
-          "Key": "5e571d2a-632c-4a10-b4ec-4062b2c8d49d",
+          "Key": "033df1db-b099-4c2b-95e6-f76db045ebed",
           "Alias": "summary",
           "DataType": "umb://data-type/c6bac0dd4ab945b18e30e4b619ee5da3",
           "Description": null,
@@ -26,30 +26,38 @@
           "Name": "Summary",
           "SortOrder": 0,
           "Validation": null
-        }
-      ]
-    },
-    {
-      "Key": "e8643a2b-99eb-4121-b21c-589064d8d87a",
-      "Name": "Content",
-      "SortOrder": 1,
-      "PropertyTypes": [
+        },
         {
-          "Key": "ac5dd660-2c4f-4f34-89c9-591e8fe095d3",
+          "Key": "5732f21c-0ef1-4547-bc1e-b11e4fe514a4",
+          "Alias": "catgories",
+          "DataType": "umb://data-type/06ffa5c28d8149da9c1c1805bf751c9c",
+          "Description": null,
+          "Mandatory": false,
+          "Name": "Catgories",
+          "SortOrder": 2,
+          "Validation": null
+        },
+        {
+          "Key": "aedaa695-ecaf-484d-a5d9-53727e0594a4",
           "Alias": "bodyText",
           "DataType": "umb://data-type/ca90c9500aff4e72b976a30b1ac57dad",
           "Description": null,
           "Mandatory": false,
-          "Name": "Content",
-          "SortOrder": 0,
+          "Name": "Body Text",
+          "SortOrder": 1,
           "Validation": null
         }
       ]
     }
   ],
   "PropertyTypes": [],
-  "Udi": "umb://document-type/22bc5ae340f54f5e895620b3a5929378",
+  "Udi": "umb://document-type/2ee38e10803948a5be421ea86ba992d4",
   "Dependencies": [
+    {
+      "Udi": "umb://data-type/06ffa5c28d8149da9c1c1805bf751c9c",
+      "Ordering": true,
+      "Mode": 0
+    },
     {
       "Udi": "umb://data-type/c6bac0dd4ab945b18e30e4b619ee5da3",
       "Ordering": true,
@@ -61,18 +69,18 @@
       "Mode": 0
     },
     {
-      "Udi": "umb://document-type-container/2ba029662d3e4768a6da2296f50b2230",
+      "Udi": "umb://document-type-container/28d280800dd743a29ac686157709c23f",
       "Ordering": true,
       "Mode": 0
     },
     {
-      "Udi": "umb://template/41a75d25d0d04fb09bdc03d4d6b62f48",
+      "Udi": "umb://template/79438c26c04f4200972ec6ce3fe880c0",
       "Ordering": true,
       "Mode": 0
     }
   ],
-  "Name": "News Item",
-  "Alias": "newsItem",
+  "Name": "Blog Item",
+  "Alias": "blogItem",
   "__type": "Umbraco.Deploy,Umbraco.Deploy.Artifacts.DocumentTypeArtifact",
   "__version": "2.0.12"
 }

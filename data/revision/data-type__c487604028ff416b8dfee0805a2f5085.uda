@@ -1,0 +1,15 @@
+{
+  "EditorAlias": "Umbraco.ContentPicker2",
+  "DatabaseType": 1,
+  "PreValues": {
+    "showOpenButton": "1",
+    "startNodeId": "umb://document/3170c741e5e64b3d93782bbd65a6a331"
+  },
+  "Parent": null,
+  "Udi": "umb://data-type/c487604028ff416b8dfee0805a2f5085",
+  "Dependencies": [],
+  "Name": "Home Page - Banner - Content Picker",
+  "Alias": null,
+  "__type": "Umbraco.Deploy,Umbraco.Deploy.Artifacts.DataTypeArtifact",
+  "__version": "2.0.12"
+}

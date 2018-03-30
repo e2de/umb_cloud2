@@ -1,1 +1,21 @@
-{"File":"umb://template-file/CommunityMember.cshtml","Master":"umb://template/6a428b2ed8e542ce8cedf2fdea7df1de","Udi":"umb://template/846b758231dc42b29c6a302997dc3563","Dependencies":[{"Udi":"umb://template/6a428b2ed8e542ce8cedf2fdea7df1de","Ordering":true,"Mode":0},{"Udi":"umb://template-file/CommunityMember.cshtml","Ordering":true,"Mode":0}],"Name":"Community Member","Alias":"CommunityMember","__type":"Umbraco.Deploy,Umbraco.Deploy.Artifacts.TemplateArtifact","__version":"1.0.9"}
+{
+  "File": "umb://template-file/CommunityMember.cshtml",
+  "Master": "umb://template/29846bf1fd6b46beac30acddc9ffa7ec",
+  "Udi": "umb://template/846b758231dc42b29c6a302997dc3563",
+  "Dependencies": [
+    {
+      "Udi": "umb://template/29846bf1fd6b46beac30acddc9ffa7ec",
+      "Ordering": true,
+      "Mode": 0
+    },
+    {
+      "Udi": "umb://template-file/CommunityMember.cshtml",
+      "Ordering": true,
+      "Mode": 0
+    }
+  ],
+  "Name": "Community Member",
+  "Alias": "CommunityMember",
+  "__type": "Umbraco.Deploy,Umbraco.Deploy.Artifacts.TemplateArtifact",
+  "__version": "2.0.12"
+}

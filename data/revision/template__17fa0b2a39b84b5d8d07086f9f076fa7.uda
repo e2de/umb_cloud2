@@ -1,1 +1,21 @@
-{"File":"umb://template-file/TextPage.cshtml","Master":"umb://template/6a428b2ed8e542ce8cedf2fdea7df1de","Udi":"umb://template/17fa0b2a39b84b5d8d07086f9f076fa7","Dependencies":[{"Udi":"umb://template/6a428b2ed8e542ce8cedf2fdea7df1de","Ordering":true,"Mode":0},{"Udi":"umb://template-file/TextPage.cshtml","Ordering":true,"Mode":0}],"Name":"Text Page","Alias":"TextPage","__type":"Umbraco.Deploy,Umbraco.Deploy.Artifacts.TemplateArtifact","__version":"1.0.9"}
+{
+  "File": "umb://template-file/TextPage.cshtml",
+  "Master": "umb://template/6a428b2ed8e542ce8cedf2fdea7df1de",
+  "Udi": "umb://template/17fa0b2a39b84b5d8d07086f9f076fa7",
+  "Dependencies": [
+    {
+      "Udi": "umb://template/6a428b2ed8e542ce8cedf2fdea7df1de",
+      "Ordering": true,
+      "Mode": 0
+    },
+    {
+      "Udi": "umb://template-file/TextPage.cshtml",
+      "Ordering": true,
+      "Mode": 0
+    }
+  ],
+  "Name": "Text Page",
+  "Alias": "TextPage",
+  "__type": "Umbraco.Deploy,Umbraco.Deploy.Artifacts.TemplateArtifact",
+  "__version": "2.0.12"
+}

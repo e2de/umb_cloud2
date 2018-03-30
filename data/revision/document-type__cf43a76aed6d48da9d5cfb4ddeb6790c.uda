@@ -1,1 +1,66 @@
-{"DefaultTemplate":"umb://template/17fa0b2a39b84b5d8d07086f9f076fa7","AllowedTemplates":["umb://template/17fa0b2a39b84b5d8d07086f9f076fa7"],"Icon":"icon-document","Thumbnail":"folder.png","Description":null,"AllowedAtRoot":false,"IsContainer":false,"Parent":null,"AllowedChildContentTypes":[],"CompositionContentTypes":[],"PropertyGroups":[{"Key":"dec38e80-89fa-4e95-ab3a-0c37a12af2ac","Name":"Content","SortOrder":0,"PropertyTypes":[{"Key":"1a791ff4-3ed8-41de-8a84-e2ffe9d466c3","Alias":"umbracoNaviHide","DataType":"umb://data-type/92897bc6a5f34ffeae27f2e7e33dda49","Description":null,"Mandatory":false,"Name":"Hide in Navigation?","SortOrder":1,"Validation":null},{"Key":"2c8da02c-443a-427d-a500-66933d096628","Alias":"bodytext","DataType":"umb://data-type/ca90c9500aff4e72b976a30b1ac57dad","Description":null,"Mandatory":false,"Name":"Bodytext","SortOrder":0,"Validation":null}]}],"PropertyTypes":[],"Udi":"umb://document-type/cf43a76aed6d48da9d5cfb4ddeb6790c","Dependencies":[{"Udi":"umb://data-type/92897bc6a5f34ffeae27f2e7e33dda49","Ordering":true,"Mode":0},{"Udi":"umb://data-type/ca90c9500aff4e72b976a30b1ac57dad","Ordering":true,"Mode":0},{"Udi":"umb://template/17fa0b2a39b84b5d8d07086f9f076fa7","Ordering":true,"Mode":0}],"Name":"Text Page","Alias":"textPage","__type":"Umbraco.Deploy,Umbraco.Deploy.Artifacts.DocumentTypeArtifact","__version":"1.0.9"}
+{
+  "DefaultTemplate": "umb://template/17fa0b2a39b84b5d8d07086f9f076fa7",
+  "AllowedTemplates": [
+    "umb://template/17fa0b2a39b84b5d8d07086f9f076fa7"
+  ],
+  "Icon": "icon-document",
+  "Thumbnail": "folder.png",
+  "Description": null,
+  "AllowedAtRoot": false,
+  "IsContainer": false,
+  "Parent": null,
+  "AllowedChildContentTypes": [],
+  "CompositionContentTypes": [],
+  "PropertyGroups": [
+    {
+      "Key": "dec38e80-89fa-4e95-ab3a-0c37a12af2ac",
+      "Name": "Content",
+      "SortOrder": 0,
+      "PropertyTypes": [
+        {
+          "Key": "1a791ff4-3ed8-41de-8a84-e2ffe9d466c3",
+          "Alias": "umbracoNaviHide",
+          "DataType": "umb://data-type/92897bc6a5f34ffeae27f2e7e33dda49",
+          "Description": null,
+          "Mandatory": false,
+          "Name": "Hide in Navigation?",
+          "SortOrder": 1,
+          "Validation": null
+        },
+        {
+          "Key": "2c8da02c-443a-427d-a500-66933d096628",
+          "Alias": "bodytext",
+          "DataType": "umb://data-type/ca90c9500aff4e72b976a30b1ac57dad",
+          "Description": null,
+          "Mandatory": false,
+          "Name": "Bodytext",
+          "SortOrder": 0,
+          "Validation": null
+        }
+      ]
+    }
+  ],
+  "PropertyTypes": [],
+  "Udi": "umb://document-type/cf43a76aed6d48da9d5cfb4ddeb6790c",
+  "Dependencies": [
+    {
+      "Udi": "umb://data-type/92897bc6a5f34ffeae27f2e7e33dda49",
+      "Ordering": true,
+      "Mode": 0
+    },
+    {
+      "Udi": "umb://data-type/ca90c9500aff4e72b976a30b1ac57dad",
+      "Ordering": true,
+      "Mode": 0
+    },
+    {
+      "Udi": "umb://template/17fa0b2a39b84b5d8d07086f9f076fa7",
+      "Ordering": true,
+      "Mode": 0
+    }
+  ],
+  "Name": "Text Page",
+  "Alias": "textPage",
+  "__type": "Umbraco.Deploy,Umbraco.Deploy.Artifacts.DocumentTypeArtifact",
+  "__version": "2.0.12"
+}
