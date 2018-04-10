@@ -5219,8 +5219,10 @@
                     throw 'args.tree cannot be null';
                 }
                 if (mainTreeEventHandler) {
-                    //returns a promise
-                    return mainTreeEventHandler.syncTree(args);
+                    if (mainTreeEventHandler.syncTree) {
+                        //returns a promise,
+                        return mainTreeEventHandler.syncTree(args);
+                    }
                 }
                 //couldn't sync
                 return angularHelper.rejectedPromise();
