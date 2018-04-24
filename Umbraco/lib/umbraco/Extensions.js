@@ -84,7 +84,7 @@
         };
     }
     
-    if (!String.prototype.trimStart) {
+     {
         
         /** trims the start of the string*/
         String.prototype.trimStart = function (str) {
@@ -95,7 +95,7 @@
         };
     }
     
-    if (!String.prototype.trimEnd) {
+     {
 
         /** trims the end of the string*/
         String.prototype.trimEnd = function (str) {
