@@ -42,5 +42,5 @@
   "Name": "Insert Form with Theme",
   "Alias": "renderUmbracoForm",
   "__type": "Umbraco.Deploy,Umbraco.Deploy.Artifacts.MacroArtifact",
-  "__version": "2.0.12"
+  "__version": "2.0.13"
 }
