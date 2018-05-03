@@ -3,7 +3,7 @@
   "AllowedTemplates": [
     "umb://template/410b23d2c95e48cf8fdd42057e1bb592"
   ],
-  "Icon": "icon-document",
+  "Icon": "icon-users-alt color-lime",
   "Thumbnail": "folder.png",
   "Description": null,
   "AllowedAtRoot": false,
@@ -54,5 +54,5 @@
   "Name": "Community",
   "Alias": "community",
   "__type": "Umbraco.Deploy,Umbraco.Deploy.Artifacts.DocumentTypeArtifact",
-  "__version": "2.0.12"
+  "__version": "2.0.13"
 }
