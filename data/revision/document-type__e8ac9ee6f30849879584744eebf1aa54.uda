@@ -3,7 +3,7 @@
   "AllowedTemplates": [
     "umb://template/436c63250a664988a2018aaa52dd7a04"
   ],
-  "Icon": "icon-document",
+  "Icon": "icon-thumbnail-list color-purple",
   "Thumbnail": "folder.png",
   "Description": null,
   "AllowedAtRoot": false,
@@ -31,5 +31,5 @@
   "Name": "Products",
   "Alias": "products",
   "__type": "Umbraco.Deploy,Umbraco.Deploy.Artifacts.DocumentTypeArtifact",
-  "__version": "2.0.12"
+  "__version": "2.0.13"
 }
