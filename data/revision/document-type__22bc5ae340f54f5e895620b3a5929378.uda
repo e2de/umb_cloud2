@@ -3,7 +3,7 @@
   "AllowedTemplates": [
     "umb://template/41a75d25d0d04fb09bdc03d4d6b62f48"
   ],
-  "Icon": "icon-document",
+  "Icon": "icon-newspaper-alt",
   "Thumbnail": "folder.png",
   "Description": null,
   "AllowedAtRoot": false,
@@ -74,5 +74,5 @@
   "Name": "News Item",
   "Alias": "newsItem",
   "__type": "Umbraco.Deploy,Umbraco.Deploy.Artifacts.DocumentTypeArtifact",
-  "__version": "2.0.12"
+  "__version": "2.0.13"
 }
