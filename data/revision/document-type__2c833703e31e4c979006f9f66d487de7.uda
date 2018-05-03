@@ -25,7 +25,7 @@
           "Mandatory": true,
           "Name": "Email",
           "SortOrder": 0,
-          "Validation": null
+          "Validation": "[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+"
         }
       ]
     }
