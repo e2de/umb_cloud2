@@ -3,7 +3,7 @@
   "AllowedTemplates": [
     "umb://template/17fa0b2a39b84b5d8d07086f9f076fa7"
   ],
-  "Icon": "icon-forms-file-word color-green",
+  "Icon": "icon-notepad color-red",
   "Thumbnail": "folder.png",
   "Description": null,
   "AllowedAtRoot": false,
