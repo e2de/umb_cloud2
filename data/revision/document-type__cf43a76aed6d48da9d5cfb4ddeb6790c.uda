@@ -3,7 +3,7 @@
   "AllowedTemplates": [
     "umb://template/17fa0b2a39b84b5d8d07086f9f076fa7"
   ],
-  "Icon": "icon-document",
+  "Icon": "icon-forms-file-word color-green",
   "Thumbnail": "folder.png",
   "Description": null,
   "AllowedAtRoot": false,
@@ -62,5 +62,5 @@
   "Name": "Text Page",
   "Alias": "textPage",
   "__type": "Umbraco.Deploy,Umbraco.Deploy.Artifacts.DocumentTypeArtifact",
-  "__version": "2.0.12"
+  "__version": "2.0.13"
 }
