@@ -3,7 +3,7 @@
   "AllowedTemplates": [
     "umb://template/79438c26c04f4200972ec6ce3fe880c0"
   ],
-  "Icon": "icon-document",
+  "Icon": "icon-layout color-orange",
   "Thumbnail": "folder.png",
   "Description": null,
   "AllowedAtRoot": false,
@@ -82,5 +82,5 @@
   "Name": "Blog Item",
   "Alias": "blogItem",
   "__type": "Umbraco.Deploy,Umbraco.Deploy.Artifacts.DocumentTypeArtifact",
-  "__version": "2.0.12"
+  "__version": "2.0.13"
 }
