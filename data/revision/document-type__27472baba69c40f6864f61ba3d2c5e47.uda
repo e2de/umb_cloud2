@@ -3,9 +3,9 @@
   "AllowedTemplates": [
     "umb://template/d1f2ac68bd4c4e6eae22bca64d1b2fa4"
   ],
-  "Icon": "icon-document",
+  "Icon": "icon-home color-light-blue",
   "Thumbnail": "folder.png",
-  "Description": null,
+  "Description": "Root of our website",
   "AllowedAtRoot": true,
   "IsContainer": false,
   "Parent": null,
@@ -66,7 +66,7 @@
           "Key": "81c4a0bf-981f-461b-89f8-e56945e638da",
           "Alias": "banner",
           "DataType": "umb://data-type/c487604028ff416b8dfee0805a2f5085",
-          "Description": null,
+          "Description": "banner, aka image that stretches across the screen on the home page",
           "Mandatory": false,
           "Name": "Banner",
           "SortOrder": 0,
@@ -152,5 +152,5 @@
   "Name": "Home Page",
   "Alias": "homePage",
   "__type": "Umbraco.Deploy,Umbraco.Deploy.Artifacts.DocumentTypeArtifact",
-  "__version": "2.0.12"
+  "__version": "2.0.13"
 }
