@@ -3,7 +3,7 @@
   "AllowedTemplates": [
     "umb://template/e7014c011c584314870eb26458a22649"
   ],
-  "Icon": "icon-document",
+  "Icon": "icon-umb-content color-orange",
   "Thumbnail": "folder.png",
   "Description": null,
   "AllowedAtRoot": false,
@@ -69,5 +69,5 @@
   "Name": "Documentation",
   "Alias": "documentation",
   "__type": "Umbraco.Deploy,Umbraco.Deploy.Artifacts.DocumentTypeArtifact",
-  "__version": "2.0.12"
+  "__version": "2.0.13"
 }
