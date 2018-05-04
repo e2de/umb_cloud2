@@ -18,6 +18,16 @@
       "SortOrder": 0,
       "PropertyTypes": [
         {
+          "Key": "1908f90d-c521-4654-96af-09eb20a0c3c4",
+          "Alias": "twitterHandle",
+          "DataType": "umb://data-type/ad0bae761d954c918950d4b50d8ca2c4",
+          "Description": null,
+          "Mandatory": false,
+          "Name": "Twitter Handle",
+          "SortOrder": 1,
+          "Validation": null
+        },
+        {
           "Key": "5e861455-82bd-4c8c-ba03-d8ef0aea4e6f",
           "Alias": "email",
           "DataType": "umb://data-type/0cc0eba1996042c9bf9b60e150b429ae",
@@ -35,6 +45,11 @@
   "Dependencies": [
     {
       "Udi": "umb://data-type/0cc0eba1996042c9bf9b60e150b429ae",
+      "Ordering": true,
+      "Mode": 0
+    },
+    {
+      "Udi": "umb://data-type/ad0bae761d954c918950d4b50d8ca2c4",
       "Ordering": true,
       "Mode": 0
     },

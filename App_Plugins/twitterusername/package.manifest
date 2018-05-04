@@ -7,5 +7,8 @@
               "view": "/app_plugins/twitterusername/editor.html"
           }
         }
+    ],
+    "css": [
+        "~/app_plugins/twitterusername/editor.css"
     ]
 }

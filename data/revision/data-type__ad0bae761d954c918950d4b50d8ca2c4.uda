@@ -1,0 +1,12 @@
+{
+  "EditorAlias": "my.TwitterUsername",
+  "DatabaseType": 1,
+  "PreValues": {},
+  "Parent": null,
+  "Udi": "umb://data-type/ad0bae761d954c918950d4b50d8ca2c4",
+  "Dependencies": [],
+  "Name": "Community Member - Twitter Handle - Twitter Username",
+  "Alias": null,
+  "__type": "Umbraco.Deploy,Umbraco.Deploy.Artifacts.DataTypeArtifact",
+  "__version": "2.0.13"
+}

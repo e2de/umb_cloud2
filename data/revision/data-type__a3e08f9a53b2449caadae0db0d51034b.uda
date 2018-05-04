@@ -1,0 +1,14 @@
+{
+  "EditorAlias": "Umbraco.ImageCropper",
+  "DatabaseType": 0,
+  "PreValues": {
+    "crops": "[\r\n  {\r\n    \"alias\": \"Square\",\r\n    \"width\": 400,\r\n    \"height\": 400\r\n  },\r\n  {\r\n    \"alias\": \"Wide\",\r\n    \"width\": 700,\r\n    \"height\": 300\r\n  }\r\n]"
+  },
+  "Parent": null,
+  "Udi": "umb://data-type/a3e08f9a53b2449caadae0db0d51034b",
+  "Dependencies": [],
+  "Name": "Product Item - Home Image - Image Cropper",
+  "Alias": null,
+  "__type": "Umbraco.Deploy,Umbraco.Deploy.Artifacts.DataTypeArtifact",
+  "__version": "2.0.13"
+}

@@ -1,0 +1,31 @@
+{
+  "EditorAlias": "Umbraco.Slider",
+  "DatabaseType": 1,
+  "PreValues": {
+    "enableRange": null,
+    "handle": "triangle",
+    "initVal1": "5",
+    "initVal2": null,
+    "maxVal": "10",
+    "minVal": "1",
+    "orientation": "horizontal",
+    "precision": null,
+    "reversed": null,
+    "step": "1",
+    "ticks": null,
+    "ticksLabels": null,
+    "ticksPositions": null,
+    "ticksSnapBounds": null,
+    "tooltip": "show",
+    "tooltipFormat": "{0} day (s)",
+    "tooltipPosition": null,
+    "tooltipSplit": null
+  },
+  "Parent": null,
+  "Udi": "umb://data-type/b60422f2fb4b4a7fafb873092c504d77",
+  "Dependencies": [],
+  "Name": "Product Item - Delivery Time - Slider",
+  "Alias": null,
+  "__type": "Umbraco.Deploy,Umbraco.Deploy.Artifacts.DataTypeArtifact",
+  "__version": "2.0.13"
+}

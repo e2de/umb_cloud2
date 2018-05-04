@@ -17,5 +17,5 @@
   "Name": "Product Item",
   "Alias": "ProductItem",
   "__type": "Umbraco.Deploy,Umbraco.Deploy.Artifacts.TemplateArtifact",
-  "__version": "2.0.12"
+  "__version": "2.0.13"
 }

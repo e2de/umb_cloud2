@@ -44,7 +44,7 @@
                 {
 
                     <a href="@product.Url" class="product-grid__item"
-                       style="background-image: url('@product.HomeImage')">
+                       style="background-image: url('@Url.GetCropUrl(product, "homeImage","square")')">
                         <div class="product-grid__item__overlay">
                             <div class="product-grid__item__name">
                                 @product.Name

@@ -1,0 +1,15 @@
+{
+    "propertyEditors": [
+     {
+         "name": "Forum Post Searcher",
+         "alias": "umb.post.searcher",
+         "editor": {
+             "view": "~/App_Plugins/forumpostsearcher/editor.html",
+             "valueType": "JSON"
+         }
+     }
+    ],
+    "javascript": [
+        "~/App_Plugins/forumpostsearcher/editor1.controller.js"
+    ]
+}

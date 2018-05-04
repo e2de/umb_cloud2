@@ -1,0 +1,12 @@
+{
+  "EditorAlias": "umb.post.searcher",
+  "DatabaseType": 0,
+  "PreValues": {},
+  "Parent": null,
+  "Udi": "umb://data-type/bf1a4d09f9374bc58a3b917c59507d67",
+  "Dependencies": [],
+  "Name": "Product Item - Forum Post Searcher",
+  "Alias": null,
+  "__type": "Umbraco.Deploy,Umbraco.Deploy.Artifacts.DataTypeArtifact",
+  "__version": "2.0.13"
+}

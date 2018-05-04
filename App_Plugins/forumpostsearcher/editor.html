@@ -1,0 +1,10 @@
+<div ng-controller="forumpost.editorcontroller">
+    <input type="text" class="span9"
+    ng-model="model.term"
+    ng-change="search(model.term)"/>
+    <ul>
+        <li ng-repeat="result in model.results">
+            {{result}}
+        </li>
+    </ul>
+</div>

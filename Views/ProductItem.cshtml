@@ -25,8 +25,7 @@
             <div class="col-md-9">
             
                 <!--=========== REPLACE THE FOLLOWING WITH NEW GRID PROPERTY ================== -->
-                @Model.Content.Header
-                @Model.Content.Images
+               @Html.GetGridHtml(Model.Content, "productGridEditor", "Bootstrap3-Fluid")
                 <!--=========================================================================== -->
             
             </div>
